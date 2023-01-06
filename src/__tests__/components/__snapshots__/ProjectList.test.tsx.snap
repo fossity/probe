@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectList should render an empty container 1`] = `
+<div
+  className="empty-container"
+>
+  <div
+    className="empty-list"
+  >
+    <h3>
+      Common:NoProjectsFound
+    </h3>
+    <p />
+  </div>
+</div>
+`;

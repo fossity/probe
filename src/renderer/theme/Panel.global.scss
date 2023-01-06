@@ -1,0 +1,17 @@
+.panel {
+  height: 100%;
+  width: 100%;
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  .panel-title h4 {
+    margin: 0;
+  }
+
+  .panel-body {
+    position: relative;
+  }
+}
+
+

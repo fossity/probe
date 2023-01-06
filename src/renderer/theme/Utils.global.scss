@@ -1,0 +1,111 @@
+// flex and grid
+
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.flex-row {
+  flex-direction: row !important;
+}
+
+.space-between {
+  justify-content: space-between !important;
+}
+
+.flex-start {
+  justify-content: flex-start;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+// displays
+.d-none {
+  display: none !important;
+}
+
+// lines
+.line-bottom {
+  border-bottom: 1px solid #eaeaea;
+}
+
+// margins and padding
+
+@mixin loop($className, $styleName) {
+  $max: 10;
+  $offset: 5;
+  $unit: 'px';
+  $i: 0;
+  @while $i <= $max {
+    #{$className + $i} {
+      #{$styleName}: #{$i * $offset}px !important;
+    }
+    $i: $i + 1;
+  }
+}
+
+@include loop('.m-', 'margin');
+@include loop('.mt-', 'margin-top');
+@include loop('.mb-', 'margin-bottom');
+@include loop('.ml-', 'margin-left');
+@include loop('.mr-', 'margin-right');
+@include loop('.p-', 'padding');
+@include loop('.pt-', 'padding-top');
+@include loop('.pb-', 'padding-bottom');
+@include loop('.pl-', 'padding-left');
+@include loop('.pr-', 'padding-right');
+
+.mr-auto {
+  margin-right: auto !important;
+}
+
+.ml-auto {
+  margin-left: auto !important;
+}
+
+// width and height
+.w-100 {
+  width: 100% !important;
+}
+
+// text
+.font-medium {
+  font-weight: 500;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.word-break {
+  word-break: break-word;
+}
+
+.border-bottom {
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}

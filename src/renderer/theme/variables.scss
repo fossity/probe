@@ -1,0 +1,39 @@
+:root {
+  --color-primary: #6366F1;
+  --color-primary-lighten: #E0E7FF;
+  --text-color-primary: #505050;
+
+  --color-status-pending: #F97316;
+  --color-status-ignored: #71717A;
+  --color-status-identified: #22C55E;
+
+  --background-color-primary: #e4e4e7;
+
+  --color-font: #27272A;
+  --color-component: #3B82F6;
+
+  --appbar-height: 64px;
+}
+
+.color-primary {
+  color: var(--color-primary);
+}
+
+.bg-primary {
+  background-color: var(--color-primary-lighten) !important;
+}
+
+
+
+// Colors
+$pending-orange: #f97316;
+$indentified-green: #22c55e;
+$ignored-gray: #a1a1aa;
+$nomatch-black: #27272a;
+$blue-scanoss: #3B82F6;
+
+// Screen sizes
+$default-width: 1280px;
+$md: 780px;
+
+$search-box-width: 480px;

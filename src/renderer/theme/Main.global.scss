@@ -1,0 +1,169 @@
+body {
+  position: relative;
+  color: #27272A !important;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0;
+  overflow-y: hidden;
+  margin: 0;
+  padding: 0;
+
+  height: 100vh;
+  // min-width: 800px;
+  background-color: var(--background-color-primary);
+
+  > #root {
+    height: 100%;
+  }
+}
+
+button {
+  font-family: 'Inter', sans-serif;
+}
+
+*, *::after, *::before {
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
+}
+
+a {
+  text-decoration: none;
+  height: fit-content;
+  width: fit-content;
+
+  &:hover {
+    opacity: 1;
+    text-decoration: none;
+  }
+
+}
+
+.MuiAlert-root {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+.MuiAlert-standardInfo {
+  color: #5387f8 !important;
+  border: 1px solid #2196f3;
+}
+
+.MuiChip-root.identified {
+  border-radius: 4px;
+  background: #DCFCE7;
+  border: 1px solid var(--color-status-identified);;
+
+  color: var(--color-status-identified);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+
+.has-status-bullet {
+  &::before {
+    content: ' ';
+    display: inline-block;
+    margin-right: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  &.pending::before {
+    background-color: var(--color-status-pending);
+  }
+  &.identified::before {
+    background-color: var(--color-status-identified);
+  }
+  &.ignored::before {
+    background-color: var(--color-status-ignored);
+    background-color: #A1A1AA
+  }
+}
+
+.loader {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 12px;
+    margin-bottom: 60px;
+    color: var(--color-status-ignored);
+  }
+}
+
+.custom-alert {
+  color: rgb(102, 60, 0);
+  background-color: rgb(255, 244, 229);
+  display: flex;
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  border-radius: 4px;
+
+  .MuiAlert-standardWarning .MuiAlert-icon {
+    color: #ff9800;
+  }
+
+  .MuiAlert-icon {
+    display: flex;
+    opacity: 0.9;
+    padding: 7px 0;
+    font-size: 22px;
+    margin-right: 12px;
+  }
+}
+
+// CUSTOM TABS
+.tabs {
+  .MuiPaper-root {
+    border-radius: 4px;
+  }
+
+  .MuiTabs-root, .MuiButtonBase-root {
+    min-height: 42px;
+  }
+
+  .MuiTab-root {
+    color: var(--color-font);
+    font-weight: 400;
+    opacity: 0.7;
+
+    &.has-bullet {
+      padding-left: 35px;
+    }
+
+    &.has-bullet::before {
+      position: absolute;
+      left: 15px;
+      content: '';
+      width: 10px;
+      height: 10px;
+      background-color: lightgray;
+      border-radius: 50%;
+      margin-right: 7px;
+    }
+
+    &.pending::before { background-color: var(--color-status-pending);}
+    &.identified::before { background-color: var(--color-status-identified);}
+    &.ignored::before, &.original::before { background-color: var(--color-status-ignored);}
+  }
+
+  .Mui-selected {
+    font-weight: 600;
+    opacity: 1;
+  }
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.selectable, .selectable * {
+  -webkit-user-select: text !important;
+}
