@@ -67,6 +67,7 @@ const ProjectSettings = () => {
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
 
   const [licenses, setLicenses] = useState([]);
+  const [license, setLicense] = useState<string>('proprietary');
 
   const [projectSettings, setProjectSettings] = useState<INewProject>({
     name: '',
@@ -176,6 +177,15 @@ const ProjectSettings = () => {
     })
   };
 
+  useEffect(e => {
+    if (license === 'proprietary') {
+      setProjectSettings({
+        ...projectSettings,
+        default_license: null,
+      })
+    }
+  }, [license]);
+
   return (
     <>
       <section id="ProjectSettings" className="app-page">
@@ -224,8 +234,8 @@ const ProjectSettings = () => {
 
                 <label className="input-label">{t('Contact Information')}</label>
                 <div className="form-field">
-                  <FormLabel>{t('Name')} </FormLabel>
-                  <TextField name="name" size="small" fullWidth onChange={(e) => inputHandler(e, 'contact')} />
+                  <FormLabel>{t('Name')} <span className="optional">- {t('Optional')}</span></FormLabel>
+                  <TextField name="name" size="small" type="email" fullWidth onChange={(e) => inputHandler(e, 'contact')} />
                 </div>
 
                 <Grid container spacing={2}>
@@ -237,7 +247,7 @@ const ProjectSettings = () => {
                   </Grid>
                   <Grid item xs={6}>
                     <div className="form-field">
-                      <FormLabel>{t('Phone Number')}</FormLabel>
+                      <FormLabel>{t('Phone Number')} <span className="optional">- {t('Optional')}</span></FormLabel>
                       <TextField name="phone" size="small" fullWidth onChange={(e) => inputHandler(e, 'contact')} />
                     </div>
                   </Grid>
@@ -266,11 +276,12 @@ const ProjectSettings = () => {
                     placeholder="Enter here the list of known Open Source components used and/or attach an SBOM (only text files allowed, .i.e. SPDX, CycloneDX, CSV, TXT)."
                     maxRows={2}
                     minRows={2}
+                    onChange={e => setProjectSettings({...projectSettings, software_composition: e.target.value})}
                     helperText={projectSettings.software_composition_uri}
                   />
                 <FormGroup className="mt-2">
                   <FormControlLabel
-                    control={<Checkbox />}
+                    control={<Checkbox required />}
                     label={<small>I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
                     onChange={(event, checked) => onDecompress(checked)}
                   />
@@ -282,6 +293,7 @@ const ProjectSettings = () => {
                     <RadioGroup
                       defaultValue="proprietary"
                       name="license"
+                      onChange={e => setLicense(e.target.value)}
                     >
                       <FormControlLabel value="proprietary" control={<Radio />} label="Proprietary" />
                       <FormControlLabel value="other" control={<Radio />} label="Other" />
@@ -290,6 +302,7 @@ const ProjectSettings = () => {
 
                   <div className="input-container input-container-license mt-1 mb-3">
                     <Autocomplete
+                      disabled={license === 'proprietary'}
                       size="small"
                       onChange={(e, value) =>
                         setProjectSettings({
@@ -354,10 +367,11 @@ const ProjectSettings = () => {
                     placeholder="Enter here any additional details about actual licensing of the software being scanned."
                     minRows={2}
                     maxRows={2}
+                    onChange={e => setProjectSettings({...projectSettings, extra_license: e.target.value})}
                   />
                   <FormGroup className="mt-2">
                     <FormControlLabel
-                      control={<Checkbox />}
+                      control={<Checkbox required />}
                       label={<small>I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
                       onChange={(event, checked) => onDecompress(checked)}
                     />
