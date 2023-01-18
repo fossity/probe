@@ -3,7 +3,7 @@
   "IMPORTED": "IMPORTED",
   "NoProjectsFound": "No projects found",
   "NoProjectsFoundWith": "No projects found with <strong>{{searchQuery}}</strong>",
-  "StartNewProject": "You can start by <link1>scanning a new project</link1> <br /> or <link2>importing a project</link2>.",
+  "StartNewProject": "You can start by <link1>scanning a new project</link1>.",
   "LoadingProjects": "Loading projects...",
   "ProjectNameAlreadyExists": "The project name already exists",
   "ProjectNameInvalid": "The project name is invalid",

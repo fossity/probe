@@ -21,6 +21,7 @@ declare global {
     };
     shell: {
       showItemInFolder(path: string): void;
+      openPath(path: string): void;
       openExternal(url: string, options?: Electron.OpenExternalOptions): Promise<void>;
     };
     path: {

@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  Checkbox,
+  Checkbox, FormControl,
   FormControlLabel,
-  FormHelperText,
+  FormHelperText, FormLabel, Grid,
   IconButton,
   MenuItem,
-  Paper,
+  Paper, Radio, RadioGroup,
   Select,
   TextField,
-  Tooltip,
+  Tooltip
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -17,20 +17,19 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Add } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
 import { INewProject } from '@api/types';
-import { userSettingService } from '@api/services/userSetting.service';
 import { workspaceService } from '@api/services/workspace.service';
-import { ResponseStatus } from '@api/Response';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
-import AppConfig from '@config/AppConfigModule';
 import { useDispatch, useSelector } from 'react-redux';
 import FormGroup from '@mui/material/FormGroup';
+import AddIcon from '@mui/icons-material/Add';
 import { Scanner } from '../../../../../main/task/scanner/types';
 import ScannerType = Scanner.ScannerType;
 import ScannerSource = Scanner.ScannerSource;
+import { dialogController } from '../../../../controllers/dialog-controller';
+
 
 const useStyles = makeStyles((theme) => ({
   size: {
@@ -63,22 +62,18 @@ const ProjectSettings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-
   const { projects, scanPath } = useSelector(selectWorkspaceState);
 
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
 
   const [licenses, setLicenses] = useState([]);
-  const [apis, setApis] = useState([]);
 
   const [projectSettings, setProjectSettings] = useState<INewProject>({
     name: '',
     scan_root: '',
     default_license: '',
-    api_key: null,
-    api: null,
-    token: null,
-    source: null,
+    contact: null,
+
     scannerConfig: {
       mode: Scanner.ScannerMode.SCAN,
       source: scanPath?.source || ScannerSource.CODE,
@@ -101,19 +96,37 @@ const ProjectSettings = () => {
     const data = await workspaceService.getLicenses();
     setLicenses(data);
 
-    const apiUrlKey = await userSettingService.get();
-    setApis(apiUrlKey.APIS);
-
     const { path } = scanPath;
-    let projectName: string = path.split(window.path.sep)[path.split(window.path.sep).length - 1]
-
-    if (projectName.endsWith('.wfp'))
-      projectName = projectName.replace('.wfp', '');
+    const projectName: string = path.split(window.path.sep)[path.split(window.path.sep).length - 1]
 
     setProjectSettings({
       ...projectSettings,
       scan_root: path,
       name: projectName,
+    });
+  };
+
+  const onAttachFile = async () => {
+    const paths = await dialogController.showOpenDialog({
+      properties: ['openFile'],
+      filters: [{ name: 'Text files', extensions: ['json', 'txt'] }],
+    });
+
+    if (paths && paths.length > 0) {
+      setProjectSettings({
+        ...projectSettings,
+        software_composition_uri:  paths[0]
+      })
+    }
+  };
+
+  const inputHandler = (e, group) => {
+    setProjectSettings({
+      ...projectSettings,
+      [group]: {
+        ...projectSettings[group],
+        [e.target.name]: e.target.value,
+      }
     });
   };
 
@@ -151,24 +164,6 @@ const ProjectSettings = () => {
     submit();
   };
 
-  const openLicenseDialog = async () => {
-    const response = await dialogCtrl.openLicenseCreate(false);
-    if (response && response.action === ResponseStatus.OK) {
-      setLicenses([
-        ...licenses,
-        {
-          spdxid: response.data.spdxid,
-          name: response.data.name,
-        },
-      ]);
-
-      setProjectSettings({
-        ...projectSettings,
-        default_license: response.data.spdxid,
-      });
-    }
-  };
-
   const onDecompress = (checked: boolean) => {
     const newType = projectSettings.scannerConfig.type.filter((t) => t !== ScannerType.UNZIP);
     if (checked) newType.push(ScannerType.UNZIP);
@@ -195,18 +190,19 @@ const ProjectSettings = () => {
               >
                 <ArrowBackIcon />
               </IconButton>
-              {t('Title:ProjectSettings')}
+              {t('Project Info')}
             </h4>
             <h1 className="mt-0 mb-0">{scanPath.path}</h1>
           </div>
         </header>
         <div className="app-content">
           <form onSubmit={(e) => handleClose(e)}>
-            <div className="project-form-container mt-1">
-              <div className="project-license-container">
-                <div className="input-container">
+
+            <Grid container spacing={8} rowSpacing={2}>
+              <Grid item xs={6}>
+
+                <div className="form-field mb-5">
                   <label className="input-label">{t('Title:ProjectName')}</label>
-                  <Paper className="input-text-container project-name-container">
                     <TextField
                       spellCheck={false}
                       error={projectNameExists || !projectValidName}
@@ -220,26 +216,79 @@ const ProjectSettings = () => {
                         })
                       }
                     />
-                  </Paper>
                   <div className="error-message">
                     {projectNameExists && t('Common:ProjectNameAlreadyExists')}
                     {!projectValidName && t('Common:ProjectNameInvalid')}
                   </div>
                 </div>
 
-                <div className="input-container input-container-license mt-1 mb-3">
-                  <div className="input-label-add-container">
-                    <label className="input-label">
-                      {t('Title:License')}
-                      <Tooltip title= {t('Tooltip:AddNewLicense')}>
-                        <IconButton tabIndex={-1} color="inherit" size="small" onClick={openLicenseDialog}>
-                          <Add fontSize="inherit" />
-                        </IconButton>
-                      </Tooltip>
-                      <span className="optional">- {t('Common:Optional')}</span>
-                    </label>
-                  </div>
-                  <Paper className="input-text-container license-input-container">
+                <label className="input-label">{t('Contact Information')}</label>
+                <div className="form-field">
+                  <FormLabel>{t('Name')} </FormLabel>
+                  <TextField name="name" size="small" fullWidth onChange={(e) => inputHandler(e, 'contact')} />
+                </div>
+
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <div className="form-field">
+                      <FormLabel>{t('Email Address')}</FormLabel>
+                      <TextField name="email" size="small" fullWidth required onChange={(e) => inputHandler(e, 'contact')} />
+                    </div>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <div className="form-field">
+                      <FormLabel>{t('Phone Number')}</FormLabel>
+                      <TextField name="phone" size="small" fullWidth onChange={(e) => inputHandler(e, 'contact')} />
+                    </div>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={6}>
+
+                <div className="d-flex align-center">
+                  <label className="input-label">{t('Known Software Composition')}</label>
+                  <IconButton
+                    className="ml-2 mb-1"
+                    title={t('Tooltip:AttachFile')}
+                    tabIndex={-1}
+                    color="inherit"
+                    size="small"
+                    onClick={onAttachFile}
+
+                  >
+                    <AddIcon fontSize="inherit" />
+                  </IconButton>
+                </div>
+
+                <TextField
+                    fullWidth
+                    multiline
+                    placeholder="Enter here the list of known Open Source components used and/or attach an SBOM (only text files allowed, .i.e. SPDX, CycloneDX, CSV, TXT)."
+                    maxRows={2}
+                    minRows={2}
+                    helperText={projectSettings.software_composition_uri}
+                  />
+                <FormGroup className="mt-2">
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    label={<small>I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
+                    onChange={(event, checked) => onDecompress(checked)}
+                  />
+                </FormGroup>
+
+                <>
+                  <label className="input-label mt-5">{t('Licensing')}</label>
+                  <FormControl>
+                    <RadioGroup
+                      defaultValue="proprietary"
+                      name="license"
+                    >
+                      <FormControlLabel value="proprietary" control={<Radio />} label="Proprietary" />
+                      <FormControlLabel value="other" control={<Radio />} label="Other" />
+                    </RadioGroup>
+                  </FormControl>
+
+                  <div className="input-container input-container-license mt-1 mb-3">
                     <Autocomplete
                       size="small"
                       onChange={(e, value) =>
@@ -252,10 +301,10 @@ const ProjectSettings = () => {
                       value={
                         licenses && projectSettings.default_license
                           ? licenses?.find(
-                              (license) =>
-                                license?.spdxid ===
-                                projectSettings?.default_license
-                            )
+                            (license) =>
+                              license?.spdxid ===
+                              projectSettings?.default_license
+                          )
                           : ''
                       }
                       selectOnFocus
@@ -298,99 +347,27 @@ const ProjectSettings = () => {
                         />
                       )}
                     />
-                  </Paper>
-                </div>
-              </div>
-              <div className="api-conections-container mt-5">
-                <div className="api-subcontainer">
-                  {AppConfig.FF_ENABLE_API_CONNECTION_SETTINGS && (
-                    <>
-                      <div className="api-conections-label-container mb-3">
-                        <label className="input-label">{t('Title:APIConnections')}</label>
-                      </div>
-                      <div className="label-input-container">
-                        <div className="label-icon">
-                          <label className="input-label h3">
-                            {t('Title:KnowledgebaseAPI')}
-                            <span className="optional"> - {t('Common:Optional')}</span>
-                          </label>
-                        </div>
-                        <Paper>
-                          <Select
-                            size="small"
-                            onChange={(e: any) => {
-                              setProjectSettings({
-                                ...projectSettings,
-                                api: e.target?.value.URL,
-                                api_key: e.target?.value.API_KEY,
-                              });
-                            }}
-                            defaultValue={0}
-                            fullWidth
-                            disableUnderline
-                          >
-                            <MenuItem value={0}>
-                              <span className="item-default">{t('Common:UseDefaultSettings')}</span>
-                            </MenuItem>
-                            ;
-                            {apis.map((api) => (
-                              <MenuItem value={api} key={api.key}>
-                                <span>API URL: {api.URL}</span>
-                                {api.API_KEY && (
-                                  <span className="api_key">
-                                    {' '}
-                                    - API KEY: {api.API_KEY}
-                                  </span>
-                                )}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </Paper>
-                      </div>
-                    </>
-                  )}
-                  <div className="label-input-container mt-5">
-                    <div className="label-icon">
-                      <label className="input-label h3">
-                        {t('Title:SBOMLedgerToken')} <span className="optional">- {t('Common:Optional')}</span>
-                      </label>
-                    </div>
-                    <Paper>
-                      <TextField
-                        size="small"
-                        name="token"
-                        placeholder={t('Common:UseDefaultSettings')}
-                        fullWidth
-                        onChange={(e) =>
-                          setProjectSettings({
-                            ...projectSettings,
-                            token: e.target.value.trim(),
-                          })
-                        }
-                      />
-                    </Paper>
                   </div>
-                </div>
-              </div>
-              <div className="mt-5">
-                <label className="input-label">{t('Title:ScannerSettings')}</label>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    disabled={scanPath?.source === Scanner.ScannerSource.WFP}
-                    label={t('DecompressArchivesLabel')}
-                    onChange={(event, checked) => onDecompress(checked)}
+                  <TextField
+                    fullWidth
+                    multiline
+                    placeholder="Enter here any additional details about actual licensing of the software being scanned."
+                    minRows={2}
+                    maxRows={2}
                   />
-                </FormGroup>
-                {projectSettings.scannerConfig.type.some(
-                  (item) => item === ScannerType.UNZIP
-                ) && (
-                  <FormHelperText>
-                    {t('DecompressArchivesHint')}
-                  </FormHelperText>
-                )}
-              </div>
-            </div>
+                  <FormGroup className="mt-2">
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label={<small>I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
+                      onChange={(event, checked) => onDecompress(checked)}
+                    />
+                  </FormGroup>
+                </>
+
+              </Grid>
+              <Grid item xs={6} />
+            </Grid>
+
             <div className="button-container">
               <Button
                 endIcon={<ArrowForwardIcon />}

@@ -53,6 +53,9 @@ contextBridge.exposeInMainWorld('shell', {
   openExternal: async (url: string, options?: Electron.OpenExternalOptions) => {
     await shell.openExternal(url, options);
   },
+  openPath: (p: string) => {
+    shell.openPath(p);
+  },
 });
 
 contextBridge.exposeInMainWorld('app', {

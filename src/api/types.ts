@@ -97,13 +97,13 @@ export interface ItemInclude {
 
 export interface INewProject {
   name: string;
-  scan_root: string;
+  contact?: Record<string, string> | null,
+  software_composition?: string;
+  software_composition_uri?: string;
   default_license: string;
-  default_components?: string;
-  api?: string;
-  token?: string;
-  api_key?: string;
-  source: string;
+  extra_license?: string;
+
+  scan_root: string;
   scannerConfig: ScannerConfig;
 }
 

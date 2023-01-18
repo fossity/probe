@@ -8,6 +8,11 @@
       justify-content: space-between;
     }
 
+
+    .form-field {
+      margin-bottom: 15px;
+    }
+
     .project-form-container {
       max-width: 600px;
       min-width: 400px;
@@ -55,20 +60,6 @@
           }
         }
       }
-
-      .api-conections-container {
-        margin-top: 5px;
-        .api-subcontainer {
-          display: flex;
-          flex-direction: column;
-
-          .api-conections-label-container {
-            .api-conections-label {
-              font-size: 20px;
-            }
-          }
-        }
-      }
     }
   }
 
@@ -107,13 +98,11 @@
   }
 
   .input-label {
-    font-weight: 600;
-    font-size: 18px;
-
-    &.h3 {
-      font-size: 16px;
-      font-weight: 500;
-    }
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 28px;
 
     .optional {
       color: gray;

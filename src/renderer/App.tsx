@@ -108,7 +108,7 @@ export default class App {
           styleOverrides: {
             root: {
               '& fieldset': {
-                borderColor: 'transparent',
+
               },
               // TODO: we need to remove "!important" from rules. Currently, default style is more specific that custom styles. Could be controversial in the future
               '&.Mui-disabled fieldset': {

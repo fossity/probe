@@ -3,7 +3,7 @@
   "IMPORTED": "IMPORTADO",
   "NoProjectsFound": "No se encontraron proyectos",
   "NoProjectsFoundWith": "No se encontraron proyectos con <strong>{{searchQuery}}</strong>",
-  "StartNewProject": "Puedes comenzar <link1>escaneando un nuevo proyecto</link1> <br /> o <link2>importando un proyecto</link2>.",
+  "StartNewProject": "Puedes comenzar <link1>escaneando un nuevo proyecto</link1>.",
   "LoadingProjects": "Cargando proyectos...",
   "ProjectNameAlreadyExists": "El nombre del proyecto ya existe",
   "ProjectNameInvalid": "El nombre del proyecto no es correcto",
