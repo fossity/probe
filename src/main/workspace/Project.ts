@@ -53,8 +53,7 @@ export class Project {
 
   fileTreeViewMode: FileTreeViewMode;
 
-  constructor(name: string) {
-    this.metadata = new Metadata(name);
+  constructor() {
     this.state = ProjectState.CLOSED;
     this.filter = null;
     this.fileTreeViewMode = FileTreeViewMode.DEFAULT;
@@ -64,7 +63,7 @@ export class Project {
 
   public static async readFromPath(pathToProject: string): Promise<Project> {
     const mt: Metadata = await Metadata.readFromPath(pathToProject);
-    const p: Project = new Project(mt.getName());
+    const p: Project = new Project();
     p.setState(ProjectState.CLOSED);
     p.setMetadata(mt);
     return p;
@@ -98,10 +97,10 @@ export class Project {
     this.filesNotScanned = a.filesNotScanned;
     this.processedFiles = a.processedFiles;
     this.filesSummary = a.filesSummary;
-    await modelProvider.init(this.metadata.getMyPath());
     this.metadata = await Metadata.readFromPath(this.metadata.getMyPath());
     this.tree = new Tree(a.tree.rootFolder.label, this.metadata.getMyPath(),a.tree.rootFolder.label);
     this.tree.loadTree(a.tree.rootFolder);
+    this.tree.setSummary(a.filesSummary);
     return true;
   }
 
@@ -152,19 +151,6 @@ export class Project {
   public setMetadata(mt: Metadata) {
     this.metadata = mt;
   }
-
-  public setScannerConfig(value: ScannerCFG.Scanner.ScannerConfig) {
-    this.metadata.setScannerConfig(value);
-  }
-
-  public setScanPath(name: string) {
-    this.metadata.setScanRoot(name);
-  }
-
-  public setLicense(license: string) {
-    this.metadata.setLicense(license);
-  }
-
   public setMyPath(myPath: string) {
     this.metadata.setMyPath(myPath);
     this.metadata.save();
@@ -194,26 +180,6 @@ export class Project {
     return this.metadata.getScanRoot();
   }
 
-  public setApi(api: string) {
-    this.metadata.setApi(api);
-  }
-
-  public getApi() {
-    return this.metadata.getApi();
-  }
-
-  public setToken(token: string) {
-    this.metadata.setToken(token);
-  }
-
-  public setApiKey(apiKey: string) {
-    this.metadata.setApiKey(apiKey);
-  }
-
-  public getApiKey() {
-    return this.metadata.getApiKey();
-  }
-
   public async getResults() {
     return JSON.parse(
       await fs.promises.readFile(
@@ -241,9 +207,7 @@ export class Project {
     return this.tree.getNode(path);
   }
 
-  public getToken() {
-    return this.metadata.getToken();
-  }
+
 
   public async getDependencies(): Promise<IDependencyResponse> {
     try {
@@ -299,6 +263,5 @@ export class Project {
 
   public setTree(tree: Tree) {
     this.tree = tree;
-    this.metadata.setFileCounter(tree.getSummarize().include);
   }
 }

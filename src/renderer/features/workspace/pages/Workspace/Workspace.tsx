@@ -41,7 +41,7 @@ const Workspace = () => {
   };
 
   const onShowFilesHandler = async (project: IProject) => {
-    window.shell.openPath(project.work_root.replace('/', '\\'));
+    window.shell.openPath(project.work_root);
   };
 
   const onDownloadHandler = async (project: IProject) => {

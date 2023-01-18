@@ -1,46 +1,40 @@
 import * as fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { app } from 'electron';
-import { IProject, ScanState } from '../../api/types';
+import { IMetadata, INewProject, IProject, ScanState } from '../../api/types';
 import packageJson from '../../../release/app/package.json';
-import { Scanner } from '../task/scanner/types';
-import * as ScannerCFG from '../task/scanner/types';
 
-export class Metadata {
-  private appVersion: string;
+export class Metadata implements IMetadata{
 
-  private date: string;
+  data: Partial<INewProject>;
 
-  private name: string;
+  appVersion: string;
 
-  private work_root: string;
+  date: string;
 
-  private scan_root: string;
+  work_root: string;
 
-  private scannerState: ScanState;
+  uuid: string;
 
-  private files: number;
+  files : number;
 
-  private api: string;
+  scannerState: ScanState;
 
-  private apiKey: string;
-
-  private token: string;
-
-  private uuid: string;
-
-  private default_license: string;
-
-  private source: string;
-
-  private scannerConfig: Scanner.ScannerConfig;
-
-  constructor(name: string) {
-    this.name = name;
+  constructor(projectMetadata: INewProject) {
+    this.data = projectMetadata;
     this.appVersion =
       app.isPackaged === true ? app.getVersion() : packageJson.version;
     this.date = new Date().toISOString();
     this.uuid = uuidv4();
+    this.scannerState = ScanState.CREATED;
+  }
+
+  setScannerState(state: ScanState){
+    this.scannerState = state;
+  }
+
+  getScannerState(){
+    return this.scannerState;
   }
 
   public static async readFromPath(pathToProject: string): Promise<Metadata> {
@@ -63,10 +57,6 @@ export class Metadata {
     return this.appVersion;
   }
 
-  public setName(name: string) {
-    this.name = name;
-  }
-
   public setDate(date: string) {
     this.date = date;
   }
@@ -76,47 +66,19 @@ export class Metadata {
   }
 
   public setScanRoot(scanRoot: string) {
-    this.scan_root = scanRoot;
-  }
-
-  public setScannerState(s: ScanState) {
-    this.scannerState = s;
-  }
-
-  public getScannerState(): ScanState {
-    return this.scannerState;
-  }
-
-  public setApi(api: string) {
-    this.api = api;
-  }
-
-  public setToken(token: string) {
-    this.token = token;
+    this.data.scan_root = scanRoot;
   }
 
   public setUuid(uuid: string) {
     this.uuid = uuid;
   }
 
-  public setFileCounter(c: number) {
-    this.files = c;
-  }
-
   public setLicense(license: string) {
-    this.default_license = license;
-  }
-
-  public setSource(source: string) {
-    this.source = source;
-  }
-
-  public getSource(): string {
-    return this.source;
+    this.data.default_license = license;
   }
 
   public getName() {
-    return this.name;
+    return this.data.name;
   }
 
   public getMyPath(): string {
@@ -128,57 +90,28 @@ export class Metadata {
   }
 
   public getScanRoot() {
-    return this.scan_root;
+    return this.data.scan_root;
   }
 
-  public getState() {
-    return this.scannerState;
+  public setTotalFiles(files: number){
+    this.files = files;
   }
 
   public getLicense(): string {
-    return this.default_license;
-  }
-
-  public setApiKey(apiKey: string) {
-    this.apiKey = apiKey;
-  }
-
-  public getApiKey(): string {
-    return this.apiKey;
-  }
-
-  public getApi(): string {
-    return this.api;
-  }
-
-  public getToken(): string {
-    return this.token;
-  }
-
-  public getScannerConfig(): ScannerCFG.Scanner.ScannerConfig {
-    return this.scannerConfig;
-  }
-
-  public setScannerConfig(value: ScannerCFG.Scanner.ScannerConfig) {
-    this.scannerConfig = value;
+    return this.data.default_license;
   }
 
   public getDto(): IProject {
     const Ip: IProject = {
       appVersion: this.appVersion,
       date: this.date,
-      name: this.name,
+      name: this.data.name,
       work_root: this.work_root,
-      scan_root: this.scan_root,
-      scannerState: this.scannerState,
-      files: this.files,
-      api: this.api,
-      token: this.token,
+      scan_root: this.data.scan_root,
       uuid: this.uuid,
-      default_license: this.default_license,
-      api_key: this.apiKey,
-      source: this.source,
-      scannerConfig: this.scannerConfig,
+      files: this.files,
+      scannerState: this.scannerState,
+      default_license: this.data.default_license,
     };
     return Ip;
   }

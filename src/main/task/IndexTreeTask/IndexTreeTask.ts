@@ -26,5 +26,4 @@ export abstract class IndexTreeTask implements Scanner.IPipelineTask {
   public abstract setTreeSummary(tree: Tree);
 
 
-
 }

@@ -102,20 +102,26 @@ export interface INewProject {
   software_composition_uri?: string;
   default_license: string;
   extra_license?: string;
-
   scan_root: string;
-  scannerConfig: ScannerConfig;
+}
+
+export interface IMetadata {
+  data: Partial<INewProject>;
+  appVersion: string;
+  date: string;
+  work_root: string;
+  uuid: string;
+  files: number;
+  scannerState: ScanState
 }
 
 export interface IProject extends INewProject {
   appVersion: string;
   date: string;
   work_root: string;
-  scannerState: ScanState;
-  files: number;
   uuid: string;
-  source: string;
-  scannerConfig: Scanner.ScannerConfig;
+  files:number;
+  scannerState: ScanState;
 }
 
 export interface Files {

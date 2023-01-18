@@ -23,7 +23,6 @@ ipcMain.handle(IpcChannels.PROJECT_OPEN_SCAN, async (event, arg: any) => {
     work_root: p.getMyPath(),
     scan_root: p.getScanRoot(),
     uuid: p.getUUID(),
-    source: p.getDto().source,
     metadata: p.metadata,
   };
   return {
@@ -97,22 +96,6 @@ ipcMain.handle(IpcChannels.UTILS_GET_NODE_FROM_PATH, (event, path: string) => {
   }
 });
 
-ipcMain.handle(IpcChannels.GET_TOKEN, async (event) => {
-  try {
-    let token = workspace.getOpenedProjects()[0].getToken();
-    if (!token || token === '') {
-      const { TOKEN } = userSettingService.get();
-      token = TOKEN;
-    }
-    return Response.ok({
-      message: 'Node from path retrieve succesfully',
-      data: token,
-    });
-  } catch (e: any) {
-    return Response.fail({ message: e.message });
-  }
-});
-
 ipcMain.handle(IpcChannels.PROJECT_READ_TREE, (event) => {
   try {
     const tree = workspace.getOpenedProjects()[0].getTree().getRootFolder();
@@ -148,24 +131,6 @@ ipcMain.handle(
   }
 );
 
-ipcMain.handle(IpcChannels.GET_API_KEY, async (event) => {
-  try {
-    const p = workspace.getOpenProject();
-    let apiKey = p.getApiKey();
-    if (apiKey === undefined) {
-      const { APIS, DEFAULT_API_INDEX } = userSettingService.get();
-      if (DEFAULT_API_INDEX > 0) apiKey = APIS[DEFAULT_API_INDEX].API_KEY;
-      else apiKey = null;
-    }
-    return Response.ok({
-      message: 'Api Key loaded successfully',
-      data: apiKey,
-    });
-  } catch (e: any) {
-    return Response.fail({ message: e.message });
-  }
-});
-
 ipcMain.handle(
   IpcChannels.PROJECT_CREATE,
   async (_event, projectDTO: INewProject) => {
@@ -179,28 +144,5 @@ ipcMain.handle(
   }
 );
 
-ipcMain.handle(IpcChannels.PROJECT_EXTRACT_INVENTORY_KNOWLEDGE, async (_event, param: ExtractFromProjectDTO) => {
-  try {
-    const inventoryKnowledgeExtraction: InventoryKnowledgeExtraction = await projectService.extractProjectKnowledgeInventoryData(param);
-    return Response.ok({
-      message: 'Project extraction successfully',
-      data: inventoryKnowledgeExtraction,
-    });
-  } catch (error: any) {
-    log.error('[PROJECT_EXTRACT_INVENTORY_KNOWLEDGE]', error);
-    return Response.fail({ message: error.message });
-  }
-});
 
-ipcMain.handle(IpcChannels.PROJECT_ACCEPT_INVENTORY_KNOWLEDGE, async (_event, param: ReuseIdentificationTaskDTO) => {
-  try {
-    const inventories: Array<Inventory> = await projectService.acceptInventoryKnowledge(param);
-    return Response.ok({
-      message: 'Project extraction successfully',
-      data: inventories,
-    });
-  } catch (error: any) {
-    log.error('[PROJECT_EXTRACT_INVENTORY_KNOWLEDGE]', error);
-    return Response.fail({ message: error.message });
-  }
-});
+
