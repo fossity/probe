@@ -8,6 +8,7 @@ import { ProjectFilter } from './filters/ProjectFilter';
 import { Scanner } from '../task/scanner/types';
 import { WorkspaceMigration } from '../migration/WorkspaceMigration';
 import { userSettingService } from '../services/UserSettingService';
+import { Metadata } from './Metadata';
 
 class Workspace {
   private projectList: Array<Project>;
@@ -187,15 +188,9 @@ class Workspace {
   }
 
   public async createProject(projectDTO: INewProject): Promise<Project> {
-    const newProject: Project = new Project(projectDTO.name);
-    newProject.setScannerConfig(projectDTO.scannerConfig);
-    newProject.setScanPath(projectDTO.scan_root);
-    newProject.setLicense(projectDTO.default_license);
-    if (projectDTO.api) {
-      newProject.setApi(projectDTO.api);
-      newProject.setApiKey(projectDTO.api_key ? projectDTO.api_key : '');
-    }
-    if (projectDTO.token) newProject.setToken(projectDTO.token);
+    const newProject: Project = new Project();
+    const metadata = new Metadata(projectDTO);
+    newProject.setMetadata(metadata);
     await this.addProject(newProject);
     return newProject;
   }

@@ -148,6 +148,10 @@ export class Tree {
     return sum;
   }
 
+  public setSummary(summary: any){
+    this.summary = summary;
+  }
+
   public getSummarize(): any {
     return this.summary;
   }

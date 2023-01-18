@@ -74,16 +74,6 @@ const ProjectSettings = () => {
     scan_root: '',
     default_license: '',
     contact: null,
-
-    scannerConfig: {
-      mode: Scanner.ScannerMode.SCAN,
-      source: scanPath?.source || ScannerSource.CODE,
-      type: [
-        ScannerType.CODE,
-        ScannerType.DEPENDENCIES,
-        ScannerType.VULNERABILITIES,
-      ],
-    },
   });
 
   const [projectValidName, setProjectValidName] = useState(false);
@@ -165,19 +155,7 @@ const ProjectSettings = () => {
     submit();
   };
 
-  const onDecompress = (checked: boolean) => {
-    const newType = projectSettings.scannerConfig.type.filter((t) => t !== ScannerType.UNZIP);
-    if (checked) newType.push(ScannerType.UNZIP);
-    setProjectSettings({
-      ...projectSettings,
-      scannerConfig: {
-        ...projectSettings.scannerConfig,
-        type: newType
-      }
-    })
-  };
-
-  useEffect(e => {
+  useEffect(() => {
     if (license === 'proprietary') {
       setProjectSettings({
         ...projectSettings,
@@ -283,7 +261,6 @@ const ProjectSettings = () => {
                   <FormControlLabel
                     control={<Checkbox required />}
                     label={<small>I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
-                    onChange={(event, checked) => onDecompress(checked)}
                   />
                 </FormGroup>
 
@@ -373,7 +350,6 @@ const ProjectSettings = () => {
                     <FormControlLabel
                       control={<Checkbox required />}
                       label={<small>I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
-                      onChange={(event, checked) => onDecompress(checked)}
                     />
                   </FormGroup>
                 </>

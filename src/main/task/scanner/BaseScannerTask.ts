@@ -1,16 +1,12 @@
 import {
   Scanner,
-  ScannerCfg,
   ScannerEvents,
-  ScannerInput,
 } from 'scanoss';
 import log from 'electron-log';
 import fs from "fs";
 import { ScanState } from '../../../api/types';
 import { Project } from '../../workspace/Project';
 import { IpcChannels } from '../../../api/ipc-channels';
-
-import { userSettingService } from '../../services/UserSettingService';
 import { broadcastManager } from '../../broadcastManager/BroadcastManager';
 import { Scanner as ScannerModule } from './types';
 import {IDispatch} from "./dispatcher/IDispatch";
@@ -47,7 +43,7 @@ export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScann
     this.cleanWorkDirectory();
     let {processedFiles} = this.project;
 
-    this.scanner.on(ScannerEvents.DISPATCHER_NEW_DATA, async (response) => {
+    this.scanner.on(ScannerEvents.DISPATCHER_NEW_DATA, async (response) => { // NEW CONTENT
 
       processedFiles += response.getNumberOfFilesScanned();
 
@@ -79,7 +75,7 @@ export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScann
     );
 
     this.scanner.on(
-      ScannerEvents.SCAN_DONE,
+      ScannerEvents.SCAN_DONE,  // WINNOWING_FINISH
       async (resultPath, filesNotScanned) => {
         log.info(`%cScannerEvents.SCAN_DONE`, 'color: green');
       }
@@ -113,26 +109,6 @@ export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScann
   }
 
   protected setScannerConfig() {
-    const scannerCfg: ScannerCfg = new ScannerCfg();
-    const { DEFAULT_API_INDEX, APIS, CA_CERT, PROXY, IGNORE_CERT_ERRORS } = userSettingService.get();
-
-    if (this.project.getApi()) {
-      scannerCfg.API_URL = this.project.getApi();
-      scannerCfg.API_KEY = this.project.getApiKey();
-    } else {
-      scannerCfg.API_URL = APIS[DEFAULT_API_INDEX].URL;
-      scannerCfg.API_KEY = APIS[DEFAULT_API_INDEX].API_KEY;
-    }
-    scannerCfg.MAX_RESPONSES_IN_BUFFER = 500;
-    scannerCfg.CONCURRENCY_LIMIT = 10;
-    scannerCfg.DISPATCHER_QUEUE_SIZE_MAX_LIMIT = 500;
-    scannerCfg.DISPATCHER_QUEUE_SIZE_MIN_LIMIT = 450;
-    scannerCfg.PROXY = PROXY || null;
-    scannerCfg.IGNORE_CERT_ERRORS = IGNORE_CERT_ERRORS !== undefined ? IGNORE_CERT_ERRORS : false;
-    scannerCfg.CA_CERT = CA_CERT !== undefined ? CA_CERT : null;
-
-    this.scanner = new Scanner(scannerCfg);
-    this.project.scanner = this.scanner;
     this.scanner.setWorkDirectory(this.project.getMyPath());
   }
 

@@ -17,30 +17,27 @@ import ScannerMode = Scanner.ScannerMode;
 class ProjectService {
   public async createProject(projectDTO: INewProject) {
     const p = await this.create(projectDTO);
-    await ScannerPipelineFactory.getScannerPipeline(projectDTO.scannerConfig.source).run(p);
+    await new CodeScannerPipelineTask().run(p);
   }
 
   public async reScan(projectPath: string) {
     await workspace.closeAllProjects();
     const p = await workspace.getProject(new ProjectFilterPath(projectPath));
-    p.metadata.getScannerConfig().mode = Scanner.ScannerMode.RESCAN;
-    await ScannerPipelineFactory.getScannerPipeline(p.metadata.getScannerConfig().source).run(p);
+  /*  p.metadata.getScannerConfig().mode = Scanner.ScannerMode.RESCAN;
+    await ScannerPipelineFactory.getScannerPipeline(p.metadata.getScannerConfig().source).run(p);*/
   }
 
   public async resume(projectPath: string) {
     await workspace.closeAllProjects();
     const p = await workspace.getProject(new ProjectFilterPath(projectPath));
-    const scanner = new CodeScannerPipelineTask();
-    p.metadata.getScannerConfig().mode = Scanner.ScannerMode.RESUME;
-    await ScannerPipelineFactory.getScannerPipeline(p.metadata.getScannerConfig().source).run(p);
+/*    const scanner = new CodeScannerPipelineTask();
+    await ScannerPipelineFactory.getScannerPipeline(p.metadata.getScannerConfig().source).run(p);*/
   }
 
   private async createNewProject(projectDTO: INewProject): Promise<Project> {
     const p = await workspace.createProject(projectDTO);
-    await modelProvider.init(p.getMyPath());
     log.transports.file.resolvePath = () =>
       `${p.metadata.getMyPath()}/project.log`;
-    p.state = ProjectState.OPENED;
     p.save();
     return p;
   }
@@ -50,22 +47,11 @@ class ProjectService {
     event: Electron.WebContents = null
   ): Promise<Project> {
     await workspace.closeAllProjects();
-    projectDTO.scannerConfig.mode = ScannerMode.SCAN;
-    await this.modeTypeFilter(projectDTO);
     const p = await this.createNewProject(projectDTO);
     return p;
   }
 
-  private async modeTypeFilter(projectDTO: INewProject) {
-    const { APIS, DEFAULT_API_INDEX } = userSettingService.get();
-    const hasApiKey = projectDTO.api_key || APIS[DEFAULT_API_INDEX]?.API_KEY;
 
-    if (!hasApiKey) {
-      projectDTO.scannerConfig.type = projectDTO.scannerConfig.type.filter(
-        (e) => e !== ScannerType.VULNERABILITIES
-      );
-    }
-  }
 
 }
 
