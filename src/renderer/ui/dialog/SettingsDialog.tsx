@@ -142,10 +142,7 @@ const SettingDialog = ({ open, onClose, onCancel }: SettingDialogProps) => {
 
   const submit = async () => {
     const config: Partial<IWorkspaceCfg> = {
-      DEFAULT_API_INDEX: selectedApi ? apis.findIndex((api) => api === selectedApi) : -1,
-      APIS: apis,
-      TOKEN: sbomLedgerToken || null,
-      LNG: language || 'en',
+         LNG: language || 'en',
     };
 
     await userSettingService.set(config);
@@ -153,14 +150,7 @@ const SettingDialog = ({ open, onClose, onCancel }: SettingDialogProps) => {
   };
 
   const setDefault = (config: Partial<IWorkspaceCfg>) => {
-    const { DEFAULT_API_INDEX, APIS, TOKEN, LNG } = config;
-
-    const urlsDefault = APIS || [];
-    const selectedUrlDefault = APIS && APIS[DEFAULT_API_INDEX] ? APIS[DEFAULT_API_INDEX] : null;
-
-    setSbomLedgerToken(TOKEN);
-    setApis(urlsDefault);
-    setSelectedApi(selectedUrlDefault);
+    const { LNG } = config;
     setLanguage(LNG);
   };
 

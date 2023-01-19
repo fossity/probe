@@ -3,9 +3,9 @@
 /* eslint-disable func-names */
 import log from 'electron-log';
 import sqlite3 from 'sqlite3';
+import util from 'util';
 import { QueryBuilder } from './queryBuilder/QueryBuilder';
 import { Querys } from './querys_db';
-import util from 'util';
 
 
 const query = new Querys();
@@ -18,6 +18,7 @@ export class Model {
   constructor(path: string) {
     this.dbPath = `${path}/scan_db`;
   }
+
   public async init() {
     try {
       const success = await this.scanCreateDb();
@@ -64,6 +65,7 @@ export class Model {
       );
     });
   }
+
   private async createViews(): Promise<void> {
     const db = await this.openDb();
     const call = util.promisify(db.run.bind(db));
@@ -80,9 +82,11 @@ export class Model {
           `);
     db.close();
   }
+
   public getEntityMapper():Record<string,string>{
     return Model.entityMapper;
   }
+
   public getSQL(queryBuilder:QueryBuilder , SQLquery:string, entityMapper:Record<string,string>){
     let SQL = SQLquery;
     const filter = queryBuilder?.getSQL(entityMapper)

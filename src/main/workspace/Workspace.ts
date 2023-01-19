@@ -28,7 +28,6 @@ class Workspace {
     // if (this.projectList.length) this.close();  //Prevents to keep projects opened when directory changes
     log.info(`%c[ WORKSPACE ]: Reading projects....`, 'color: green');
     const projectPaths = await this.getAllProjectsPaths();
-    console.log(projectPaths);
     const projectArray: Promise<Project>[] = projectPaths.map((projectPath) =>
       Project.readFromPath(projectPath)
         .then((p) => {
@@ -90,7 +89,7 @@ class Workspace {
     for (let i = 0; i < this.projectList.length; i += 1)
       if (this.projectList[i].getProjectName() === p.getProjectName()) {
         // eslint-disable-next-line no-await-in-loop
-        await fs.promises.rmdir(this.projectList[i].getMyPath(), {
+        await fs.promises.rm(this.projectList[i].getMyPath(), {
           recursive: true,
         });
         this.projectList.splice(i, 1);
@@ -135,7 +134,7 @@ class Workspace {
       if (p.getState() === ProjectState.OPENED) await p.close();
   }
 
-  public async addProject(p: Project,projectInfo:IProjectInfoMetadata) {
+  public async addProject(p: Project) {
     if (this.existProject(p.getProjectName())) {
       log.info(
         `%c[ WORKSPACE ]: Project already exist and will be replaced`,
@@ -147,16 +146,6 @@ class Workspace {
       `%c[ WORKSPACE ]: Adding project ${p.getProjectName()} to workspace`,
       'color: green'
     );
-    const pDirectory = path.join(this.wsPath, p.getProjectName());
-
-    if (!fs.existsSync(`${pDirectory}`)){
-      await fs.promises.mkdir(pDirectory);
-    }
-    await fs.promises.mkdir(path.join(pDirectory,"encrypted"));
-    await fs.promises.writeFile(path.join(workspace.getMyPath(),p.getProjectName(),'encrypted','projectMetadata.json'),JSON.stringify(projectInfo));
-
-    p.setMyPath(pDirectory);
-    p.save();
     this.addNewProject(p);
     return this.projectList.length - 1;
   }
@@ -193,7 +182,10 @@ class Workspace {
     const newProject: Project = new Project();
     const metadata = new Metadata(projectDTO.name, projectDTO.scan_root, path.join(workspace.getMyPath(),projectDTO.name));
     newProject.setMetadata(metadata);
-    await this.addProject(newProject,projectDTO.projectInfo);
+    await this.addProject(newProject);
+    await newProject.createProjectFolder();
+    await fs.promises.writeFile(path.join(newProject.getMyPath(),'encrypted','projectMetadata.json'),JSON.stringify(projectDTO.projectInfo));
+    newProject.save();
     return newProject;
   }
 

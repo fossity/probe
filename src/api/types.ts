@@ -22,15 +22,9 @@ export interface IProjectCfg {
 }
 
 export interface IWorkspaceCfg {
-  DEFAULT_API_INDEX: number;
-  APIS: Array<Record<string, string>>;
-  TOKEN: string;
   SCAN_MODE: string;
   VERSION: string;
   LNG: string;
-  PROXY: string;
-  CA_CERT: string;
-  IGNORE_CERT_ERRORS: boolean;
 }
 
 export interface Node {

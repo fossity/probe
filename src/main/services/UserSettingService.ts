@@ -1,14 +1,12 @@
 import log from "electron-log";
 import { app } from 'electron';
 import fs from 'fs';
+import path from "path";
 import { IWorkspaceCfg } from '../../api/types';
 import { wsUtils } from '../workspace/WsUtils/WsUtils';
-
 import packageJson from '../../../release/app/package.json';
-import AppConfig from '../../config/AppConfigModule';
 import { AppI18n } from '../../shared/i18n';
 import { WorkspaceMigration } from '../migration/WorkspaceMigration';
-import os from 'os';
 
 class UserSettingService {
   private myPath: string;
@@ -18,21 +16,9 @@ class UserSettingService {
   private store: IWorkspaceCfg;
 
   private defaultStore: IWorkspaceCfg = {
-    TOKEN: '',
-    DEFAULT_API_INDEX: 0,
-    APIS: [
-      {
-        URL: `${AppConfig.API_URL}/scan/direct`,
-        API_KEY: `${AppConfig.API_KEY}`,
-        DESCRIPTION: '',
-      },
-    ],
     SCAN_MODE: 'FULL_SCAN',
     VERSION: app.isPackaged === true ? app.getVersion() : packageJson.version,
     LNG: 'en',
-    PROXY: '',
-    CA_CERT: '',
-    IGNORE_CERT_ERRORS: false,
   };
 
   constructor() {
@@ -49,9 +35,6 @@ class UserSettingService {
     return this.store;
   }
 
-  public setSetting(key: string, value: string) {
-    this.store[key] = value;
-  }
 
   public get(): Partial<IWorkspaceCfg> {
     return JSON.parse(JSON.stringify(this.store));
@@ -66,40 +49,30 @@ class UserSettingService {
     return this.defaultStore;
   }
 
-  public async read(path: string) {
+  public async read(workspacePath: string) {
     try {
-      this.setMyPath(path);
-      if (!(await wsUtils.fileExist(`${this.myPath}/${this.name}`)))
+      this.setMyPath(path.join(workspacePath,this.name));
+      if (!(await wsUtils.fileExist(this.myPath)))
         await this.save();
-      const setting = await fs.promises.readFile(
-        `${this.myPath}/${this.name}`,
+      const setting = await fs.promises.readFile(this.myPath,
         'utf8'
       );
-      const root = `${os.homedir()}/${AppConfig.DEFAULT_WORKSPACE_NAME}`;
-      await new WorkspaceMigration(userSettingService.get().VERSION, root).up();
+      await new WorkspaceMigration(userSettingService.get().VERSION, workspacePath).up();
       this.store =  {...this.store,...JSON.parse(setting)};
     } catch(error:any) {
       log.error("[ WORKSPACE CONFIG ]:", "Invalid workspace configuration");
       const ws =  await fs.promises.readFile(
-        `${this.myPath}/${this.name}`,
+        this.myPath,
         'utf8'
       );
-      await fs.promises.writeFile(`${this.myPath}/workspaceCfg-invalid.json`,ws);
+      await fs.promises.writeFile(`${workspacePath}/workspaceCfg-invalid.json`,ws);
       this.store = this.defaultStore;
     }
-  }
-  public async update(): Promise<void> {
-    this.store.APIS[0] = {
-      URL: `${AppConfig.API_URL}/scan/direct`,
-      API_KEY: `${AppConfig.API_KEY}`,
-      DESCRIPTION: '',
-    };
-    await this.save();
   }
 
   public async save() {
     await fs.promises.writeFile(
-      `${this.myPath}/${this.name}`,
+      this.myPath,
       JSON.stringify(this.store, undefined, 2),
       'utf8'
     );
