@@ -1,15 +1,12 @@
 import { ipcMain } from 'electron';
 import log from 'electron-log';
+import { NewProjectDTO } from '@api/dto';
 import {
-  ExtractFromProjectDTO,
   FileTreeViewMode,
-  INewProject, Inventory,
-  InventoryKnowledgeExtraction,
-  IWorkbenchFilter, ReuseIdentificationTaskDTO
+  IWorkbenchFilter
 } from '../types';
 import { IpcChannels } from '../ipc-channels';
 import { Response } from '../Response';
-import { userSettingService } from '../../main/services/UserSettingService';
 import { ProjectFilterPath } from '../../main/workspace/filters/ProjectFilterPath';
 import { Project } from '../../main/workspace/Project';
 import { workspace } from '../../main/workspace/Workspace';
@@ -53,19 +50,6 @@ ipcMain.handle(
   async (event, projectPath: string) => {
     try {
       await projectService.resume(projectPath);
-      return Response.ok();
-    } catch (error: any) {
-      console.error(error);
-      return Response.fail({ message: error.message });
-    }
-  }
-);
-
-ipcMain.handle(
-  IpcChannels.PROJECT_RESCAN,
-  async (event, projectPath: string) => {
-    try {
-      await projectService.reScan(projectPath);
       return Response.ok();
     } catch (error: any) {
       console.error(error);
@@ -133,7 +117,7 @@ ipcMain.handle(
 
 ipcMain.handle(
   IpcChannels.PROJECT_CREATE,
-  async (_event, projectDTO: INewProject) => {
+  async (_event, projectDTO: NewProjectDTO) => {
     try {
       await projectService.createProject(projectDTO);
       return Response.ok();

@@ -3,11 +3,11 @@ import fs from 'fs';
 import log from 'electron-log';
 import { IDependencyResponse, Scanner } from 'scanoss';
 import {
-  FileTreeViewMode,
+  FileTreeViewMode, IMetadata,
   IProjectCfg,
   IWorkbenchFilter,
   IWorkbenchFilterParams,
-  ProjectState,
+  ProjectState
 } from '../../api/types';
 import { ScanModel } from '../model/ScanModel';
 import { Metadata } from './Metadata';
@@ -172,7 +172,7 @@ export class Project {
     return this.metadata.getUUID();
   }
 
-  public getDto() {
+  public getDto(): IMetadata {
     return this.metadata.getDto();
   }
 

@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as fs from 'fs';
 import log from 'electron-log';
+import path from 'path';
+import { NewProjectDTO } from '@api/dto';
 import { Project } from './Project';
-import { INewProject, IProject, License, ProjectState } from '../../api/types';
+import { IMetadata, IProjectInfoMetadata, License, ProjectState } from '../../api/types';
 import { licenses } from '../../../assets/data/licenses';
 import { ProjectFilter } from './filters/ProjectFilter';
 import { Scanner } from '../task/scanner/types';
 import { WorkspaceMigration } from '../migration/WorkspaceMigration';
 import { userSettingService } from '../services/UserSettingService';
 import { Metadata } from './Metadata';
-import path from 'path';
 
 class Workspace {
   private projectList: Array<Project>;
@@ -27,6 +28,7 @@ class Workspace {
     // if (this.projectList.length) this.close();  //Prevents to keep projects opened when directory changes
     log.info(`%c[ WORKSPACE ]: Reading projects....`, 'color: green');
     const projectPaths = await this.getAllProjectsPaths();
+    console.log(projectPaths);
     const projectArray: Promise<Project>[] = projectPaths.map((projectPath) =>
       Project.readFromPath(projectPath)
         .then((p) => {
@@ -53,11 +55,11 @@ class Workspace {
     );
   }
 
-  public getProjectsDtos(): Array<IProject> {
-    const projectsDtos: Array<IProject> = this.projectList.map((p) =>
+  public getProjectsMetadata(): Array<IMetadata> {
+    const projectMetadata: Array<IMetadata> = this.projectList.map((p) =>
       p.getDto()
     );
-    return projectsDtos;
+    return projectMetadata;
   }
 
   public getOpenedProjects(): Array<Project> {
@@ -133,7 +135,7 @@ class Workspace {
       if (p.getState() === ProjectState.OPENED) await p.close();
   }
 
-  public async addProject(p: Project) {
+  public async addProject(p: Project,projectInfo:IProjectInfoMetadata) {
     if (this.existProject(p.getProjectName())) {
       log.info(
         `%c[ WORKSPACE ]: Project already exist and will be replaced`,
@@ -147,12 +149,11 @@ class Workspace {
     );
     const pDirectory = path.join(this.wsPath, p.getProjectName());
 
-    if (!fs.existsSync(`${pDirectory}`)) await fs.promises.mkdir(pDirectory);
-    const files = await fs.promises.readdir(pDirectory);
-    const unlinkPromises = files.map((filename) =>
-      fs.promises.unlink(`${pDirectory}/${filename}`)
-    );
-    await Promise.all(unlinkPromises);
+    if (!fs.existsSync(`${pDirectory}`)){
+      await fs.promises.mkdir(pDirectory);
+    }
+    await fs.promises.mkdir(path.join(pDirectory,"encrypted"));
+    await fs.promises.writeFile(path.join(workspace.getMyPath(),p.getProjectName(),'encrypted','projectMetadata.json'),JSON.stringify(projectInfo));
 
     p.setMyPath(pDirectory);
     p.save();
@@ -188,11 +189,11 @@ class Workspace {
     return licenses;
   }
 
-  public async createProject(projectDTO: INewProject): Promise<Project> {
+  public async createProject(projectDTO: NewProjectDTO): Promise<Project> {
     const newProject: Project = new Project();
-    const metadata = new Metadata(projectDTO);
+    const metadata = new Metadata(projectDTO.name, projectDTO.scan_root, path.join(workspace.getMyPath(),projectDTO.name));
     newProject.setMetadata(metadata);
-    await this.addProject(newProject);
+    await this.addProject(newProject,projectDTO.projectInfo);
     return newProject;
   }
 

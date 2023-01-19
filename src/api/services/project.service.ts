@@ -1,8 +1,9 @@
+import { NewProjectDTO } from '@api/dto';
 import { IpcChannels } from '../ipc-channels';
 import {
   ExtractFromProjectDTO,
   FileTreeViewMode,
-  INewProject, Inventory, InventoryKnowledgeExtraction,
+  Inventory, InventoryKnowledgeExtraction,
   IProject,
   IWorkbenchFilter, ReuseIdentificationTaskDTO
 } from '../types';
@@ -33,7 +34,7 @@ class ProjectService extends BaseService {
     return response;
   }
 
-  public async create(project: INewProject): Promise<any> {
+  public async create(project: NewProjectDTO): Promise<any> {
     const response = await window.electron.ipcRenderer.invoke(
       IpcChannels.PROJECT_CREATE,
       project
@@ -72,13 +73,6 @@ class ProjectService extends BaseService {
     return this.response(response);
   }
 
-  public async getToken(): Promise<any> {
-    const response = await window.electron.ipcRenderer.invoke(
-      IpcChannels.GET_TOKEN
-    );
-    return this.response(response);
-  }
-
   public async getTree(): Promise<any> {
     const response = await window.electron.ipcRenderer.invoke(
       IpcChannels.PROJECT_READ_TREE
@@ -102,21 +96,6 @@ class ProjectService extends BaseService {
     return this.response(response);
   }
 
-  public async getApiKey(): Promise<string> {
-    const response = await window.electron.ipcRenderer.invoke(IpcChannels.GET_API_KEY);
-    return this.response(response);
-  }
-
-  public async extractInventoryKnowledge(param: ExtractFromProjectDTO): Promise<InventoryKnowledgeExtraction>{
-    const response = await window.electron.ipcRenderer.invoke(IpcChannels.PROJECT_EXTRACT_INVENTORY_KNOWLEDGE, param);
-    console.log(param, response);
-    return this.response(response);
-  }
-
-  public async acceptInventoryKnowledge(param: ReuseIdentificationTaskDTO): Promise<Inventory>{
-    const response = await window.electron.ipcRenderer.invoke(IpcChannels.PROJECT_ACCEPT_INVENTORY_KNOWLEDGE, param);
-    return this.response(response);
-  }
 
 }
 export const projectService = new ProjectService();
