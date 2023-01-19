@@ -9,6 +9,7 @@ import { Scanner } from '../task/scanner/types';
 import { WorkspaceMigration } from '../migration/WorkspaceMigration';
 import { userSettingService } from '../services/UserSettingService';
 import { Metadata } from './Metadata';
+import path from 'path';
 
 class Workspace {
   private projectList: Array<Project>;
@@ -144,7 +145,7 @@ class Workspace {
       `%c[ WORKSPACE ]: Adding project ${p.getProjectName()} to workspace`,
       'color: green'
     );
-    const pDirectory = `${this.wsPath}/${p.getProjectName()}`;
+    const pDirectory = path.join(this.wsPath, p.getProjectName());
 
     if (!fs.existsSync(`${pDirectory}`)) await fs.promises.mkdir(pDirectory);
     const files = await fs.promises.readdir(pDirectory);

@@ -213,14 +213,14 @@ const ProjectSettings = () => {
                 <label className="input-label">{t('Contact Information')}</label>
                 <div className="form-field">
                   <FormLabel>{t('Name')} <span className="optional">- {t('Optional')}</span></FormLabel>
-                  <TextField name="name" size="small" type="email" fullWidth onChange={(e) => inputHandler(e, 'contact')} />
+                  <TextField name="name" size="small" fullWidth onChange={(e) => inputHandler(e, 'contact')} />
                 </div>
 
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <div className="form-field">
                       <FormLabel>{t('Email Address')}</FormLabel>
-                      <TextField name="email" size="small" fullWidth required onChange={(e) => inputHandler(e, 'contact')} />
+                      <TextField name="email" type="email" size="small" fullWidth required onChange={(e) => inputHandler(e, 'contact')} />
                     </div>
                   </Grid>
                   <Grid item xs={6}>

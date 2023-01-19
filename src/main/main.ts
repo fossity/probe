@@ -177,7 +177,7 @@ app
   .catch(console.log);
 
 async function init() {
-  const root = path.join(os.homedir(),AppConfig.DEFAULT_WORKSPACE_NAME);
+  const root = path.join(os.homedir(), AppConfig.DEFAULT_WORKSPACE_NAME);
   await workspace.read(root);
   await userSettingService.read(root);
   await userSettingService.update();

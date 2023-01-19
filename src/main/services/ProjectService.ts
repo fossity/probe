@@ -13,6 +13,7 @@ import {CodeScannerPipelineTask} from '../task/scanner/scannerPipeline/CodeScann
 import {ScannerPipelineFactory} from "../task/scanner/scannerPipelineFactory/ScannerPipelineFactory";
 import ScannerType = Scanner.ScannerType;
 import ScannerMode = Scanner.ScannerMode;
+import path from 'path';
 
 class ProjectService {
   public async createProject(projectDTO: INewProject) {
@@ -36,8 +37,7 @@ class ProjectService {
 
   private async createNewProject(projectDTO: INewProject): Promise<Project> {
     const p = await workspace.createProject(projectDTO);
-    log.transports.file.resolvePath = () =>
-      `${p.metadata.getMyPath()}/project.log`;
+    log.transports.file.resolvePath = () =>  path.join(p.metadata.getMyPath(), 'project.log');
     p.save();
     return p;
   }
