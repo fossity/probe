@@ -2,6 +2,7 @@
 import fs from 'fs';
 import log from 'electron-log';
 import { IDependencyResponse, Scanner } from 'scanoss';
+import path from 'path';
 import {
   FileTreeViewMode, IMetadata,
   IProjectCfg,
@@ -151,10 +152,21 @@ export class Project {
   public setMetadata(mt: Metadata) {
     this.metadata = mt;
   }
+
   public setMyPath(myPath: string) {
     this.metadata.setMyPath(myPath);
     this.metadata.save();
   }
+
+  private async createEncryptedFolder() {
+    await fs.promises.mkdir(path.join(this.getMyPath(),'encrypted'));
+  }
+
+  public async createProjectFolder(){
+    await fs.promises.mkdir(this.getMyPath());
+    await this.createEncryptedFolder();
+  }
+
 
   public getFilesNotScanned() {
     return this.filesNotScanned;

@@ -19,8 +19,6 @@ export abstract class ScanTask<TDispatcher extends IDispatch, TInputScannerAdapt
   }
 
   public async set(): Promise<void> {
- /*   await modelProvider.init(this.project.getMyPath());
-    await licenseService.import();
-    this.project.metadata.setScannerState(ScanState.SCANNING);*/
+    this.project.metadata.setScannerState(ScanState.SCANNING);
   }
 }

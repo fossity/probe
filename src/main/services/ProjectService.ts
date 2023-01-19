@@ -3,13 +3,13 @@ import path from 'path';
 import {Project} from '../workspace/Project';
 import {workspace} from '../workspace/Workspace';
 import {ProjectFilterPath} from '../workspace/filters/ProjectFilterPath';
-import {CodeScannerPipelineTask} from '../task/scanner/scannerPipeline/CodeScannerPipelineTask';
+import {FingerprintPipelineTask} from '../task/scanner/scannerPipeline/FingerprintPipelineTask';
 import { NewProjectDTO } from '../../api/dto';
 
 class ProjectService {
   public async createProject(projectDTO: NewProjectDTO) {
     const p = await this.create(projectDTO);
-    await new CodeScannerPipelineTask().run(p);
+    await new FingerprintPipelineTask().run(p);
   }
 
   public async resume(projectPath: string) {

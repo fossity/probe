@@ -98,12 +98,12 @@ const ProjectList = (props: ProjectListProps) => {
                     <TableCell>{project.files}</TableCell>
                     <TableCell className="row-actions">
                       <div className="btn-actions">
-                        {isProjectFinished(project) && (
-                          <>
+                        <>
                             <Tooltip title={t('Tooltip:ShowFiles')}>
                               <IconButton
                                 aria-label="show-files"
                                 className="btn-show"
+                                disabled={!isProjectFinished(project)}
                                 onClick={(event) => {
                                   event.stopPropagation();
                                   props.onProjectShowFiles(project);
@@ -117,6 +117,7 @@ const ProjectList = (props: ProjectListProps) => {
                             <Tooltip title={t('Tooltip:Download')}>
                               <IconButton
                                 aria-label="download"
+                                disabled={!isProjectFinished(project)}
                                 className="btn-download"
                                 onClick={(event) => {
                                   event.stopPropagation();
@@ -142,7 +143,6 @@ const ProjectList = (props: ProjectListProps) => {
                             </IconButton>
                           </Tooltip>
                           </>
-                          )}
                       </div>
                     </TableCell>
                   </TableRow>

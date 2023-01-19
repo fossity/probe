@@ -1,5 +1,4 @@
 import { QueryBuilderCreator } from '../../../model/queryBuilder/QueryBuilderCreator';
-import { modelProvider } from '../../../services/ModelProvider';
 import Node from '../Node';
 import { TreeViewMode } from './TreeViewMode';
 
@@ -12,12 +11,7 @@ export abstract class TreeViewFilter extends TreeViewMode {
   }
 
   public async getFiles(): Promise<Record<string, number>> {
-    let files: any = await modelProvider.model.result.getAll(QueryBuilderCreator.create({ ...this.filter, path: null }));
-    files = files.reduce((acc: any, curr: any) => {
-      if (!acc[curr.path]) acc[curr.path] = curr.id;
-      return acc;
-    }, {});
-    return files;
+    return null;
   }
 
   public abstract getTree(node: Node): Promise<Node>;

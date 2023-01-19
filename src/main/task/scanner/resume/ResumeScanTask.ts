@@ -1,10 +1,10 @@
 import { ScannerStage, ScanState } from '../../../../api/types';
 import { Scanner } from '../types';
-import { CodeScanTask } from "../scan/CodeScanTask";
+import { FingerprintTask } from "../scan/FingerprintTask";
 import {CodeDispatcher} from "../dispatcher/CodeDispatcher";
 import {CodeScannerInputAdapter} from "../adapter/CodeScannerInputAdapter";
 
-export class ResumeScanTask extends CodeScanTask {
+export class ResumeScanTask extends FingerprintTask {
 
   // @Override
   public getStageProperties(): Scanner.StageProperties {
