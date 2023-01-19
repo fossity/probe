@@ -1,6 +1,6 @@
 import { IpcChannels } from '../ipc-channels';
 import { BaseService } from './base.service';
-import { INewProject, IProject, License } from '../types';
+import { IProject, License } from '../types';
 
 class WorkspaceService extends BaseService {
   public async getAllProjects(): Promise<IProject[]> {
@@ -14,13 +14,6 @@ class WorkspaceService extends BaseService {
     const response = await window.electron.ipcRenderer.invoke(
       IpcChannels.WORKSPACE_DELETE_PROJECT,
       args
-    );
-    return this.response(response);
-  }
-
-  public async getProjectDTO(): Promise<any> {
-    const response = await window.electron.ipcRenderer.invoke(
-      IpcChannels.UTILS_GET_PROJECT_DTO
     );
     return this.response(response);
   }

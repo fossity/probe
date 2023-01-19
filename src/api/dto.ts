@@ -1,6 +1,5 @@
-import { ComponentGroup, Dependency, ExportFormat, ExportSource } from '@api/types';
-import { ISearchComponent } from '../main/task/componentCatalog/iComponentCatalog/ISearchComponent';
-import { IComponentResult } from '../main/task/componentCatalog/iComponentCatalog/IComponentResult';
+import { Dependency, ExportFormat, ExportSource, IProjectInfoMetadata } from '@api/types';
+
 
 export interface NewDependencyDTO {
   dependencyId?: number;
@@ -61,10 +60,6 @@ export interface IAppInfo {
   arch: string;
 }
 
-export type SearchComponentDTO = ISearchComponent;
-
-export type ComponentResultDTO = IComponentResult;
-
 export interface NewExportDTO {
   format: ExportFormat;
   source: ExportSource;
@@ -74,6 +69,12 @@ export interface NewExportDTO {
 export enum SourceType {
   detected = 'detected',
   identified = 'identified',
+}
+
+export interface NewProjectDTO {
+  name: string;
+  scan_root;
+  projectInfo: IProjectInfoMetadata;
 }
 
 export interface VulnerabilitiesGetAllDTO {

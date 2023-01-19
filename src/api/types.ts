@@ -95,18 +95,17 @@ export interface ItemInclude {
   action: boolean;
 }
 
-export interface INewProject {
-  name: string;
+export interface IProjectInfoMetadata {
   contact?: Record<string, string> | null,
   software_composition?: string;
   software_composition_uri?: string;
   default_license: string;
   extra_license?: string;
-  scan_root: string;
 }
 
 export interface IMetadata {
-  data: Partial<INewProject>;
+  name: string;
+  scan_root: string;
   appVersion: string;
   date: string;
   work_root: string;
@@ -115,13 +114,8 @@ export interface IMetadata {
   scannerState: ScanState
 }
 
-export interface IProject extends INewProject {
-  appVersion: string;
-  date: string;
-  work_root: string;
-  uuid: string;
-  files:number;
-  scannerState: ScanState;
+export interface IProject extends IMetadata {
+  data: IProjectInfoMetadata;
 }
 
 export interface Files {

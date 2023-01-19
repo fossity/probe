@@ -1,8 +1,9 @@
 import { projectService } from '@api/services/project.service';
 import { workspaceService } from '@api/services/workspace.service';
-import { INewProject } from '@api/types';
+import { NewProjectDTO } from '@api/dto';
 
-export const scan = async (project: INewProject) => {
+
+export const scan = async (project: NewProjectDTO) => {
   await projectService.create(project);
 };
 

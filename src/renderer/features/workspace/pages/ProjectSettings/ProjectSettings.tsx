@@ -17,9 +17,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { NewProjectDTO } from '@api/dto';
 import { useTranslation } from 'react-i18next';
 import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
-import { INewProject } from '@api/types';
 import { workspaceService } from '@api/services/workspace.service';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { useDispatch, useSelector } from 'react-redux';
@@ -69,11 +69,13 @@ const ProjectSettings = () => {
   const [licenses, setLicenses] = useState([]);
   const [license, setLicense] = useState<string>('proprietary');
 
-  const [projectSettings, setProjectSettings] = useState<INewProject>({
+  const [projectSettings, setProjectSettings] = useState<NewProjectDTO>({
     name: '',
     scan_root: '',
-    default_license: '',
-    contact: null,
+    projectInfo:{
+      default_license: '',
+      contact: null,
+    },
   });
 
   const [projectValidName, setProjectValidName] = useState(false);
@@ -105,20 +107,19 @@ const ProjectSettings = () => {
 
     if (paths && paths.length > 0) {
       setProjectSettings({
-        ...projectSettings,
-        software_composition_uri:  paths[0]
+        ...projectSettings,projectInfo: {...projectSettings.projectInfo, software_composition_uri:paths[0]}
       })
     }
   };
 
   const inputHandler = (e, group) => {
     setProjectSettings({
-      ...projectSettings,
+      ...projectSettings,projectInfo:{...projectSettings.projectInfo,
       [group]: {
-        ...projectSettings[group],
+        ...projectSettings.projectInfo[group],
         [e.target.name]: e.target.value,
       }
-    });
+    }});
   };
 
   useEffect(() => {
@@ -158,8 +159,7 @@ const ProjectSettings = () => {
   useEffect(() => {
     if (license === 'proprietary') {
       setProjectSettings({
-        ...projectSettings,
-        default_license: null,
+        ...projectSettings,projectInfo:{...projectSettings.projectInfo,default_license: null}
       })
     }
   }, [license]);
@@ -254,8 +254,8 @@ const ProjectSettings = () => {
                     placeholder="Enter here the list of known Open Source components used and/or attach an SBOM (only text files allowed, .i.e. SPDX, CycloneDX, CSV, TXT)."
                     maxRows={2}
                     minRows={2}
-                    onChange={e => setProjectSettings({...projectSettings, software_composition: e.target.value})}
-                    helperText={projectSettings.software_composition_uri}
+                    onChange={e => setProjectSettings({...projectSettings, projectInfo:{...projectSettings.projectInfo,software_composition: e.target.value} })}
+                    helperText={projectSettings.projectInfo.software_composition_uri}
                   />
                 <FormGroup className="mt-2">
                   <FormControlLabel
@@ -283,17 +283,16 @@ const ProjectSettings = () => {
                       size="small"
                       onChange={(e, value) =>
                         setProjectSettings({
-                          ...projectSettings,
-                          default_license: value?.spdxid,
+                          ...projectSettings,projectInfo:{...projectSettings.projectInfo,default_license: value?.spdxid}
                         })
                       }
                       fullWidth
                       value={
-                        licenses && projectSettings.default_license
+                        licenses && projectSettings.projectInfo.default_license
                           ? licenses?.find(
                             (license) =>
                               license?.spdxid ===
-                              projectSettings?.default_license
+                              projectSettings?.projectInfo.default_license
                           )
                           : ''
                       }
@@ -302,7 +301,7 @@ const ProjectSettings = () => {
                       handleHomeEndKeys
                       options={licenses}
                       isOptionEqualToValue={(option: any) =>
-                        option.spdxid === projectSettings.default_license
+                        option.spdxid === projectSettings.projectInfo.default_license
                       }
                       getOptionLabel={(option: any) =>
                         option.name || option.spdxid || ''
@@ -344,7 +343,7 @@ const ProjectSettings = () => {
                     placeholder="Enter here any additional details about actual licensing of the software being scanned."
                     minRows={2}
                     maxRows={2}
-                    onChange={e => setProjectSettings({...projectSettings, extra_license: e.target.value})}
+                    onChange={e => setProjectSettings({...projectSettings,projectInfo: {...projectSettings.projectInfo, extra_license: e.target.value}})}
                   />
                   <FormGroup className="mt-2">
                     <FormControlLabel
