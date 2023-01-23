@@ -2,8 +2,6 @@ import i18next from "i18next";
 import { ScannerStage, ScanState } from "../../../../api/types";
 import { BaseScannerTask } from "../BaseScannerTask";
 import { Scanner } from "../types";
-import { modelProvider } from "../../../services/ModelProvider";
-import { licenseService } from "../../../services/LicenseService";
 import { IDispatch } from "../dispatcher/IDispatch";
 import { IScannerInputAdapter } from "../adapter/IScannerInputAdapter";
 
