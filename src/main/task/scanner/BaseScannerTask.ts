@@ -44,9 +44,9 @@ export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScann
     this.setFingerprintConfig();
     let {processedFiles} = this.project;
 
-    this.fingerprint.on(ScannerEvents.WINNOWING_NEW_CONTENT, async (response) => {
+    this.fingerprint.on(ScannerEvents.WINNOWING_STATUS, async (filesFingerprinted: number) => {
 
-      processedFiles += response.getNumberFilesFingerprinted();
+      processedFiles += filesFingerprinted;
 
       this.sendToUI(IpcChannels.SCANNER_UPDATE_STATUS, {
         processed:
