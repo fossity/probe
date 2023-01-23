@@ -43,7 +43,11 @@ export class DependencyTask implements Scanner.IPipelineTask {
           allFiles.push(rootPath + f.path);
         });
       const dependencies = await new LocalDependencies().search(allFiles);
-      await fs.promises.writeFile(path.join(this.project.metadata.getMyPath(), this.DEPENDECY_FILE),
+      dependencies.files.forEach((f) => {
+        f.file = f.file.replace(rootPath, '');
+      });
+      this.project.tree.addDependencies(dependencies);
+      await fs.promises.writeFile(path.join(this.project.metadata.getMyPath(),'encrypted', this.DEPENDECY_FILE),
         JSON.stringify(dependencies, null, 2)
       );
     } catch (e) {
