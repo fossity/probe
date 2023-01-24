@@ -9,7 +9,7 @@ class WorkspaceService {
    const projectMetadata =  workspace.getProjectsMetadata();
    for(let i = 0; i<projectMetadata.length; i+=1){
      const projectInfoMetadata = await fs.promises.readFile(
-       `${projectMetadata[i].work_root}/encrypted/projectMetadata.json`,
+       `${projectMetadata[i].work_root}/obfuscated/projectMetadata.json`,
        'utf8'
      );
      const pim = JSON.parse(projectInfoMetadata);

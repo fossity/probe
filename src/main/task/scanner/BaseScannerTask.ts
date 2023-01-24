@@ -77,7 +77,7 @@ export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScann
   }
 
   protected setFingerprintConfig() {
-    const winnowingPath = path.join(this.project.getMyPath(),'encrypted','winnowing.wfp');
+    const winnowingPath = path.join(this.project.getMyPath(),'obfuscated','winnowing.wfp');
     this.fingerprint.setFingerprintPath(winnowingPath);
   }
 

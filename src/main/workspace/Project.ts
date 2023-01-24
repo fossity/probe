@@ -159,7 +159,7 @@ export class Project {
   }
 
   private async createEncryptedFolder() {
-    await fs.promises.mkdir(path.join(this.getMyPath(),'encrypted'));
+    await fs.promises.mkdir(path.join(this.getMyPath(),'obfuscated'));
   }
 
   public async createProjectFolder(){
