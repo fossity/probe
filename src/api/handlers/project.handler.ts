@@ -11,6 +11,7 @@ import { ProjectFilterPath } from '../../main/workspace/filters/ProjectFilterPat
 import { Project } from '../../main/workspace/Project';
 import { workspace } from '../../main/workspace/Workspace';
 import { projectService } from '../../main/services/ProjectService';
+import { WFPObfuscationTask } from '../../main/task/obfuscation/WFPObfuscationTask';
 
 ipcMain.handle(IpcChannels.PROJECT_OPEN_SCAN, async (event, arg: any) => {
   // TODO: factory to create filters depending on arguments

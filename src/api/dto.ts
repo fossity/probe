@@ -77,6 +77,7 @@ export interface NewProjectDTO {
   projectInfo: IProjectInfoMetadata;
 }
 
-export interface VulnerabilitiesGetAllDTO {
-  type: SourceType,
+export interface ObfuscationDTO{
+  path:string;
+  dictionary: Record<string,string>;
 }

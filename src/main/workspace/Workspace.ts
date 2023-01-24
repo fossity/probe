@@ -184,7 +184,7 @@ class Workspace {
     newProject.setMetadata(metadata);
     await this.addProject(newProject);
     await newProject.createProjectFolder();
-    await fs.promises.writeFile(path.join(newProject.getMyPath(),'encrypted','projectMetadata.json'),JSON.stringify(projectDTO.projectInfo));
+    await fs.promises.writeFile(path.join(newProject.getMyPath(),'obfuscated','projectMetadata.json'),JSON.stringify(projectDTO.projectInfo));
     newProject.save();
     return newProject;
   }
