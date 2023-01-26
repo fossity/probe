@@ -56,9 +56,6 @@ export class ProjectZipper {
         }
       }
     }
-
-
-
     // Read metadata and delete de api and apiKey fields.
     const txtMetadata = await fs.promises.readFile(path.join(projectPath, 'metadata.json'), 'utf8');
     const metadata = JSON.parse(txtMetadata);
