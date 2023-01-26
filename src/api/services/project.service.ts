@@ -11,6 +11,7 @@ import { BaseService } from './base.service';
 
 
 class ProjectService extends BaseService {
+
   public async get(args: Partial<IProject>): Promise<any> {
     const response = await window.electron.ipcRenderer.invoke(
       IpcChannels.INVENTORY_GET,
@@ -96,7 +97,13 @@ class ProjectService extends BaseService {
     return this.response(response);
   }
 
-
+  public async packageProject(projectPath: string): Promise<any> {
+    const response = await window.electron.ipcRenderer.invoke(
+      IpcChannels.PROJECT_CREATE_FOSSITY_PACKAGE, projectPath
+    );
+    return this.response(response);
+  }
 }
 export const projectService = new ProjectService();
+
 

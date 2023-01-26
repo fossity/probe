@@ -1,12 +1,14 @@
 import log from 'electron-log';
 import path from 'path';
+import { IProjectInfoMetadata } from '@api/types';
+import fs from 'fs';
 import {Project} from '../workspace/Project';
 import {workspace} from '../workspace/Workspace';
 import {ProjectFilterPath} from '../workspace/filters/ProjectFilterPath';
 import {FingerprintPipelineTask} from '../task/scanner/scannerPipeline/FingerprintPipelineTask';
 import { NewProjectDTO, ObfuscationDTO } from '../../api/dto';
 import { WFPObfuscationTask } from '../task/obfuscation/WFPObfuscationTask';
-import fs from 'fs';
+import { FossityPackagerTask } from '../task/fossityPackagerTask/FossityPackagerTask';
 
 class ProjectService {
   public async createProject(projectDTO: NewProjectDTO) {
@@ -51,8 +53,32 @@ class ProjectService {
     return response;
   }
 
+  public async fossityPackager(projectPath: string){
+    if(await this.isValidObfuscatedFile(projectPath)) {
+      await fs.promises.mkdir(path.join(projectPath, 'packaged'), { recursive:true });
+      await new FossityPackagerTask().run({inputPath: path.join(projectPath,'obfuscated'), outputPath:path.join(projectPath,'package','fossity.zip')});
+    }
+  }
 
-
+  private async isValidObfuscatedFile(projectPath:string):Promise<boolean> {
+    let validFiles = true;
+    const requiredFiles = ["winnowing.wfp","projectMetadata.json"];
+    const folderFiles = new Set<string>();
+    const dirContent = await fs.promises.readdir(path.join(projectPath,'obfuscated'));
+    for (const file of dirContent) {
+      folderFiles.add(file);
+    }
+    for(let i = 0; i < requiredFiles.length ; i+=1 ) {
+      if (!folderFiles.has(requiredFiles[i])) {
+        validFiles = false;
+        break;
+      }
+    }
+    const metadata = await fs.promises.readFile(path.join(projectPath,'obfuscated',"projectMetadata.json"),'utf-8');
+    const projectMetadata: IProjectInfoMetadata = JSON.parse(metadata);
+    if(!validFiles  ||  projectMetadata.contact.email === undefined  || projectMetadata.contact.email === "") throw new Error("Invalid project metadata");
+    return true;
+  }
 }
 
 export const projectService = new ProjectService();

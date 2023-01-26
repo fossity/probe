@@ -129,5 +129,17 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle(
+  IpcChannels.PROJECT_CREATE_FOSSITY_PACKAGE,
+  async (_event,projectPath: string) => {
+    try {
+      await projectService.fossityPackager(projectPath);
+      return Response.ok({ message: 'Fossity package', data: true });
+    } catch (error: any) {
+      log.error('[FOSSITY PACKAGER]', error);
+      return Response.fail({ message: error.message });
+    }
+  }
+);
 
 
