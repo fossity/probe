@@ -55,14 +55,13 @@ class ProjectService {
 
   public async fossityPackager(projectPath: string){
     if(await this.isValidObfuscatedFile(projectPath)) {
-      await fs.promises.mkdir(path.join(projectPath, 'packaged'), { recursive:true });
-      await new FossityPackagerTask().run({inputPath: path.join(projectPath,'obfuscated'), outputPath:path.join(projectPath,'package','fossity.zip')});
+      await new FossityPackagerTask().run({inputPath: path.join(projectPath,'obfuscated'), outputPath:path.join(projectPath,'fossity.zip')});
     }
   }
 
   private async isValidObfuscatedFile(projectPath:string):Promise<boolean> {
     let validFiles = true;
-    const requiredFiles = ["winnowing.wfp","projectMetadata.json"];
+    const requiredFiles = ["winnowing.wfp","projectMetadata.json","file_count.csv"];
     const folderFiles = new Set<string>();
     const dirContent = await fs.promises.readdir(path.join(projectPath,'obfuscated'));
     for (const file of dirContent) {

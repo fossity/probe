@@ -1,11 +1,9 @@
 import { NewProjectDTO } from '@api/dto';
 import { IpcChannels } from '../ipc-channels';
 import {
-  ExtractFromProjectDTO,
   FileTreeViewMode,
-  Inventory, InventoryKnowledgeExtraction,
   IProject,
-  IWorkbenchFilter, ReuseIdentificationTaskDTO
+  IWorkbenchFilter,
 } from '../types';
 import { BaseService } from './base.service';
 
@@ -105,5 +103,4 @@ class ProjectService extends BaseService {
   }
 }
 export const projectService = new ProjectService();
-
 
