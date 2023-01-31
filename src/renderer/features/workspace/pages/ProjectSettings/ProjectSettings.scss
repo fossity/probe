@@ -1,100 +1,18 @@
 #ProjectSettings {
+  &.app-page {
+  }
+
   .app-content {
-    form {
-      min-height: 80vh;
-      margin-bottom: 1rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-
+    overflow: auto;
     .form-field {
       margin-bottom: 15px;
     }
-
-    .project-form-container {
-      max-width: 600px;
-      min-width: 400px;
-
-      .project-license-container {
-        .input-container {
-          transform-origin: 0;
-
-          &-license {
-            margin-top: 2em;
-          }
-
-          .input-label-add-container {
-            display: flex;
-            align-items: center;
-          }
-
-          .project-name-container {
-            max-width: 380px;
-          }
-
-          .input-text-container {
-            margin-top: 0.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .input-autocomplete {
-              height: 40px;
-            }
-
-            .icon {
-              margin-left: 4px;
-            }
-
-            .api-key {
-              color: gray;
-            }
-          }
-
-          .error-message {
-            color: red;
-            height: 30px;
-            margin-top: 6px;
-          }
-        }
-      }
-    }
   }
 
-  .input-container-license,
-  .api-subcontainer {
-    max-width: 500px;
-  }
-
-  .label-input-container {
-    .label-icon {
-      margin-bottom: 12px;
-    }
-    .MuiSvgIcon-root {
-      margin-right: 15px;
-    }
-  }
-
-  .button-container {
-    display: flex;
-    justify-content: flex-end;
-
-    .btn {
-      padding: 12px 24px;
-      border-radius: 4px;
-    }
-
-    .btn-continue {
-      background-color: #6366f1;
-      color: #fff;
-      font-weight: 400;
-      font-size: 24px;
-    }
-  }
-
-  .error {
+  .error-message {
+    color: red;
+    height: 30px;
+    margin-top: 6px;
   }
 
   .input-label {

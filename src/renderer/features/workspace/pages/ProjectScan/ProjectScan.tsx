@@ -39,8 +39,7 @@ const ProjectScan = () => {
   };
 
   const onShowScan = (path) => {
-    dispatch(setScanPath({ path, action: 'none' }));
-    navigate('/workspace', { replace: true });
+    navigate('/workspace/new/obfuscation');
   };
 
   const handlerScannerStatus = (e, args) => {
@@ -134,7 +133,7 @@ const ProjectScan = () => {
 
   return (
     <>
-      <section id="ProjectScan" className="app-page">
+      <section id="ProjectScan" className="app-page app-pipeline">
         <header className="app-header">
           <div>
             <h4 className="header-subtitle back">
@@ -161,6 +160,7 @@ const ProjectScan = () => {
             </div>
           </div>
         </main>
+        <footer className='app-footer' />
       </section>
     </>
   );

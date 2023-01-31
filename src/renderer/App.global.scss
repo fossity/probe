@@ -24,8 +24,9 @@
 
 /* components */
 @import './features/workspace/pages/Workspace/Workspace';
-@import './features/workspace/pages/ProjectDrop/ProjectDrop';
 @import './features/workspace/pages/ProjectScan/ProjectScan';
 @import './features/workspace/pages/ProjectSettings/ProjectSettings';
+@import './features/workspace/pages/ProjectObfuscation/ProjectObfuscation';
+@import './features/workspace/pages/ProjectSummary/ProjectSummary';
 
 /* 👮 css rules are forbidden here 👮 */
