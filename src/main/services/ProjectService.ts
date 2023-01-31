@@ -2,6 +2,7 @@ import log from 'electron-log';
 import path from 'path';
 import { IProjectInfoMetadata } from '@api/types';
 import fs from 'fs';
+import {AppDefaultValues} from "../../config/AppDefaultValues";
 import {Project} from '../workspace/Project';
 import {workspace} from '../workspace/Workspace';
 import {ProjectFilterPath} from '../workspace/filters/ProjectFilterPath';
@@ -23,7 +24,7 @@ class ProjectService {
 
   private async createNewProject(projectDTO: NewProjectDTO): Promise<Project> {
     const p = await workspace.createProject(projectDTO);
-    log.transports.file.resolvePath = () =>  path.join(p.metadata.getMyPath(), 'project.log');
+    log.transports.file.resolvePath = () =>  path.join(p.metadata.getMyPath(), AppDefaultValues.PROJECT.PROJECT_LOG);
 
     p.save();
     return p;
@@ -41,19 +42,20 @@ class ProjectService {
   public async obfuscateWFP(words: Array<string>): Promise<ObfuscationDTO>{
     const wordsToObfuscate = words.sort((a, b)=> b.length - a.length);
     const p = workspace.getOpenedProjects()[0];
-    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(), 'obfuscated', 'winnowing.wfp'),wordsToObfuscate).run();
+    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(),  AppDefaultValues.PROJECT.OUTPUT, AppDefaultValues.PROJECT.WINNOWING_WFP),wordsToObfuscate).run();
     return response;
   }
 
   public async deofuscateWFP(): Promise<ObfuscationDTO> {
     const p = workspace.getOpenedProjects()[0];
-    const dictionary = await fs.promises.readFile(path.join(p.getMyPath(), 'obfuscationMapper.json'),'utf-8');
+    const dictionary = await fs.promises.readFile(path.join(p.getMyPath(),AppDefaultValues.PROJECT.OBFUSCATION_MAPPER),'utf-8');
     const mapper = JSON.parse(dictionary);
-    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(), 'obfuscated', 'winnowing.wfp'), mapper).run();
+    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(), AppDefaultValues.PROJECT.OUTPUT, AppDefaultValues.PROJECT.WINNOWING_WFP), mapper).run();
     return response;
   }
 
   public async fossityPackager(params: ProjectPackageDTO) {
+    if(!params.targetPath.toLowerCase().endsWith('.fossity')) params.targetPath = `${params.targetPath}.fossity`;
     if (path.extname(params.targetPath).toLowerCase() !== '.fossity')
       throw new Error('File type not supported');
 
@@ -61,14 +63,14 @@ class ProjectService {
       throw new Error("Invalid project metadata");
     }
 
-    await new FossityPackagerTask().run({inputPath: path.join(params.projectPath, 'obfuscated'), outputPath: params.targetPath});
+    await new FossityPackagerTask().run({inputPath: path.join(params.projectPath,  AppDefaultValues.PROJECT.OUTPUT), outputPath: params.targetPath});
   }
 
   private async isValidObfuscatedFile(projectPath:string): Promise<boolean> {
     let validFiles = true;
-    const requiredFiles = ["winnowing.wfp", "projectMetadata.json", "file_count.csv"];
+    const requiredFiles = [AppDefaultValues.PROJECT.WINNOWING_WFP, AppDefaultValues.PROJECT.OUTPUT_METADATA, AppDefaultValues.PROJECT.FILE_COUNT];
     const folderFiles = new Set<string>();
-    const dirContent = await fs.promises.readdir(path.join(projectPath, 'obfuscated'));
+    const dirContent = await fs.promises.readdir(path.join(projectPath, AppDefaultValues.PROJECT.OUTPUT));
     for (const file of dirContent) {
       folderFiles.add(file);
     }
@@ -78,7 +80,7 @@ class ProjectService {
         break;
       }
     }
-    const metadata = await fs.promises.readFile(path.join(projectPath,'obfuscated', "projectMetadata.json"),'utf-8');
+    const metadata = await fs.promises.readFile(path.join(projectPath,AppDefaultValues.PROJECT.OUTPUT, AppDefaultValues.PROJECT.OUTPUT_METADATA),'utf-8');
     const projectMetadata: IProjectInfoMetadata = JSON.parse(metadata);
 
     if (!validFiles  ||  projectMetadata.contact.email === undefined  || projectMetadata.contact.email === "")

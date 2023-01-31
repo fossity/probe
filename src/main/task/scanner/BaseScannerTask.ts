@@ -13,6 +13,7 @@ import { Scanner as ScannerModule } from './types';
 import {IDispatch} from "./dispatcher/IDispatch";
 import {IScannerInputAdapter} from "./adapter/IScannerInputAdapter";
 import {utilModel} from "../../model/UtilModel";
+import {AppDefaultValues} from "../../../config/AppDefaultValues";
 
 export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScannerAdapter extends IScannerInputAdapter> implements ScannerModule.IPipelineTask {
   protected fingerprint: Fingerprint;
@@ -77,7 +78,7 @@ export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScann
   }
 
   protected setFingerprintConfig() {
-    const winnowingPath = path.join(this.project.getMyPath(),'obfuscated','winnowing.wfp');
+    const winnowingPath = path.join(this.project.getMyPath(),AppDefaultValues.PROJECT.OUTPUT,AppDefaultValues.PROJECT.WINNOWING_WFP);
     this.fingerprint.setFingerprintPath(winnowingPath);
   }
 

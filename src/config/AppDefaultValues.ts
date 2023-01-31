@@ -1,0 +1,17 @@
+export const AppDefaultValues  = {
+  PROJECT: {
+    OUTPUT: 'output',
+    METADATA: 'metadata.json',
+    OUTPUT_METADATA: 'projectMetadata.json',
+    WINNOWING_WFP: 'winnowing.wfp',
+    DEPENDENCIES: 'dependencies.json',
+    PROJECT_LOG: 'project.log',
+    TREE: 'tree.json',
+    FILE_COUNT: 'file_count.csv',
+    OBFUSCATION_MAPPER: 'obfuscationMapper.json'
+  },
+  WORKSPACE: {
+    WORKSPACE_CONFIG: 'workspaceCfg.json',
+    WORKSPACE_LOG: 'ws.log'
+  }
+}

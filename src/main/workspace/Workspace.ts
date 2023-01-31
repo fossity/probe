@@ -11,6 +11,7 @@ import { Scanner } from '../task/scanner/types';
 import { WorkspaceMigration } from '../migration/WorkspaceMigration';
 import { userSettingService } from '../services/UserSettingService';
 import { Metadata } from './Metadata';
+import {AppDefaultValues} from "../../config/AppDefaultValues";
 
 class Workspace {
   private projectList: Array<Project>;
@@ -24,7 +25,7 @@ class Workspace {
   public async read(workspacePath: string) {
     this.wsPath = workspacePath;
     await this.initWorkspaceFileSystem();
-    log.transports.file.resolvePath = () => `${this.wsPath}/ws.log`;
+    log.transports.file.resolvePath = () =>  path.join(this.wsPath,AppDefaultValues.WORKSPACE.WORKSPACE_LOG);
     // if (this.projectList.length) this.close();  //Prevents to keep projects opened when directory changes
     log.info(`%c[ WORKSPACE ]: Reading projects....`, 'color: green');
     const projectPaths = await this.getAllProjectsPaths();
@@ -184,7 +185,7 @@ class Workspace {
     newProject.setMetadata(metadata);
     await this.addProject(newProject);
     await newProject.createProjectFolder();
-    await fs.promises.writeFile(path.join(newProject.getMyPath(),'obfuscated','projectMetadata.json'),JSON.stringify(projectDTO.projectInfo));
+    await fs.promises.writeFile(path.join(newProject.getMyPath(),AppDefaultValues.PROJECT.OUTPUT,AppDefaultValues.PROJECT.OUTPUT_METADATA),JSON.stringify(projectDTO.projectInfo));
     newProject.save();
     return newProject;
   }

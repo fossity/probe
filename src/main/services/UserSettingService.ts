@@ -7,6 +7,7 @@ import { wsUtils } from '../workspace/WsUtils/WsUtils';
 import packageJson from '../../../release/app/package.json';
 import { AppI18n } from '../../shared/i18n';
 import { WorkspaceMigration } from '../migration/WorkspaceMigration';
+import {AppDefaultValues} from "../../config/AppDefaultValues";
 
 class UserSettingService {
   private myPath: string;
@@ -22,7 +23,7 @@ class UserSettingService {
   };
 
   constructor() {
-    this.name = 'workspaceCfg.json';
+    this.name = AppDefaultValues.WORKSPACE.WORKSPACE_CONFIG;
     this.store = this.defaultStore;
   }
 
