@@ -36,6 +36,33 @@
   height: 100%; // 100vh;
   padding: 30px 65px;
   grid-template-rows: auto 1fr;
+
+  &.app-pipeline {
+    display: grid;
+    height: 100vh;
+    padding: 0 65px;
+    grid-template-rows: 120px 1fr 60px;
+
+    .app-footer {
+      .button-container {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+
+        .btn {
+          padding: 12px 24px;
+          border-radius: 4px;
+        }
+
+        .btn-continue {
+          background-color: #6366f1;
+          color: #fff;
+          font-weight: 400;
+          font-size: 24px;
+        }
+      }
+    }
+  }
 }
 
 .SplitPane {
