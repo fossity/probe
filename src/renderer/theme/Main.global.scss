@@ -11,8 +11,22 @@ body {
   // min-width: 800px;
   background-color: var(--background-color-primary);
 
+  &::before {
+      content: "";
+      background-image: url("../../assets/imgs/background.png");
+      background-size: cover;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.17;
+      z-index: -1;
+  }
+
   > #root {
     height: 100%;
+    z-index: 1;
   }
 }
 

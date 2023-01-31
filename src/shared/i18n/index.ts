@@ -2,12 +2,11 @@
 /* eslint-disable global-require */
 import i18next, { i18n } from "i18next";
 import { initReactI18next } from "react-i18next";
-import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { i18nextPlugin } from 'translation-check'
 
 const rsb = resourcesToBackend((language, namespace, callback) => {
-  import(`/assets/i18n/${language}/${namespace}.json`)
+  require(`/assets/i18n/${language}/${namespace}.json`)
     .then((resources) => {
       return callback(null, resources)
     })

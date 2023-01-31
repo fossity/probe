@@ -77,7 +77,12 @@ export interface NewProjectDTO {
   projectInfo: IProjectInfoMetadata;
 }
 
-export interface ObfuscationDTO{
-  path:string;
+export interface ObfuscationDTO {
+  path: string;
   dictionary: Record<string,string>;
+}
+
+export interface ProjectPackageDTO { // PROJECT_CREATE_FOSSITY_PACKAGE
+  projectPath: string;
+  targetPath: string;
 }
