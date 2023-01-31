@@ -7,12 +7,10 @@ import { ScannerStage } from '../../../api/types';
 import { Project } from '../../workspace/Project';
 import path from 'path';
 import { Format } from 'scanoss/build/main/sdk/FileCount/Interfaces';
+import {AppDefaultValues} from "../../../config/AppDefaultValues";
 
 export class HintTask implements Scanner.IPipelineTask {
   private project: Project;
-
-  private CSV_FILE = 'file_count.csv';
-
   constructor(project: Project) {
     this.project = project;
   }
@@ -28,7 +26,7 @@ export class HintTask implements Scanner.IPipelineTask {
   public async run(): Promise<boolean> {
     log.info('[ HintTask init ]');
     const csv = await FileCount.walk(this.project.getScanRoot(),{ output: Format.CSV });
-    await fs.promises.writeFile(path.join(this.project.getMyPath(),'obfuscated',this.CSV_FILE) ,csv.toString());
+    await fs.promises.writeFile(path.join(this.project.getMyPath(),AppDefaultValues.PROJECT.OUTPUT,AppDefaultValues.PROJECT.FILE_COUNT) ,csv.toString());
     return true;
   }
 }

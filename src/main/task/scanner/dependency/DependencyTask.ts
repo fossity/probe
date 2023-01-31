@@ -7,12 +7,10 @@ import { BlackListDependencies } from '../../../workspace/tree/blackList/BlackLi
 import { Project } from '../../../workspace/Project';
 import { Scanner } from '../types';
 import { ScannerStage } from '../../../../api/types';
+import {AppDefaultValues} from "../../../../config/AppDefaultValues";
 
 export class DependencyTask implements Scanner.IPipelineTask {
   private project: Project;
-
-  private DEPENDECY_FILE = 'dependencies.json';
-
   constructor(project: Project) {
     this.project = project;
   }
@@ -47,7 +45,7 @@ export class DependencyTask implements Scanner.IPipelineTask {
         f.file = f.file.replace(rootPath, '');
       });
       this.project.tree.addDependencies(dependencies);
-      await fs.promises.writeFile(path.join(this.project.metadata.getMyPath(),'obfuscated', this.DEPENDECY_FILE),
+      await fs.promises.writeFile(path.join(this.project.metadata.getMyPath(),AppDefaultValues.PROJECT.OUTPUT, AppDefaultValues.PROJECT.DEPENDENCIES),
         JSON.stringify(dependencies, null, 2)
       );
     } catch (e) {

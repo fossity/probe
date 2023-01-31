@@ -18,6 +18,7 @@ import { modelProvider } from '../services/ModelProvider';
 import { TreeViewModeCreator } from './tree/treeViewModes/TreeViewModeCreator';
 import { IpcChannels } from '../../api/ipc-channels';
 import * as ScannerCFG from '../task/scanner/types';
+import {AppDefaultValues} from "../../config/AppDefaultValues";
 
 export class Project {
   work_root: string;
@@ -87,10 +88,8 @@ export class Project {
 
   public async open(): Promise<boolean> {
     this.state = ProjectState.OPENED;
-    log.transports.file.resolvePath = () =>
-      `${this.metadata.getMyPath()}/project.log`;
-    const project = await fs.promises.readFile(
-      `${this.metadata.getMyPath()}/tree.json`,
+    log.transports.file.resolvePath = () => path.join(this.metadata.getMyPath(),AppDefaultValues.PROJECT.PROJECT_LOG);
+    const project = await fs.promises.readFile( path.join(this.metadata.getMyPath(),AppDefaultValues.PROJECT.TREE),
       'utf8'
     );
     const a = JSON.parse(project);
@@ -131,8 +130,7 @@ export class Project {
       filesSummary: self.filesSummary,
       tree: self.tree,
     };
-    fs.writeFileSync(
-      `${this.metadata.getMyPath()}/tree.json`,
+    fs.writeFileSync(path.join(this.metadata.getMyPath(), AppDefaultValues.PROJECT.TREE),
       JSON.stringify(a)
     );
     log.info(
@@ -159,7 +157,7 @@ export class Project {
   }
 
   private async createEncryptedFolder() {
-    await fs.promises.mkdir(path.join(this.getMyPath(),'obfuscated'));
+    await fs.promises.mkdir(path.join(this.getMyPath(), AppDefaultValues.PROJECT.OUTPUT));
   }
 
   public async createProjectFolder(){
@@ -224,8 +222,7 @@ export class Project {
   public async getDependencies(): Promise<IDependencyResponse> {
     try {
       return JSON.parse(
-        await fs.promises.readFile(
-          `${this.metadata.getMyPath()}/dependencies.json`,
+        await fs.promises.readFile(path.join(this.metadata.getMyPath(), AppDefaultValues.PROJECT.DEPENDENCIES),
           'utf8'
         )
       );
