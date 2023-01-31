@@ -1,4 +1,4 @@
-import { NewProjectDTO } from '@api/dto';
+import { NewProjectDTO, ProjectPackageDTO } from '@api/dto';
 import { IpcChannels } from '../ipc-channels';
 import {
   FileTreeViewMode,
@@ -95,9 +95,9 @@ class ProjectService extends BaseService {
     return this.response(response);
   }
 
-  public async packageProject(projectPath: string): Promise<any> {
+  public async packageProject(params: ProjectPackageDTO): Promise<any> {
     const response = await window.electron.ipcRenderer.invoke(
-      IpcChannels.PROJECT_CREATE_FOSSITY_PACKAGE, projectPath
+      IpcChannels.PROJECT_CREATE_FOSSITY_PACKAGE, params
     );
     return this.response(response);
   }

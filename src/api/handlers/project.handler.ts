@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
 import log from 'electron-log';
-import { NewProjectDTO } from '@api/dto';
+import { NewProjectDTO, ProjectPackageDTO } from '@api/dto';
 import {
   FileTreeViewMode,
   IWorkbenchFilter
@@ -131,9 +131,9 @@ ipcMain.handle(
 
 ipcMain.handle(
   IpcChannels.PROJECT_CREATE_FOSSITY_PACKAGE,
-  async (_event,projectPath: string) => {
+  async (_event, params: ProjectPackageDTO) => {
     try {
-      await projectService.fossityPackager(projectPath);
+      await projectService.fossityPackager(params);
       return Response.ok({ message: 'Fossity package', data: true });
     } catch (error: any) {
       log.error('[FOSSITY PACKAGER]', error);

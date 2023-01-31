@@ -12,7 +12,9 @@ import { selectWorkspaceState, setScanPath } from '@store/workspace-store/worksp
 import { useTranslation } from 'react-i18next';
 import ProjectList from '../Components/ProjectList';
 import AddProjectButton from '../Components/AddProjectButton/AddProjectButton';
-import DownloadIcon from '@mui/icons-material/Download';
+import { projectService } from '@api/services/project.service';
+import { dialogController } from '../../../../controllers/dialog-controller';
+import { Button } from '@mui/material';
 
 
 const Workspace = () => {
@@ -45,7 +47,76 @@ const Workspace = () => {
   };
 
   const onDownloadHandler = async (project: IProject) => {
+    const path = await dialogController.showSaveDialog({
+      filters: [{ name: 'Fossity Package Archive', extensions: ['fossity'] }],
+      defaultPath: `${project.name}-package`,
+    });
 
+    if (!path) return;
+
+    const dialog = await dialogCtrl.createProgressDialog(t('Creating Fossity Package').toUpperCase());
+    dialog.present();
+
+    try {
+     await projectService.packageProject({
+        projectPath: project.work_root,
+        targetPath: path,
+      });
+
+      setTimeout(async () => {
+        const timeout = setTimeout(() => dialog.dismiss(), 8000);
+        const dismiss = () => {
+          clearTimeout(timeout);
+          dialog.dismiss();
+        };
+        dialog.finish({
+          message: (
+            <footer className="d-flex space-between">
+              <span>SUCCESSFUL PACKAGED</span>
+              <div>
+                <Button
+                  className="mr-3 text-uppercase"
+                  size="small"
+                  variant="text"
+                  color="primary"
+                  style={{ padding: 0, lineHeight: 1, minWidth: 0 }}
+                  onClick={() => dismiss()}
+                >
+                  {t('Button:Close')}
+                </Button>
+                <Button
+                  className="text-uppercase"
+                  size="small"
+                  variant="text"
+                  color="primary"
+                  style={{ padding: 0, lineHeight: 1, minWidth: 0 }}
+                  onClick={() => {
+                    dismiss();
+                    window.shell.showItemInFolder(path);
+                  }}
+                >
+                  {t('Button:Open')}
+                </Button>
+              </div>
+            </footer>
+          ),
+        });
+      }, 2000);
+
+    } catch (err) {
+      dialog.dismiss();
+      const errorMessage = `<strong>Packaging Error</strong>
+        <span style="font-style: italic;">${err || ''}</span>`;
+
+      await dialogCtrl.openConfirmDialog(
+        `${errorMessage}`,
+        {
+          label: 'OK',
+          role: 'accept',
+        },
+        true
+      );
+    }
   };
 
   const deleteProject = async (project: IProject) => {

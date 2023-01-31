@@ -19,6 +19,7 @@ import { IProject, ScanState } from '@api/types';
 import { Trans, useTranslation } from 'react-i18next';
 import PreviewIcon from '@mui/icons-material/Preview';
 import DownloadIcon from '@mui/icons-material/Download';
+import SystemUpdateAltOutlinedIcon from '@mui/icons-material/SystemUpdateAltOutlined';
 
 const filter = (items, query) => {
   if (!items) return null;
@@ -114,7 +115,7 @@ const ProjectList = (props: ProjectListProps) => {
                               </IconButton>
                             </Tooltip>
 
-                            <Tooltip title={t('Tooltip:Download')}>
+                            <Tooltip title={t('Tooltip:CreateFossityPackage')}>
                               <IconButton
                                 aria-label="download"
                                 disabled={!isProjectFinished(project)}
@@ -125,7 +126,7 @@ const ProjectList = (props: ProjectListProps) => {
                                 }}
                                 size="large"
                               >
-                                <DownloadIcon fontSize="small" />
+                                <SystemUpdateAltOutlinedIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
 

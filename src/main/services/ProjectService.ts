@@ -6,7 +6,7 @@ import {Project} from '../workspace/Project';
 import {workspace} from '../workspace/Workspace';
 import {ProjectFilterPath} from '../workspace/filters/ProjectFilterPath';
 import {FingerprintPipelineTask} from '../task/scanner/scannerPipeline/FingerprintPipelineTask';
-import { NewProjectDTO, ObfuscationDTO } from '../../api/dto';
+import { NewProjectDTO, ObfuscationDTO, ProjectPackageDTO } from '../../api/dto';
 import { WFPObfuscationTask } from '../task/obfuscation/WFPObfuscationTask';
 import { FossityPackagerTask } from '../task/fossityPackagerTask/FossityPackagerTask';
 
@@ -38,32 +38,37 @@ class ProjectService {
     return p;
   }
 
-  public async obfuscateWFP(words: Array<string>) : Promise<ObfuscationDTO>{
-    const wordsToObfuscate = words.sort((a,b)=> b.length - a.length);
+  public async obfuscateWFP(words: Array<string>): Promise<ObfuscationDTO>{
+    const wordsToObfuscate = words.sort((a, b)=> b.length - a.length);
     const p = workspace.getOpenedProjects()[0];
-    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(),'obfuscated','winnowing.wfp'),wordsToObfuscate).run();
+    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(), 'obfuscated', 'winnowing.wfp'),wordsToObfuscate).run();
     return response;
   }
 
-  public async deofuscateWFP() : Promise<ObfuscationDTO>{
+  public async deofuscateWFP(): Promise<ObfuscationDTO> {
     const p = workspace.getOpenedProjects()[0];
-    const dictionary = await fs.promises.readFile(path.join(p.getMyPath(),'obfuscationMapper.json'),'utf-8');
+    const dictionary = await fs.promises.readFile(path.join(p.getMyPath(), 'obfuscationMapper.json'),'utf-8');
     const mapper = JSON.parse(dictionary);
-    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(),'obfuscated','winnowing.wfp'),mapper).run();
+    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(), 'obfuscated', 'winnowing.wfp'), mapper).run();
     return response;
   }
 
-  public async fossityPackager(projectPath: string){
-    if(await this.isValidObfuscatedFile(projectPath)) {
-      await new FossityPackagerTask().run({inputPath: path.join(projectPath,'obfuscated'), outputPath:path.join(projectPath,'fossity.zip')});
+  public async fossityPackager(params: ProjectPackageDTO) {
+    if (path.extname(params.targetPath).toLowerCase() !== '.fossity')
+      throw new Error('File type not supported');
+
+    if (!(await this.isValidObfuscatedFile(params.projectPath))) {
+      throw new Error("Invalid project metadata");
     }
+
+    await new FossityPackagerTask().run({inputPath: path.join(params.projectPath, 'obfuscated'), outputPath: params.targetPath});
   }
 
-  private async isValidObfuscatedFile(projectPath:string):Promise<boolean> {
+  private async isValidObfuscatedFile(projectPath:string): Promise<boolean> {
     let validFiles = true;
-    const requiredFiles = ["winnowing.wfp","projectMetadata.json","file_count.csv"];
+    const requiredFiles = ["winnowing.wfp", "projectMetadata.json", "file_count.csv"];
     const folderFiles = new Set<string>();
-    const dirContent = await fs.promises.readdir(path.join(projectPath,'obfuscated'));
+    const dirContent = await fs.promises.readdir(path.join(projectPath, 'obfuscated'));
     for (const file of dirContent) {
       folderFiles.add(file);
     }
@@ -73,9 +78,12 @@ class ProjectService {
         break;
       }
     }
-    const metadata = await fs.promises.readFile(path.join(projectPath,'obfuscated',"projectMetadata.json"),'utf-8');
+    const metadata = await fs.promises.readFile(path.join(projectPath,'obfuscated', "projectMetadata.json"),'utf-8');
     const projectMetadata: IProjectInfoMetadata = JSON.parse(metadata);
-    if(!validFiles  ||  projectMetadata.contact.email === undefined  || projectMetadata.contact.email === "") throw new Error("Invalid project metadata");
+
+    if (!validFiles  ||  projectMetadata.contact.email === undefined  || projectMetadata.contact.email === "")
+      return false;
+
     return true;
   }
 }
