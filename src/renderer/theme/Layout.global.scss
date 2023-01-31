@@ -41,7 +41,18 @@
     display: grid;
     height: 100vh;
     padding: 0 65px;
-    grid-template-rows: 120px 1fr 60px;
+    grid-template-rows: 120px 1fr 70px;
+
+    .app-footer, .app-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .app-content {
+      background: #f2f2f2;
+      border-radius: 20px;
+      padding: 20px;
+    }
 
     .app-footer {
       .button-container {
@@ -63,6 +74,7 @@
       }
     }
   }
+
 }
 
 .SplitPane {
@@ -77,13 +89,13 @@
     display: flex;
     align-items: center;
     margin: 0;
-    height: 48px;
+    height: 28px;
     font-size: 14px;
     font-weight: 700;
     text-transform: uppercase;
 
     &.back {
-      margin-left: -48px;
+
     }
   }
 

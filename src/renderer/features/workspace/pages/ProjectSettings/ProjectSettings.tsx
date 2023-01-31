@@ -169,19 +169,21 @@ const ProjectSettings = () => {
     <form onSubmit={(e) => handleClose(e)}>
       <section id="ProjectSettings" className="app-page app-pipeline">
           <header className="app-header">
-            <div>
-              <h4 className="header-subtitle back">
-                <IconButton
-                  tabIndex={-1}
-                  onClick={() => navigate(-1)}
-                  component="span"
-                  size="large"
-                >
-                  <ArrowBackIcon />
-                </IconButton>
-                {t('Project Info')}
-              </h4>
-              <h1 className="mt-0 mb-0">{scanPath.path}</h1>
+            <div className='breadcrumb d-flex align-center'>
+              <IconButton
+                tabIndex={-1}
+                onClick={() => navigate(-1)}
+                component="span"
+                size="large"
+              >
+                <ArrowBackIcon />
+              </IconButton>
+              <div>
+                <h4 className="header-subtitle back">
+                  {t('New Project')}
+                </h4>
+                <h2 className="mt-0 mb-0">{scanPath.path}</h2>
+              </div>
             </div>
           </header>
           <main className="app-content">
@@ -353,7 +355,6 @@ const ProjectSettings = () => {
                   </>
 
                 </Grid>
-                <Grid item xs={6} />
               </Grid>
           </main>
           <footer className='app-footer'>
