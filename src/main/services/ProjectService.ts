@@ -39,20 +39,6 @@ class ProjectService {
     return p;
   }
 
-  public async obfuscateWFP(words: Array<string>): Promise<ObfuscationDTO>{
-    const wordsToObfuscate = words.sort((a, b)=> b.length - a.length);
-    const p = workspace.getOpenedProjects()[0];
-    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(),  AppDefaultValues.PROJECT.OUTPUT, AppDefaultValues.PROJECT.WINNOWING_WFP),wordsToObfuscate).run();
-    return response;
-  }
-
-  public async deofuscateWFP(): Promise<ObfuscationDTO> {
-    const p = workspace.getOpenedProjects()[0];
-    const dictionary = await fs.promises.readFile(path.join(p.getMyPath(),AppDefaultValues.PROJECT.OBFUSCATION_MAPPER),'utf-8');
-    const mapper = JSON.parse(dictionary);
-    const response = await new WFPObfuscationTask(p.getMyPath(), path.join(p.getMyPath(), AppDefaultValues.PROJECT.OUTPUT, AppDefaultValues.PROJECT.WINNOWING_WFP), mapper).run();
-    return response;
-  }
 
   public async fossityPackager(params: ProjectPackageDTO) {
     if(!params.targetPath.toLowerCase().endsWith('.fossity')) params.targetPath = `${params.targetPath}.fossity`;

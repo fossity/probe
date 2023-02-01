@@ -3,7 +3,8 @@ import { IpcChannels } from "../../../../api/ipc-channels";
 import { Scanner } from "../types";
 import { broadcastManager } from "../../../broadcastManager/BroadcastManager";
 import { Project } from "../../../workspace/Project";
-import {ITask} from "../../Task";
+import { ITask } from "../../Task";
+import { ProjectState } from "../../../../api/types";
 
 export abstract class ScannerPipeline implements ITask<Project, boolean> {
   protected queue: Array<Scanner.IPipelineTask>;
@@ -40,7 +41,8 @@ export abstract class ScannerPipeline implements ITask<Project, boolean> {
   }
 
   protected async done(project: Project){
-    await project.close();
+    project.setState(ProjectState.OPENED);
+    project.save();
     broadcastManager.get().send(IpcChannels.SCANNER_FINISH_SCAN, {
       success: true,
       resultsPath: project.metadata.getMyPath(),

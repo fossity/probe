@@ -11,7 +11,8 @@ export class ObfuscationModule implements IAdapter {
   private keyNumber:number = 0;
 
   constructor(obfuscatedWords: Array<string>) {
-    this.obfuscatedWords = obfuscatedWords;
+    const obfuscatedWordsSorted = obfuscatedWords.sort((a,b) => b.length-a.length);
+    this.obfuscatedWords = obfuscatedWordsSorted
     this.obfuscatedMapper = {};
   }
 
