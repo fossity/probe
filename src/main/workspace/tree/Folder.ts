@@ -1,5 +1,6 @@
 import Node, { NodeStatus } from './Node';
 import { BlackListAbstract } from './blackList/BlackListAbstract';
+import {Filter} from "./filters/Filter";
 
 export default class Folder extends Node {
   private children: Node[];
@@ -321,5 +322,13 @@ public someMatch(): boolean {
       if (child.getName() === filename) return true;
     }
     return false;
+  }
+
+  public getFilesByFilter(filter: Filter): Array<string> {
+    let files = [];
+    this.children.forEach((c)=>{
+      files = [...files,...c.getFilesByFilter(filter)];
+    });
+    return files;
   }
 }

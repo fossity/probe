@@ -1,5 +1,6 @@
 import Node, { NodeStatus } from './Node';
 import { BlackListAbstract } from './blackList/BlackListAbstract';
+import {Filter} from "./filters/Filter";
 
 export default class File extends Node {
   private isDependencyFile: boolean;
@@ -196,6 +197,11 @@ export default class File extends Node {
   }
 
   public updateFlags() {
+  }
+
+  public getFilesByFilter(filter: Filter): Array<string> {
+    if(filter.evaluate(this)) return [this.getPath()];
+    return [];
   }
 
 
