@@ -1,8 +1,8 @@
 {
-  "name": "scanoss-workbench",
-  "productName": "SCANOSS Audit Workbench",
-  "description": "Desktop version to use SCANOSS OSS in your projects",
-  "homepage": "https://github.com/scanoss/audit-workbench#readme",
+  "name": "fossity-probe",
+  "productName": "Fossity Probe",
+  "description": "Desktop version to audit your projects",
+  "homepage": "",
   "bugs": {
     "url": "https://github.com/scanoss/audit-workbench/issues"
   },
@@ -11,9 +11,9 @@
     "url": "git+https://github.com/scanoss/audit-workbench/"
   },
   "author": {
-    "name": "SCANOSS",
-    "email": "info@scanoss.com",
-    "url": "https://www.scanoss.com/"
+    "name": "FOSSITY",
+    "email": "info@fossity.com",
+    "url": "https://www.fossity.com/"
   },
   "license": "GPL-2.0",
   "keywords": [
