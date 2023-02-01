@@ -28,6 +28,7 @@ import '../api/handlers/project.handler';
 import '../api/handlers/workspace.handler';
 import '../api/handlers/license.handler';
 import '../api/handlers/userSetting.handler';
+import '../api/handlers/obfuscate.handler';
 import '../api/handlers/app.handler';
 
 
