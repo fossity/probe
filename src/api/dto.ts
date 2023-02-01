@@ -86,3 +86,5 @@ export interface ProjectPackageDTO { // PROJECT_CREATE_FOSSITY_PACKAGE
   projectPath: string;
   targetPath: string;
 }
+
+
