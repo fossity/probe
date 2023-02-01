@@ -30,6 +30,8 @@ export class Tree {
 
   private summary;
 
+  private filesToObfuscate = new Map <string, string | null>();
+
   constructor(rootName: string, projectPath: string, scanRoot?:string ) {
     this.rootName = rootName;
     this.rootPath = scanRoot;
@@ -41,6 +43,15 @@ export class Tree {
 
   sendToUI(eventName, data: any) {
     broadcastManager.get().send(eventName, data);
+  }
+
+
+  setFilesToObfuscate(files : Map<string, string |null>) {
+    this.filesToObfuscate = files;
+  }
+
+  getFilesToObfuscate(): Map<string, string | null> {
+    return this.filesToObfuscate;
   }
 
   public build(files: Array<string>) {
