@@ -7,8 +7,8 @@ import { IProject, License } from '../types';
 import { ProjectFilterPath } from '../../main/workspace/filters/ProjectFilterPath';
 import { ProjectZipper } from '../../main/workspace/ProjectZipper';
 import { workspaceService } from '../../main/services/WorkspaceService';
-import { WFPObfuscationTask } from '../../main/task/obfuscation/WFPObfuscationTask';
-import { WFPDeobfuscationTask } from '../../main/task/obfuscation/WFPDeobfuscationTask';
+import { WFPObfuscationTask } from '../../main/task/obfuscationTask/WFPObfuscationTask/WFPObfuscationTask';
+import { WFPDeobfuscationTask } from '../../main/task/obfuscationTask/WFPObfuscationTask/WFPDeobfuscationTask';
 
 ipcMain.handle(IpcChannels.WORKSPACE_PROJECT_LIST, async (_event) => {
   try {

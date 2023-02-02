@@ -266,7 +266,8 @@ export enum ScannerStage {
   DEPENDENCY,
   VULNERABILITY,
   SEARCH_INDEX,
-  HINT
+  HINT,
+  OBFUSCATE,
 }
 
 export interface InventoryExtraction {

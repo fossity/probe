@@ -6,7 +6,7 @@ import { Project } from "../../../workspace/Project";
 import { ITask } from "../../Task";
 import { ProjectState } from "../../../../api/types";
 
-export abstract class ScannerPipeline implements ITask<Project, boolean> {
+export abstract class BasePipeline implements ITask<Project, boolean> {
   protected queue: Array<Scanner.IPipelineTask>;
 
   public constructor() {

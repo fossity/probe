@@ -1,20 +1,20 @@
 import log from 'electron-log';
 import path from 'path';
-import { IProjectInfoMetadata } from '@api/types';
+import {IProjectInfoMetadata, ProjectState} from '../../api/types';
 import fs from 'fs';
 import {AppDefaultValues} from "../../config/AppDefaultValues";
 import {Project} from '../workspace/Project';
 import {workspace} from '../workspace/Workspace';
 import {ProjectFilterPath} from '../workspace/filters/ProjectFilterPath';
-import {FingerprintPipelineTask} from '../task/scanner/scannerPipeline/FingerprintPipelineTask';
-import { NewProjectDTO, ObfuscationDTO, ProjectPackageDTO } from '../../api/dto';
-import { WFPObfuscationTask } from '../task/obfuscation/WFPObfuscationTask';
-import { FossityPackagerTask } from '../task/fossityPackagerTask/FossityPackagerTask';
+import {NewProjectDTO, ProjectPackageDTO} from '../../api/dto';
+import {FossityPackagerTask} from '../task/fossityPackagerTask/FossityPackagerTask';
+import {IndexPipelineTask} from "../task/scanner/scannerPipeline/IndexPipelineTask";
+import {FingerprintPipelineTask} from "../task/scanner/scannerPipeline/FingerprintPipelineTask";
 
 class ProjectService {
   public async createProject(projectDTO: NewProjectDTO) {
     const p = await this.create(projectDTO);
-    await new FingerprintPipelineTask().run(p);
+    await new IndexPipelineTask().run(p);
   }
 
   public async resume(projectPath: string) {
@@ -72,6 +72,14 @@ class ProjectService {
     if (!validFiles  ||  projectMetadata.contact.email === undefined  || projectMetadata.contact.email === "")
       return false;
 
+    return true;
+  }
+
+  public async createFingerprints():Promise<boolean> {
+    const project = workspace.getOpenedProjects()[0];
+    await new FingerprintPipelineTask().run(project);
+    project.setState(ProjectState.CLOSED);
+    project.save();
     return true;
   }
 }

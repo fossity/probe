@@ -60,6 +60,7 @@
   "SearchingVulnerabilities": "Buscando vulnerabilidades",
   "CreatingSearchIndex": "Creando índice de búsqueda",
   "Indexing": "Indexando",
+  "Indexing": "Ofuscando",
   "Language": "Idioma",
   "ScannerSettings": "Configuración del escáner",
   "Status": "Estado",

@@ -11,7 +11,7 @@ import { ProjectFilterPath } from '../../main/workspace/filters/ProjectFilterPat
 import { Project } from '../../main/workspace/Project';
 import { workspace } from '../../main/workspace/Workspace';
 import { projectService } from '../../main/services/ProjectService';
-import { WFPObfuscationTask } from '../../main/task/obfuscation/WFPObfuscationTask';
+import { WFPObfuscationTask } from '../../main/task/obfuscationTask/WFPObfuscationTask/WFPObfuscationTask';
 
 ipcMain.handle(IpcChannels.PROJECT_OPEN_SCAN, async (event, arg: any) => {
   // TODO: factory to create filters depending on arguments
@@ -134,6 +134,18 @@ ipcMain.handle(
   async (_event, params: ProjectPackageDTO) => {
     try {
       await projectService.fossityPackager(params);
+      return Response.ok({ message: 'Fossity package', data: true });
+    } catch (error: any) {
+      log.error('[FOSSITY PACKAGER]', error);
+      return Response.fail({ message: error.message });
+    }
+  }
+);
+ipcMain.handle(
+  IpcChannels.PROJECT_CREATE_FINGERPRINTS,
+  async (_event) => {
+    try {
+      await projectService.createFingerprints();
       return Response.ok({ message: 'Fossity package', data: true });
     } catch (error: any) {
       log.error('[FOSSITY PACKAGER]', error);

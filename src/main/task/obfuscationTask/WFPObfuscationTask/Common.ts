@@ -1,8 +1,8 @@
 import fs from 'fs';
 import * as readline from 'readline';
 import path from 'path';
-import { IAdapter } from '../../modules/Obfuscation/IAdapter';
-import { ITask } from '../Task';
+import { IAdapter } from '../../../modules/Obfuscation/IAdapter';
+import { ITask } from '../../Task';
 import { ObfuscationDTO } from '@api/dto';
 
 export class Common <Adapter extends IAdapter> implements ITask<void, ObfuscationDTO>{

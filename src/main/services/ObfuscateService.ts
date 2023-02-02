@@ -1,6 +1,6 @@
 import {ObfuscationDTO} from "../../api/dto";
 import {workspace} from "../workspace/Workspace";
-import {WFPObfuscationTask} from "../task/obfuscation/WFPObfuscationTask";
+import {WFPObfuscationTask} from "../task/obfuscationTask/WFPObfuscationTask/WFPObfuscationTask";
 import path from "path";
 import {AppDefaultValues} from "../../config/AppDefaultValues";
 import fs from "fs";
@@ -26,6 +26,7 @@ class ObfuscateService {
   public async obfuscatePreview(words: Array<string>): Promise<Map<string, string|null>> {
     const obf = new ObfuscationModule(words);
     const p = workspace.getOpenedProjects()[0];
+    p.setBannedList(words);
     const fToObfuscate = p.getTree().getFilesToObfuscate();
 
     for (const filePath of fToObfuscate.keys())

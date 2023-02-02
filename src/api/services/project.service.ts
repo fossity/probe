@@ -101,5 +101,13 @@ class ProjectService extends BaseService {
     );
     return this.response(response);
   }
+
+  public async createFingerprints(): Promise<true> {
+    const response = await window.electron.ipcRenderer.invoke(
+      IpcChannels.PROJECT_CREATE_FINGERPRINTS
+    );
+    return this.response(response);
+  }
+
 }
 export const projectService = new ProjectService();
