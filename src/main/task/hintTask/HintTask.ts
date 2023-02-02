@@ -29,17 +29,9 @@ export class HintTask implements Scanner.IPipelineTask {
   public async run(): Promise<boolean> {
     log.info('[ HintTask init ]');
     await this.createFileCount();
-    this.createFileMap();
-
     return true;
   }
 
-  private createFileMap() {
-   const files = this.project.getTree().getRootFolder().getFilesByFilter(new FilterOR(new FilterWFP(), new FilterDependency()));
-   const fileMapper = new Map<string,string | null>();
-   files.forEach((f) =>  fileMapper.set(f,null));
-   this.project.getTree().setFilesToObfuscate(fileMapper);
-  }
 
   private async  createFileCount() {
     const csv = await FileCount.walk(this.project.getScanRoot(),{ output: Format.CSV });

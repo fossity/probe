@@ -2,6 +2,9 @@ import fs from "fs";
 import { IndexTreeTask } from "./IndexTreeTask";
 import Folder from "../../workspace/tree/Folder";
 import { Tree } from "../../workspace/tree/Tree";
+import { FilterOR } from "../../workspace/tree/filters/FilterOR";
+import { FilterWFP } from "../../workspace/tree/filters/FilterWFP";
+import { FilterDependency } from "../../workspace/tree/filters/FilterDependency";
 
 export class CodeIndexTreeTask  extends IndexTreeTask{
 
@@ -9,7 +12,15 @@ export class CodeIndexTreeTask  extends IndexTreeTask{
     const files = this.getProjectFiles(this.project.getScanRoot(),this.project.getScanRoot());
     const tree = await this.buildTree(files);
     this.setTreeSummary(tree);
+    this.createFileMap();
     return true;
+  }
+
+  private createFileMap() {
+    const files = this.project.getTree().getRootFolder().getFilesByFilter(new FilterOR(new FilterWFP(), new FilterDependency()));
+    const fileMapper = new Map<string,string | null>();
+    files.forEach((f) =>  fileMapper.set(f,null));
+    this.project.getTree().setFilesToObfuscate(fileMapper);
   }
 
   private getProjectFiles(dir : string, rootPath: string): Array<string> {

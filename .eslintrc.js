@@ -30,6 +30,15 @@ module.exports = {
     'no-empty-pattern': ['off'],
     'react-hooks/exhaustive-deps': 'warn',
     "no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
+    "import/extensions": [
+      "error",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   },
   parserOptions: {
     ecmaVersion: 2020,

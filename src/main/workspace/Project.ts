@@ -10,14 +10,11 @@ import {
   IWorkbenchFilterParams,
   ProjectState
 } from '../../api/types';
-import { ScanModel } from '../model/ScanModel';
-import { Metadata } from './Metadata';
+import { Metadata } from "./Metadata";
 import { ProjectMigration } from '../migration/ProjectMigration';
 import { Tree } from './tree/Tree';
-import { modelProvider } from '../services/ModelProvider';
 import { TreeViewModeCreator } from './tree/treeViewModes/TreeViewModeCreator';
 import { IpcChannels } from '../../api/ipc-channels';
-import * as ScannerCFG from '../task/scanner/types';
 import {AppDefaultValues} from "../../config/AppDefaultValues";
 
 export class Project {
@@ -32,8 +29,6 @@ export class Project {
   tree: Tree;
 
   results: any;
-
-  store!: ScanModel;
 
   scanner!: Scanner;
 
@@ -55,12 +50,15 @@ export class Project {
 
   fileTreeViewMode: FileTreeViewMode;
 
+  bannedList : Array<string>;
+
   constructor() {
     this.state = ProjectState.CLOSED;
     this.filter = null;
     this.fileTreeViewMode = FileTreeViewMode.DEFAULT;
     this.tree = null;
     this.filesToScan = {};
+    this.bannedList = [];
   }
 
   public static async readFromPath(pathToProject: string): Promise<Project> {
@@ -121,7 +119,6 @@ export class Project {
 
   public save(): void {
     this.metadata.save();
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     const a = {
       filesToScan: self.filesToScan,
@@ -272,5 +269,13 @@ export class Project {
 
   public setTree(tree: Tree) {
     this.tree = tree;
+  }
+
+  public setBannedList(bannedList: Array<string>) {
+    this.bannedList = bannedList;
+  }
+
+  public getBannedList() {
+    return this.bannedList;
   }
 }
