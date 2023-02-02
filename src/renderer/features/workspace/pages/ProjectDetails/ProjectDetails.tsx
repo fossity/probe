@@ -11,10 +11,9 @@ import { useTranslation } from 'react-i18next';
 import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDefaultValues } from '@config/AppDefaultValues';
 
 
-const ProjectSummary = () => {
+const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -28,24 +27,11 @@ const ProjectSummary = () => {
   const init = async () => {
   };
 
-  const submit = async (e) => {
-    // dispatch(setScanPath({ path, action: 'none' }));
-    navigate('/workspace/new/scan', { replace: true, state: { pipeline: AppDefaultValues.PIPELINE.FINGERPRINT } });
-  };
   return (
     <>
-      <form onSubmit={(e) => submit(e)}>
-        <section id="ProjectSummary" className="app-page app-pipeline">
+        <section id="ProjectDetails" className="app-page app-pipeline">
           <header className="app-header">
             <div className='breadcrumb d-flex align-center'>
-              <IconButton
-                tabIndex={-1}
-                onClick={() => navigate(-1)}
-                component="span"
-                size="large"
-              >
-                <ArrowBackIcon />
-              </IconButton>
               <div>
                 <h4 className="header-subtitle back">
                   {t('New Project')}
@@ -56,7 +42,7 @@ const ProjectSummary = () => {
           </header>
           <main className="app-content">
               <div className='content'>
-                SUMMARY STAGE
+                PROJECT DETAILS
               </div>
           </main>
           <footer className='app-footer'>
@@ -66,15 +52,15 @@ const ProjectSummary = () => {
                 variant="contained"
                 color="primary"
                 type="submit"
+                onClick={e => navigate('/workspace', { replace: true })}
               >
-                {t('Button:Create Fingerprints')}
+                {t('Button:Finish')}
               </Button>
             </div>
           </footer>
         </section>
-      </form>
     </>
   );
 };
 
-export default ProjectSummary;
+export default ProjectDetails;

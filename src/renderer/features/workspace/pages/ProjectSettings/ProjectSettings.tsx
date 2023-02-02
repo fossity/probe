@@ -29,6 +29,7 @@ import { Scanner } from '../../../../../main/task/scanner/types';
 import ScannerType = Scanner.ScannerType;
 import ScannerSource = Scanner.ScannerSource;
 import { dialogController } from '../../../../controllers/dialog-controller';
+import { AppDefaultValues } from '@config/AppDefaultValues';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -148,7 +149,7 @@ const ProjectSettings = () => {
   const submit = async () => {
     dispatch(setScanPath({ ...scanPath, projectName: projectSettings.name }));
     dispatch(setNewProject(projectSettings));
-    navigate('/workspace/new/scan');
+    navigate('/workspace/new/scan', { state: { pipeline: AppDefaultValues.PIPELINE.INDEX } });
   };
 
   const handleClose = (e) => {
@@ -159,7 +160,7 @@ const ProjectSettings = () => {
   useEffect(() => {
     if (license === 'proprietary') {
       setProjectSettings({
-        ...projectSettings,projectInfo:{...projectSettings.projectInfo,default_license: null}
+        ...projectSettings, projectInfo:{...projectSettings.projectInfo,default_license: null}
       })
     }
   }, [license]);

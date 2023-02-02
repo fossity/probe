@@ -13,5 +13,9 @@ export const AppDefaultValues  = {
   WORKSPACE: {
     WORKSPACE_CONFIG: 'workspaceCfg.json',
     WORKSPACE_LOG: 'ws.log'
+  },
+  PIPELINE: {
+    INDEX: 'index',
+    FINGERPRINT: 'fingerprint'
   }
 }

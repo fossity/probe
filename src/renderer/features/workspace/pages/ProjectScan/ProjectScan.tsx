@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { IpcChannels } from '@api/ipc-channels';
@@ -10,15 +10,18 @@ import { selectWorkspaceState, setScanPath } from '@store/workspace-store/worksp
 import { useTranslation } from 'react-i18next';
 import * as controller from '../../../../controllers/home-controller';
 import CircularComponent from '../Components/CircularComponent';
+import { AppDefaultValues } from '@config/AppDefaultValues';
+import { create } from '../../../../controllers/home-controller';
 
 const ProjectScan = () => {
   const navigate = useNavigate();
+  const {state} = useLocation();
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const { pipeline } = state;
   const { scanPath, newProject } = useSelector(selectWorkspaceState);
-
   const [progress, setProgress] = useState<number>(0);
   const [stage, setStage] = useState<any>({
     stageName: 'preparing',
@@ -32,14 +35,27 @@ const ProjectScan = () => {
 
       if (action === 'resume') await controller.resume(path);
       if (action === 'rescan') await controller.rescan(path);
-      if (action === 'scan') await controller.scan(newProject);
+      if (action === 'scan') {
+        const response = (stage === AppDefaultValues.PIPELINE.INDEX)
+          ? await controller.create(newProject)
+          : await controller.scan(newProject);
+      }
     } catch (e) {
       console.error(e);
     }
   };
 
   const onShowScan = (path) => {
-    navigate('/workspace/new/obfuscation');
+    switch (pipeline) {
+      case AppDefaultValues.PIPELINE.INDEX:
+        navigate('/workspace/new/obfuscation');
+        break
+      case AppDefaultValues.PIPELINE.FINGERPRINT:
+        navigate('/workspace/details', { replace: true });
+        break
+      default:
+        break
+    }
   };
 
   const handlerScannerStatus = (e, args) => {

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  Checkbox, FormControl,
+  Checkbox, Chip, FormControl,
   FormControlLabel,
   FormHelperText, FormLabel, Grid,
   IconButton,
@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { useDispatch, useSelector } from 'react-redux';
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const ProjectObfuscation = () => {
@@ -34,6 +35,10 @@ const ProjectObfuscation = () => {
 
   const init = async () => {
   };
+
+  const onTagsHandler = (data) => {
+
+  }
 
   const submit = async (e) => {
     navigate('/workspace/new/summary');
@@ -62,7 +67,38 @@ const ProjectObfuscation = () => {
           </header>
           <main className="app-content">
               <div className='content'>
-                OBFUSCATION STAGE
+                <Autocomplete
+                  multiple
+                  fullWidth
+                  size="small"
+                  options={['license', 'copyright', 'author', 'version']}
+                  freeSolo
+                  renderTags={(value: readonly string[], getTagProps) =>
+                    value.map((option: string, index: number) => (
+                      // eslint-disable-next-line react/jsx-key
+                      <Chip
+                        color="primary"
+                        variant="outlined"
+                        size="small"
+                        label={option}
+                        {...getTagProps({ index })}
+                        className="bg-primary mr-1"
+                      />
+                    ))
+                  }
+                  onChange={(event, data) => onTagsHandler(data)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      autoFocus
+                      variant="standard"
+                      InputProps={{
+                        ...params.InputProps,
+                        disableUnderline: true,
+                      }}
+                    />
+                  )}
+                />
               </div>
           </main>
         <footer className='app-footer'>
