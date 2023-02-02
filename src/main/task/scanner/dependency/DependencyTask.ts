@@ -44,7 +44,6 @@ export class DependencyTask implements Scanner.IPipelineTask {
       dependencies.files.forEach((f) => {
         f.file = f.file.replace(rootPath, '');
       });
-      this.project.tree.addDependencies(dependencies);
       await fs.promises.writeFile(path.join(this.project.metadata.getMyPath(),AppDefaultValues.PROJECT.OUTPUT, AppDefaultValues.PROJECT.DEPENDENCIES),
         JSON.stringify(dependencies, null, 2)
       );

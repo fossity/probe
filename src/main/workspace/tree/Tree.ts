@@ -275,9 +275,9 @@ export class Tree {
     }
   }
 
-  public addDependencies(dependencies: any): void {
-    dependencies.files.forEach((dependency) => {
-      this.getRootFolder().addDependency(dependency.file);
+  public addDependencies(files: Array<string>): void {
+    files.forEach((f) => {
+      this.getRootFolder().addDependency(f);
     });
   }
 

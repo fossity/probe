@@ -5,6 +5,7 @@ import { Tree } from "../../workspace/tree/Tree";
 import { FilterOR } from "../../workspace/tree/filters/FilterOR";
 import { FilterWFP } from "../../workspace/tree/filters/FilterWFP";
 import { FilterDependency } from "../../workspace/tree/filters/FilterDependency";
+import { LocalDependencies } from "scanoss";
 
 export class CodeIndexTreeTask  extends IndexTreeTask{
 
@@ -13,8 +14,19 @@ export class CodeIndexTreeTask  extends IndexTreeTask{
     const tree = await this.buildTree(files);
     this.setTreeSummary(tree);
     this.createFileMap();
+    await this.setDependenciesOnFileTree();
+    this.project.save();
     return true;
   }
+
+  private async setDependenciesOnFileTree(){
+    const f = this.project.getTree().getRootFolder().getFiles();
+    const files = f.map((f)=> f.path);
+    const localDependencies = new LocalDependencies();
+    const dependenciesFiles = localDependencies.filterFiles(files);
+    this.project.tree.addDependencies(dependenciesFiles);
+}
+
 
   private createFileMap() {
     const files = this.project.getTree().getRootFolder().getFilesByFilter(new FilterOR(new FilterWFP(), new FilterDependency()));
@@ -68,7 +80,6 @@ export class CodeIndexTreeTask  extends IndexTreeTask{
     this.project.processedFiles = 0;
     this.project.metadata.setTotalFiles(summary.include);
     this.project.setTree(tree);
-    this.project.save();
   }
 
 }
