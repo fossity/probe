@@ -8,10 +8,9 @@ import { projectService } from '@api/services/project.service';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectWorkspaceState, setScanPath } from '@store/workspace-store/workspaceSlice';
 import { useTranslation } from 'react-i18next';
+import { AppDefaultValues } from '@config/AppDefaultValues';
 import * as controller from '../../../../controllers/home-controller';
 import CircularComponent from '../Components/CircularComponent';
-import { AppDefaultValues } from '@config/AppDefaultValues';
-import { create } from '../../../../controllers/home-controller';
 
 const ProjectScan = () => {
   const navigate = useNavigate();
@@ -35,10 +34,12 @@ const ProjectScan = () => {
 
       if (action === 'resume') await controller.resume(path);
       if (action === 'rescan') await controller.rescan(path);
+
+      console.log(pipeline, AppDefaultValues.PIPELINE.INDEX);
       if (action === 'scan') {
-        const response = (stage === AppDefaultValues.PIPELINE.INDEX)
+        const response = (pipeline === AppDefaultValues.PIPELINE.INDEX)
           ? await controller.create(newProject)
-          : await controller.scan(newProject);
+          : await controller.scan();
       }
     } catch (e) {
       console.error(e);
@@ -101,8 +102,6 @@ const ProjectScan = () => {
       await projectService.stop();
       navigate('/workspace');
     }
-
-    // window.electron.ipcRenderer.send(IpcEvents.PROJECT_STOP);
   };
 
   const handlerScannerFinish = (e, args) => {
@@ -151,22 +150,24 @@ const ProjectScan = () => {
     <>
       <section id="ProjectScan" className="app-page app-pipeline">
         <header className="app-header">
-          <div className='breadcrumb d-flex align-center'>
-            <IconButton
-              tabIndex={-1}
-              onClick={() => navigate(-1)}
-              component="span"
-              size="large"
-            >
-              <ArrowBackIcon />
-            </IconButton>
-            <div>
-              <h4 className="header-subtitle back">
-                {t('New Project')}
-              </h4>
-              <h2 className="mt-0 mb-0">{scanPath.path}</h2>
+          { pipeline === AppDefaultValues.PIPELINE.INDEX && (
+            <div className='breadcrumb d-flex align-center'>
+              <IconButton
+                tabIndex={-1}
+                onClick={() => navigate(-1)}
+                component="span"
+                size="large"
+              >
+                <ArrowBackIcon />
+              </IconButton>
+              <div>
+                <h4 className="header-subtitle back">
+                  {t('New Project')}
+                </h4>
+                <h2 className="mt-0 mb-0">{scanPath.path}</h2>
+              </div>
             </div>
-          </div>
+          )}
         </header>
         <main className="app-content">
           <div className="progressbar">
