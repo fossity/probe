@@ -1,6 +1,6 @@
 import log from 'electron-log';
 import path from 'path';
-import {IProjectInfoMetadata, ProjectState} from '../../api/types';
+import { IMetadata, IProject, IProjectInfoMetadata, ProjectState } from '../../api/types';
 import fs from 'fs';
 import {AppDefaultValues} from "../../config/AppDefaultValues";
 import {Project} from '../workspace/Project';
@@ -10,11 +10,26 @@ import {NewProjectDTO, ProjectPackageDTO} from '../../api/dto';
 import {FossityPackagerTask} from '../task/fossityPackagerTask/FossityPackagerTask';
 import {IndexPipelineTask} from "../task/scanner/scannerPipeline/IndexPipelineTask";
 import {FingerprintPipelineTask} from "../task/scanner/scannerPipeline/FingerprintPipelineTask";
+import { ProjectFilterName } from '../workspace/filters/ProjectFilterName';
+import { broadcastManager } from '../broadcastManager/BroadcastManager';
+import { IpcChannels } from '../../api/ipc-channels';
 
 class ProjectService {
-  public async createProject(projectDTO: NewProjectDTO) {
-    const p = await this.create(projectDTO);
-    await new IndexPipelineTask().run(p);
+  public async createProject(projectDTO: NewProjectDTO): Promise<IMetadata> {
+    let p: Project = null;
+    if (!workspace.existProject(projectDTO.name)) {
+      p = await this.create(projectDTO);
+      await new IndexPipelineTask().run(p);
+    } else {
+      p = await workspace.getOpenProject();
+      await this.updateProjectMetadata(p, projectDTO);
+      broadcastManager.get().send(IpcChannels.SCANNER_FINISH_SCAN, {
+        success: true,
+        resultsPath: p.metadata.getMyPath(),
+      });
+    }
+
+    return p.getDto();
   }
 
   public async resume(projectPath: string) {
@@ -37,6 +52,14 @@ class ProjectService {
     await workspace.closeAllProjects();
     const p = await this.createNewProject(projectDTO);
     return p;
+  }
+
+  private async updateProjectMetadata(
+    project: Project,
+    projectDTO: NewProjectDTO,
+  ): Promise<Project> {
+    await fs.promises.writeFile(path.join(project.getMyPath(), AppDefaultValues.PROJECT.OUTPUT, AppDefaultValues.PROJECT.OUTPUT_METADATA), JSON.stringify(projectDTO.projectInfo));
+    return project;
   }
 
 

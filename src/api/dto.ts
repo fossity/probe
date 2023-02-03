@@ -73,7 +73,7 @@ export enum SourceType {
 
 export interface NewProjectDTO {
   name: string;
-  scan_root;
+  scan_root: string;
   projectInfo: IProjectInfoMetadata;
 }
 
