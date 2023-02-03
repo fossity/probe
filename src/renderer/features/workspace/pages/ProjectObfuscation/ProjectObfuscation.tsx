@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  Checkbox, Chip, FormControl,
+  Checkbox, Chip, dividerClasses, FormControl,
   FormControlLabel,
   FormHelperText, FormLabel, Grid,
   IconButton,
@@ -11,6 +11,12 @@ import {
   TextField,
   Tooltip
 } from '@mui/material';
+import {
+  AutoSizer,
+  Column,
+  Table,
+  TableHeaderProps,
+} from 'react-virtualized';
 import { makeStyles } from '@mui/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +26,7 @@ import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspa
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete from '@mui/material/Autocomplete';
+import { obfuscateService } from '@api/services/obfuscate.service';
 
 
 const ProjectObfuscation = () => {
@@ -29,6 +36,9 @@ const ProjectObfuscation = () => {
   const { projects, scanPath } = useSelector(selectWorkspaceState);
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
 
+  const [value, setValue] = React.useState<string[]>([]);
+  const [results, setResults] = React.useState<any[]>([]);
+
   useEffect(() => {
     init();
   }, []);
@@ -36,13 +46,29 @@ const ProjectObfuscation = () => {
   const init = async () => {
   };
 
-  const onTagsHandler = (data) => {
+  const onTagsHandler = (tags: string[]) => {
+    const nTags = tags
+      .map((tag) => tag.toLowerCase().trim())
+      // .map((tag) => SearchUtils.getTerms(tag))
+      .flat();
 
+    setValue(nTags);
+  };
+
+  const preview = async () => {
+    const previewData = await obfuscateService.obfuscatePreview(value);
+    setResults(Array.from(previewData, ([key, value]) => ({ key, value })));
+    console.log(Array.from(previewData, ([key, value]) => ({ key, value })));
   }
 
   const submit = async (e) => {
     navigate('/workspace/new/summary');
   };
+
+  useEffect(() => {
+      preview();
+    }, [value]);
+
   return (
     <>
       <form onSubmit={(e) => submit(e)}>
@@ -51,7 +77,7 @@ const ProjectObfuscation = () => {
             <div className='breadcrumb d-flex align-center'>
               <IconButton
                 tabIndex={-1}
-                onClick={() => navigate(-1)}
+                onClick={() => navigate(-2)}
                 component="span"
                 size="large"
               >
@@ -67,38 +93,59 @@ const ProjectObfuscation = () => {
           </header>
           <main className="app-content">
               <div className='content'>
-                <Autocomplete
-                  multiple
-                  fullWidth
-                  size="small"
-                  options={['license', 'copyright', 'author', 'version']}
-                  freeSolo
-                  renderTags={(value: readonly string[], getTagProps) =>
-                    value.map((option: string, index: number) => (
-                      // eslint-disable-next-line react/jsx-key
-                      <Chip
-                        color="primary"
-                        variant="outlined"
-                        size="small"
-                        label={option}
-                        {...getTagProps({ index })}
-                        className="bg-primary mr-1"
+                <Paper className="mb-5 p-1 pl-3 pr-3">
+                  <Autocomplete
+                    multiple
+                    fullWidth
+                    size="small"
+                    options={[]}
+                    freeSolo
+                    renderTags={(value: readonly string[], getTagProps) =>
+                      value.map((option: string, index: number) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <Chip
+                          color="primary"
+                          variant="outlined"
+                          size="small"
+                          label={option}
+                          {...getTagProps({ index })}
+                          className="bg-primary mr-1"
+                        />
+                      ))
+                    }
+                    onChange={(event, data) => onTagsHandler(data)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        autoFocus
+                        variant="standard"
+                        InputProps={{
+                          ...params.InputProps,
+                          placeholder: value.length > 0 ? '' : "Add words to obfuscate...",
+                          disableUnderline: true,
+                        }}
                       />
-                    ))
-                  }
-                  onChange={(event, data) => onTagsHandler(data)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      autoFocus
-                      variant="standard"
-                      InputProps={{
-                        ...params.InputProps,
-                        disableUnderline: true,
-                      }}
-                    />
-                  )}
-                />
+                    )}
+                  />
+                </Paper>
+
+                <div className='results'>
+                  <AutoSizer>
+                    {({ height, width }) => (
+                      <Table
+                        height={height}
+                        width={width}
+                        rowHeight={20}
+                        headerHeight={40}
+                        rowCount={results.length}
+                        rowGetter={({index}) => results[index]}
+                      >
+                        <Column label={t('Table:Header:OriginalFile')} dataKey="key"  width={width / 2} flexGrow={0} flexShrink={0} />
+                        <Column label={t('Table:Header:RenamedFile')} dataKey="value" width={width / 2} flexGrow={0} flexShrink={0} />
+                      </Table>
+                    )}
+                  </AutoSizer>
+                </div>
               </div>
           </main>
         <footer className='app-footer'>

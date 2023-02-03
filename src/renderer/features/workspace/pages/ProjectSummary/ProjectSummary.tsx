@@ -67,7 +67,7 @@ const ProjectSummary = () => {
                 color="primary"
                 type="submit"
               >
-                {t('Button:Create Fingerprints')}
+                {t('Button:CreateFingerprints')}
               </Button>
             </div>
           </footer>

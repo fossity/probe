@@ -31,14 +31,7 @@ const ProjectDetails = () => {
     <>
         <section id="ProjectDetails" className="app-page app-pipeline">
           <header className="app-header">
-            <div className='breadcrumb d-flex align-center'>
-              <div>
-                <h4 className="header-subtitle back">
-                  {t('New Project')}
-                </h4>
-                <h2 className="mt-0 mb-0">{scanPath.path}</h2>
-              </div>
-            </div>
+
           </header>
           <main className="app-content">
               <div className='content'>
@@ -48,13 +41,20 @@ const ProjectDetails = () => {
           <footer className='app-footer'>
             <div className="button-container">
               <Button
-                endIcon={<ArrowForwardIcon />}
                 variant="contained"
                 color="primary"
                 type="submit"
                 onClick={e => navigate('/workspace', { replace: true })}
               >
-                {t('Button:Finish')}
+                {t('Button:OpenFolder')}
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                onClick={e => navigate('/workspace', { replace: true })}
+              >
+                {t('Button:Download')}
               </Button>
             </div>
           </footer>

@@ -1,2 +1,19 @@
 #ProjectObfuscation {
+  .app-content {
+    overflow: auto;
+
+    .content {
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto  1fr;
+    }
+
+    .results {
+      height: 100%;
+
+      .ReactVirtualized__Table__rowColumn {
+        font-size: 12px;
+      }
+    }
+  }
 }

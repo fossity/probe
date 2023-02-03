@@ -7,8 +7,8 @@ export const create = async (project: NewProjectDTO) => {
   await projectService.create(project);
 };
 
-export const scan = async (project: NewProjectDTO) => {
-  await projectService.create(project);
+export const scan = async () => {
+  await projectService.createFingerprints();
 };
 
 
