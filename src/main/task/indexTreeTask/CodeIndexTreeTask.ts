@@ -1,11 +1,11 @@
 import fs from "fs";
+import { LocalDependencies } from "scanoss";
 import { IndexTreeTask } from "./IndexTreeTask";
 import Folder from "../../workspace/tree/Folder";
 import { Tree } from "../../workspace/tree/Tree";
 import { FilterOR } from "../../workspace/tree/filters/FilterOR";
 import { FilterWFP } from "../../workspace/tree/filters/FilterWFP";
 import { FilterDependency } from "../../workspace/tree/filters/FilterDependency";
-import { LocalDependencies } from "scanoss";
 
 export class CodeIndexTreeTask  extends IndexTreeTask{
 
@@ -13,8 +13,8 @@ export class CodeIndexTreeTask  extends IndexTreeTask{
     const files = this.getProjectFiles(this.project.getScanRoot(),this.project.getScanRoot());
     const tree = await this.buildTree(files);
     this.setTreeSummary(tree);
-    this.createFileMap();
     await this.setDependenciesOnFileTree();
+    this.createFileMap();
     this.project.save();
     return true;
   }

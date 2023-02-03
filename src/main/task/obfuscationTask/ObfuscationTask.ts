@@ -5,6 +5,7 @@ import { Project } from "../../workspace/Project";
 import { ScannerStage } from "../../../api/types";
 import { WFPObfuscationTask } from "./WFPObfuscationTask/WFPObfuscationTask";
 import { AppDefaultValues } from "../../../config/AppDefaultValues";
+import {DependencyObfuscationTask} from "./dependencyObfuscationTask/DependencyObfuscationTask";
 
 export class ObfuscationTask implements Scanner.IPipelineTask {
   private project: Project;
@@ -23,7 +24,10 @@ export class ObfuscationTask implements Scanner.IPipelineTask {
 
   public async run(params: void): Promise<boolean> {
     const wfpPath = path.join(this.project.getMyPath(),AppDefaultValues.PROJECT.OUTPUT,AppDefaultValues.PROJECT.WINNOWING_WFP);
-    await new WFPObfuscationTask(this.project.getMyPath(),wfpPath,this.project.getBannedList());
+    const dependencyPath = path.join(this.project.getMyPath(),AppDefaultValues.PROJECT.OUTPUT,AppDefaultValues.PROJECT.DEPENDENCIES);
+    const dictionaryPath =  path.join(this.project.getMyPath(),'obfuscationMapper.json');
+    await new WFPObfuscationTask(this.project.getMyPath(), wfpPath, this.project.getBannedList(), dictionaryPath).run();
+    await new DependencyObfuscationTask(this.project.getMyPath(), dependencyPath, this.project.getBannedList(), dictionaryPath).run();
     return true;
   }
 

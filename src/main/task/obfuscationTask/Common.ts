@@ -1,13 +1,17 @@
 import fs from 'fs';
+import log from 'electron-log';
 import * as readline from 'readline';
 import path from 'path';
-import { IAdapter } from '../../../modules/Obfuscation/IAdapter';
-import { ITask } from '../../Task';
-import { ObfuscationDTO } from '@api/dto';
+import { IAdapter } from '../../modules/Obfuscation/IAdapter';
+import { ITask } from '../Task';
+import { ObfuscationDTO } from '../../../api/dto';
+import {IExtractPath} from "../../modules/Obfuscation/extractPath/IExtractPath";
 
 export class Common <Adapter extends IAdapter> implements ITask<void, ObfuscationDTO>{
 
   protected obfuscation: Adapter;
+
+  protected pathExtractor: IExtractPath;
 
   protected inputFile: string;
 
@@ -15,15 +19,23 @@ export class Common <Adapter extends IAdapter> implements ITask<void, Obfuscatio
 
   protected projectPath:string;
 
-  constructor(projectPath:string, inputFile: string, adapter: Adapter) {
+  constructor(projectPath:string, inputFile: string, adapter: Adapter, pathExtractor: IExtractPath) {
     this.obfuscation = adapter;
     this.inputFile = inputFile;
     this.projectPath = projectPath;
     this.outputFile =  path.join(projectPath,"aux.wfp");
+    this.pathExtractor =  pathExtractor;
   }
 
   public run(param: void): Promise<ObfuscationDTO> {
     return new Promise((resolve, reject) => {
+      if(!this.obfuscation.hasWords()) {
+        resolve({
+          path: this.inputFile,
+          dictionary: {}
+        });
+        return;
+      }
       const outputFile = fs.createWriteStream(this.outputFile);
       const rl = readline.createInterface({
         input: fs.createReadStream(this.inputFile)
@@ -38,7 +50,7 @@ export class Common <Adapter extends IAdapter> implements ITask<void, Obfuscatio
 
 // Once done writing, rename the output to be the input file name
       outputFile.on('close', async () => {
-        console.log('done writing');
+        log.info('[ OBFUSCATION ]: Obfuscation done');
         const mapper = await this.obfuscation.done(this.projectPath);
         await fs.promises.rename(this.outputFile, this.inputFile);
         resolve({
@@ -51,8 +63,8 @@ export class Common <Adapter extends IAdapter> implements ITask<void, Obfuscatio
 // Read the file and replace any text that matches
       rl.on('line', line => {
         let text = line;
-        if (text.search(/file=([A-Za-z0-9]+(,[A-Za-z0-9]+((.*))))/g) >= 0) { // TODO: We can change this REGEX by /file=.*/g
-          const pathToProcess = line.split(',')[2];
+        const pathToProcess =  this.pathExtractor.extractPath(line);
+        if(pathToProcess) {
             const auxPath = path.join(path.parse(pathToProcess).dir, path.parse(pathToProcess).name);
             const { ext } = path.parse(pathToProcess);
              const obfuscatedPath = this.obfuscation.adapt(auxPath);
