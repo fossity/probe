@@ -51,7 +51,6 @@ export class WFPIndexTreeTask extends IndexTreeTask {
     this.project.filesNotScanned = {};
     this.project.processedFiles = 0;
     this.project.setTree(tree);
-    this.project.metadata.setFileCounter(this.filesToScan.length);
     this.project.save();
   }
 

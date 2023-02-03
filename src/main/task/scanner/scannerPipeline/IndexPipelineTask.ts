@@ -1,6 +1,6 @@
 import { BasePipeline } from "./BasePipeline";
 import { Project } from "../../../workspace/Project";
-import { CodeIndexTreeTask } from "../../IndexTreeTask/CodeIndexTreeTask";
+import { CodeIndexTreeTask } from "../../indexTreeTask/CodeIndexTreeTask";
 
 export class IndexPipelineTask extends BasePipeline {
   public async run(project: Project): Promise<boolean> {

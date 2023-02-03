@@ -22,4 +22,12 @@ export class DeobfuscationModule implements IAdapter {
   public done(): Record<string, string>{
     return this.mapper;
   }
+
+  private getObfuscationMapper(obj: any): Record<string, string> {
+    return  Object.fromEntries(Object.entries(obj).map(a => a.reverse()));
+  }
+
+  public hasWords(): boolean {
+    return Object.keys(this.mapper).length > 0;
+  }
 }
