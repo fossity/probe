@@ -120,8 +120,8 @@ ipcMain.handle(
   IpcChannels.PROJECT_CREATE,
   async (_event, projectDTO: NewProjectDTO) => {
     try {
-      await projectService.createProject(projectDTO);
-      return Response.ok();
+      const project = await projectService.createProject(projectDTO);
+      return Response.ok({ data: project, message: 'Project created successfully'});
     } catch (error: any) {
       log.error('[CREATE PROJECT]', error);
       return Response.fail({ message: error.message });

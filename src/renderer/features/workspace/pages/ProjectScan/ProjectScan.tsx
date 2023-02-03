@@ -37,9 +37,11 @@ const ProjectScan = () => {
 
       console.log(pipeline, AppDefaultValues.PIPELINE.INDEX);
       if (action === 'scan') {
-        const response = (pipeline === AppDefaultValues.PIPELINE.INDEX)
+        const projectMetadata = (pipeline === AppDefaultValues.PIPELINE.INDEX)
           ? await controller.create(newProject)
           : await controller.scan();
+
+        console.log(projectMetadata);
       }
     } catch (e) {
       console.error(e);

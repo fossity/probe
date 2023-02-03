@@ -1,10 +1,11 @@
 import { projectService } from '@api/services/project.service';
 import { workspaceService } from '@api/services/workspace.service';
 import { NewProjectDTO } from '@api/dto';
+import { IMetadata } from '@api/types';
 
 
-export const create = async (project: NewProjectDTO) => {
-  await projectService.create(project);
+export const create = async (project: NewProjectDTO): Promise<IMetadata> => {
+  return projectService.create(project);
 };
 
 export const scan = async () => {

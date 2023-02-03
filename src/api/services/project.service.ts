@@ -1,9 +1,9 @@
 import { NewProjectDTO, ProjectPackageDTO } from '@api/dto';
 import { IpcChannels } from '../ipc-channels';
 import {
-  FileTreeViewMode,
+  FileTreeViewMode, IMetadata,
   IProject,
-  IWorkbenchFilter,
+  IWorkbenchFilter
 } from '../types';
 import { BaseService } from './base.service';
 
@@ -33,12 +33,12 @@ class ProjectService extends BaseService {
     return response;
   }
 
-  public async create(project: NewProjectDTO): Promise<any> {
+  public async create(project: NewProjectDTO): Promise<IMetadata> {
     const response = await window.electron.ipcRenderer.invoke(
       IpcChannels.PROJECT_CREATE,
       project
     );
-    return response;
+    return this.response(response);
   }
 
   public async rescan(path: string): Promise<void> {
