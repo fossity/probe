@@ -4,7 +4,7 @@ import { ComponentGroup, ComponentSource, IWorkbenchFilterParams } from '@api/ty
 import { sortComponents } from '@shared/utils/scan-util';
 import { IpcChannels } from '@api/ipc-channels';
 import AppConfig from '../../config/AppConfigModule';
-import { Scanner } from '../../main/task/scanner/types';
+import { Scanner } from '../../main/task/scannerTask/types';
 
 
 export interface ScanResult {

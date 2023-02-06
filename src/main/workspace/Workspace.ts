@@ -7,7 +7,7 @@ import { Project } from './Project';
 import { IMetadata, IProjectInfoMetadata, License, ProjectState } from '../../api/types';
 import { licenses } from '../../../assets/data/licenses';
 import { ProjectFilter } from './filters/ProjectFilter';
-import { Scanner } from '../task/scanner/types';
+import { Scanner } from '../task/scannerTask/types';
 import { WorkspaceMigration } from '../migration/WorkspaceMigration';
 import { userSettingService } from '../services/UserSettingService';
 import { Metadata } from './Metadata';

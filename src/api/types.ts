@@ -1,5 +1,5 @@
 import { NodeStatus } from '../main/workspace/tree/Node';
-import { Scanner } from '../main/task/scanner/types';
+import { Scanner } from '../main/task/scannerTask/types';
 import ScannerConfig = Scanner.ScannerConfig;
 
 export enum ScanState {
@@ -92,7 +92,7 @@ export interface ItemInclude {
 export interface IProjectInfoMetadata {
   contact?: Record<string, string> | null,
   software_composition?: string;
-  software_composition_uri?: string;
+  software_composition_uri?: Array<string>;
   default_license: string;
   extra_license?: string;
 }
@@ -265,9 +265,11 @@ export enum ScannerStage {
   RESUME,
   DEPENDENCY,
   VULNERABILITY,
-  SEARCH_INDEX,
+  ATTACH_FILES,
   HINT,
   OBFUSCATE,
+
+
 }
 
 export interface InventoryExtraction {

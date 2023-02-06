@@ -1,5 +1,5 @@
 import { Inventory } from '@api/types';
-import { Scanner } from '../../main/task/scanner/types';
+import { Scanner } from '../../main/task/scannerTask/types';
 
 export enum DIALOG_ACTIONS {
   OK = 'ok',

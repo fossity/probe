@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import { Project } from '../../workspace/Project';
-import { Scanner } from '../scanner/types';
+import { Scanner } from '../scannerTask/types';
 import { ScannerStage } from '../../../api/types';
 import { Tree } from "../../workspace/tree/Tree";
 

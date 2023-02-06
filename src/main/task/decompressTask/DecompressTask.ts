@@ -2,7 +2,7 @@ import { DecompressionManager } from 'scanoss';
 import path from 'path';
 import fs from 'fs';
 import { Project } from '../../workspace/Project';
-import { Scanner } from '../scanner/types';
+import { Scanner } from '../scannerTask/types';
 import { ScannerStage } from '../../../api/types';
 
 export class DecompressTask implements Scanner.IPipelineTask {
