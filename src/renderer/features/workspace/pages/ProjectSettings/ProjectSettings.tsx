@@ -25,7 +25,7 @@ import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import FormGroup from '@mui/material/FormGroup';
 import AddIcon from '@mui/icons-material/Add';
-import { Scanner } from '../../../../../main/task/scanner/types';
+import { Scanner } from '../../../../../main/task/scannerTask/types';
 import ScannerType = Scanner.ScannerType;
 import ScannerSource = Scanner.ScannerSource;
 import { dialogController } from '../../../../controllers/dialog-controller';
@@ -108,7 +108,7 @@ const ProjectSettings = () => {
 
     if (paths && paths.length > 0) {
       setProjectSettings({
-        ...projectSettings,projectInfo: {...projectSettings.projectInfo, software_composition_uri:paths[0]}
+        ...projectSettings,projectInfo: {...projectSettings.projectInfo, software_composition_uri:[paths[0]]}
       })
     }
   };

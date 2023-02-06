@@ -2,7 +2,7 @@ import { FileCount } from 'scanoss';
 import fs from 'fs';
 import log from 'electron-log';
 import i18next from 'i18next';
-import { Scanner } from '../scanner/types';
+import { Scanner } from '../scannerTask/types';
 import { ScannerStage } from '../../../api/types';
 import { Project } from '../../workspace/Project';
 import path from 'path';

@@ -7,6 +7,7 @@ import { ObfuscationTask } from "../../obfuscationTask/ObfuscationTask";
 import {ProjectState} from "../../../../api/types";
 import {broadcastManager} from "../../../broadcastManager/BroadcastManager";
 import {IpcChannels} from "../../../../api/ipc-channels";
+import {AttachFileTask} from "../../attachFileTask/AttachFileTask";
 
 export class FingerprintPipelineTask extends BasePipeline {
   public async run(project: Project): Promise<boolean> {
@@ -14,6 +15,7 @@ export class FingerprintPipelineTask extends BasePipeline {
       this.queue.push(new DependencyTask(project));
       this.queue.push(new HintTask(project));
       this.queue.push(new ObfuscationTask(project));
+      this.queue.push(new AttachFileTask(project));
 
     for await (const [index, task] of this.queue.entries()) {
       await this.executeTask(task, index);

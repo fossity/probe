@@ -11,6 +11,7 @@ import {AppDefaultValues} from "../../../../config/AppDefaultValues";
 
 export class DependencyTask implements Scanner.IPipelineTask {
   private project: Project;
+
   constructor(project: Project) {
     this.project = project;
   }

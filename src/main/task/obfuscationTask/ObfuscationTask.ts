@@ -1,6 +1,6 @@
 import path from "path";
 import i18next from "i18next";
-import { Scanner } from "../scanner/types";
+import { Scanner } from "../scannerTask/types";
 import { Project } from "../../workspace/Project";
 import { ScannerStage } from "../../../api/types";
 import { WFPObfuscationTask } from "./WFPObfuscationTask/WFPObfuscationTask";
