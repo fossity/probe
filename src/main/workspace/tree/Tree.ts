@@ -41,6 +41,19 @@ export class Tree {
     this.projectPath = projectPath;
   }
 
+  public setRootName(rootName: string) {
+    this.rootName = rootName;
+    this.rootFolder = new Folder('', this.rootName);
+  }
+
+  public setProjectPath(projectPath: string){
+    this.projectPath = projectPath;
+  }
+
+  public setScanRoot(scanRoot: string) {
+    this.rootPath = scanRoot;
+  }
+
   sendToUI(eventName, data: any) {
     broadcastManager.get().send(eventName, data);
   }

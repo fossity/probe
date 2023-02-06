@@ -56,7 +56,7 @@ export class Project {
     this.state = ProjectState.CLOSED;
     this.filter = null;
     this.fileTreeViewMode = FileTreeViewMode.DEFAULT;
-    this.tree = null;
+    this.tree = new Tree(null,null,null);
     this.filesToScan = {};
     this.bannedList = [];
   }
@@ -99,6 +99,7 @@ export class Project {
     this.tree = new Tree(a.tree.rootFolder.label, this.metadata.getMyPath(),a.tree.rootFolder.label);
     this.tree.loadTree(a.tree.rootFolder);
     this.tree.setSummary(a.filesSummary);
+    this.tree.setFilesToObfuscate(new Map(Object.entries(a.tree.filesToObfuscate)));
     return true;
   }
 
@@ -120,13 +121,14 @@ export class Project {
   public save(): void {
     this.metadata.save();
     const self = this;
-    const a = {
+    const a: any = {
       filesToScan: self.filesToScan,
       filesNotScanned: self.filesNotScanned,
       processedFiles: self.processedFiles,
       filesSummary: self.filesSummary,
-      tree: self.tree,
+      tree: {...self.tree},
     };
+    a.tree.filesToObfuscate = Object.fromEntries(this.tree.getFilesToObfuscate()); // Can't save map
     fs.writeFileSync(path.join(this.metadata.getMyPath(), AppDefaultValues.PROJECT.TREE),
       JSON.stringify(a)
     );

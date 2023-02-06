@@ -24,8 +24,8 @@ class ObfuscateService {
   }
 
   public async obfuscatePreview(words: Array<string>): Promise<Map<string, string|null>> {
-    const obf = new ObfuscationModule(words);
     const p = workspace.getOpenedProjects()[0];
+    const obf = new ObfuscationModule(words,'');
     p.setBannedList(words);
     const fToObfuscate = p.getTree().getFilesToObfuscate();
 
