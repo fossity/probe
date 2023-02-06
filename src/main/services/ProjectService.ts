@@ -40,7 +40,6 @@ class ProjectService {
   private async createNewProject(projectDTO: NewProjectDTO): Promise<Project> {
     const p = await workspace.createProject(projectDTO);
     log.transports.file.resolvePath = () =>  path.join(p.metadata.getMyPath(), AppDefaultValues.PROJECT.PROJECT_LOG);
-
     p.save();
     return p;
   }
