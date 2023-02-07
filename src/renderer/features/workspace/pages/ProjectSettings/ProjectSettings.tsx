@@ -65,10 +65,9 @@ const ProjectSettings = () => {
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
 
   const [isEdition, setIsEdition] = useState<boolean>(!!newProject.uuid);
-  console.log(newProject);
 
   const [licenses, setLicenses] = useState([]);
-  const [license, setLicense] = useState<string>('proprietary');
+  const [license, setLicense] = useState<string>(isEdition && newProject.projectInfo.default_license ? 'other' : 'proprietary');
 
   const [projectValidName, setProjectValidName] = useState(false);
   const [projectNameExists, setProjectNameExists] = useState(false);
@@ -89,13 +88,14 @@ const ProjectSettings = () => {
 
   const onAttachFile = async () => {
     const paths = await dialogController.showOpenDialog({
-      properties: ['openFile'],
+      properties: ['openFile', 'multiSelections'],
       filters: [{ name: 'Text files', extensions: ['json', 'txt'] }],
     });
 
     if (paths && paths.length > 0) {
+      const files = [... new Set([...(newProject.projectInfo.software_composition_uri || []), ...paths])];
       dispatch(setNewProject({
-        ...newProject, projectInfo: {...newProject.projectInfo, software_composition_uri: [paths[0]]}
+        ...newProject, projectInfo: {...newProject.projectInfo, software_composition_uri: files}
       }))
     }
   };
@@ -261,7 +261,7 @@ const ProjectSettings = () => {
                       minRows={2}
                       value={newProject.projectInfo.software_composition}
                       onChange={e => dispatch(setNewProject({...newProject, projectInfo: {...newProject.projectInfo, software_composition: e.target.value} }))}
-                      helperText={newProject.projectInfo.software_composition_uri}
+                      helperText={newProject.projectInfo.software_composition_uri?.join(' - ')}
                     />
                   <FormGroup className="mt-2">
                     <FormControlLabel
