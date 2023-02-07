@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { IpcChannels } from '@api/ipc-channels';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { setScanPath } from '@store/workspace-store/workspaceSlice';
+import { clean, setScanPath } from '@store/workspace-store/workspaceSlice';
 import { DialogContext, IDialogContext } from './DialogProvider';
 import { dialogController } from '../controllers/dialog-controller';
 
@@ -26,6 +26,7 @@ const AppProvider = ({ children }) => {
     });
 
     if (paths && paths.length > 0) {
+      dispatch(clean());
       dispatch(setScanPath({ path: paths[0], action: 'scan' }));
       navigate('/workspace/new/settings');
     }

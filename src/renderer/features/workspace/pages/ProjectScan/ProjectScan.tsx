@@ -6,7 +6,7 @@ import { IpcChannels } from '@api/ipc-channels';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { projectService } from '@api/services/project.service';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectWorkspaceState, setScanPath } from '@store/workspace-store/workspaceSlice';
+import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
 import { useTranslation } from 'react-i18next';
 import { AppDefaultValues } from '@config/AppDefaultValues';
 import * as controller from '../../../../controllers/home-controller';
@@ -35,13 +35,14 @@ const ProjectScan = () => {
       if (action === 'resume') await controller.resume(path);
       if (action === 'rescan') await controller.rescan(path);
 
-      console.log(pipeline, AppDefaultValues.PIPELINE.INDEX);
       if (action === 'scan') {
-        const projectMetadata = (pipeline === AppDefaultValues.PIPELINE.INDEX)
-          ? await controller.create(newProject)
-          : await controller.scan();
-
-        console.log(projectMetadata);
+        if (pipeline === AppDefaultValues.PIPELINE.INDEX) { // NEW PROJECT
+          const projectMetadata = await controller.create(newProject)
+          dispatch(setNewProject({
+            ...newProject,
+            uuid: projectMetadata.uuid
+          }))
+        } else await controller.scan();
       }
     } catch (e) {
       console.error(e);
