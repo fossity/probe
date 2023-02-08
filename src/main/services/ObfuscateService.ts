@@ -29,8 +29,13 @@ class ObfuscateService {
     p.setBannedList(words);
     const fToObfuscate = p.getTree().getFilesToObfuscate();
 
-    for (const filePath of fToObfuscate.keys())
-      fToObfuscate.set(filePath, obf.adapt(filePath));
+    for (const filePath of fToObfuscate.keys()) {
+      let auxPath = path.join(path.parse(filePath).dir, path.parse(filePath).name);
+      const { ext } = path.parse(filePath);
+      auxPath = obf.adapt(auxPath)
+      const obfuscatedPath =  ext !== "" ? `${auxPath}${ext}` : auxPath; // add extension if it has one ;
+      fToObfuscate.set(filePath, obfuscatedPath);
+    }
 
     return fToObfuscate;
 
