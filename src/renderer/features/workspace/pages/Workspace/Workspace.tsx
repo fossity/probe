@@ -49,7 +49,7 @@ const Workspace = () => {
   const onDownloadHandler = async (project: IProject) => {
     const path = await dialogController.showSaveDialog({
       filters: [{ name: 'Fossity Package Archive', extensions: ['fossity'] }],
-      defaultPath: `${project.name}-package`,
+      defaultPath: project.name,
     });
 
     if (!path) return;

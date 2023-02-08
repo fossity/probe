@@ -151,27 +151,7 @@ const ProjectScan = () => {
 
   return (
     <>
-      <section id="ProjectScan" className="app-page app-pipeline">
-        <header className="app-header">
-          { pipeline === AppDefaultValues.PIPELINE.INDEX && (
-            <div className='breadcrumb d-flex align-center'>
-              <IconButton
-                tabIndex={-1}
-                onClick={() => navigate(-1)}
-                component="span"
-                size="large"
-              >
-                <ArrowBackIcon />
-              </IconButton>
-              <div>
-                <h4 className="header-subtitle back">
-                  {t('New Project')}
-                </h4>
-                <h2 className="mt-0 mb-0">{scanPath.path}</h2>
-              </div>
-            </div>
-          )}
-        </header>
+      <section id="ProjectScan" className="app-page app-main">
         <main className="app-content">
           <div className="progressbar">
             <div className="circular-progress-container">
@@ -183,7 +163,6 @@ const ProjectScan = () => {
             </div>
           </div>
         </main>
-        <footer className='app-footer' />
       </section>
     </>
   );

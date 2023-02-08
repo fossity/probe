@@ -11,6 +11,8 @@ export interface WorkspaceState {
   currentProject: IProject;
   newProject: NewProjectDTO;
   scanPath: IScan;
+  obfuscateList: string[],
+
 }
 
 const initialState: WorkspaceState = {
@@ -26,6 +28,7 @@ const initialState: WorkspaceState = {
     },
   },
   scanPath: null,
+  obfuscateList: [],
 };
 
 export const workspaceSlice = createSlice({
@@ -41,8 +44,12 @@ export const workspaceSlice = createSlice({
     setCurrentProject: (state, action: PayloadAction<IProject>) => {
       state.currentProject = action.payload
     },
+    setObfuscateList: (state, action: PayloadAction<string[]>) => {
+      state.obfuscateList = action.payload;
+    },
     clean: (state) => {
       state.newProject = initialState.newProject;
+      state.obfuscateList = [];
     }
   },
   extraReducers: {
@@ -57,7 +64,7 @@ export const workspaceSlice = createSlice({
 });
 
 // actions
-export const { setNewProject, setScanPath, setCurrentProject, clean } = workspaceSlice.actions;
+export const { setNewProject, setScanPath, setCurrentProject, setObfuscateList, clean } = workspaceSlice.actions;
 
 // selectors
 export const selectWorkspaceState = (state: RootState) => state.workspace;

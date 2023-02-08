@@ -41,11 +41,14 @@
     display: grid;
     height: 100vh;
     padding: 0 65px;
-    grid-template-rows: 120px 1fr 70px;
+
+    grid-template-rows: 90px 1fr 70px;
 
     .app-footer, .app-header {
       display: flex;
       align-items: center;
+      padding-bottom: 0em;
+
     }
 
     .app-content {
@@ -74,6 +77,18 @@
       }
     }
   }
+
+  &.app-main {
+    display: grid;
+    grid-template-rows: auto;
+    align-items: center;
+    justify-content: center;
+
+    .app-content {
+      overflow: hidden;
+    }
+  }
+
 
 }
 

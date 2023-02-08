@@ -268,8 +268,6 @@ export enum ScannerStage {
   ATTACH_FILES,
   HINT,
   OBFUSCATE,
-
-
 }
 
 export interface InventoryExtraction {

@@ -7,9 +7,9 @@ import { useTranslation } from 'react-i18next';
 
 interface CircularComponentProps {
   stage: {
-    stageName: ScannerStage;
+    stageName?: ScannerStage;
     stageLabel: string;
-    stageStep: number;
+    stageStep?: number;
   };
   progress: number;
   pauseScan: () => void;
@@ -83,9 +83,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CircularComponent = ({
-  stage,
+  stage = null,
   progress,
-  pauseScan,
+  pauseScan = null,
 }: CircularComponentProps) => {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -133,7 +133,7 @@ const CircularComponent = ({
             {variant === 'determinate' ? '%' : ''}
           </span>
           <span className={`${classes.stage} text-uppercase`}>{stage.stageLabel}</span>
-          <span className={`${classes.stageStep} text-uppercase`}>{t('Title:Stage')} {stage.stageStep}</span>
+          { stage.stageStep && <span className={`${classes.stageStep} text-uppercase`}>{t('Title:Stage')} {stage.stageStep}</span> }
         </div>
         <div className={classes.pauseContainer}>
           <Button

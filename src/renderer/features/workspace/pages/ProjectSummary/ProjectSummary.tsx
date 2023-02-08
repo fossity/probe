@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
-  IconButton,
+  Button, Grid,
+  IconButton, Tooltip, Typography
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -13,13 +13,36 @@ import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDefaultValues } from '@config/AppDefaultValues';
 
+const Panel = ({ title, children }) => (
+  <section className='panel'>
+    <header>
+      <Typography variant="h5" gutterBottom>
+        {title}
+      </Typography>
+    </header>
+    <main>
+      {children}
+    </main>
+  </section>
+);
+
+const Data = ({label = null, value}) => (
+  <>
+    {label &&
+      <Typography variant="h6">
+        {label}
+      </Typography>
+    }
+    <Typography variant="subtitle1" gutterBottom>
+      {value || '-'}
+    </Typography>
+  </>
+);
 
 const ProjectSummary = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { projects, scanPath } = useSelector(selectWorkspaceState);
-  const dialogCtrl = useContext(DialogContext) as IDialogContext;
+  const { scanPath, newProject, obfuscateList } = useSelector(selectWorkspaceState);
 
   useEffect(() => {
     init();
@@ -47,16 +70,49 @@ const ProjectSummary = () => {
                 <ArrowBackIcon />
               </IconButton>
               <div>
-                <h4 className="header-subtitle back">
-                  {t('New Project')}
-                </h4>
-                <h2 className="mt-0 mb-0">{scanPath.path}</h2>
+                <h2 className="header-subtitle back">
+                  {t('Summary')}
+                </h2>
+                <h5 className="mt-0 mb-0">{scanPath.path}</h5>
               </div>
             </div>
           </header>
           <main className="app-content">
               <div className='content'>
-                SUMMARY STAGE
+
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                    <Panel title={t('Contact Information')}>
+                      <Data label="Name" value={newProject.projectInfo.contact.name} />
+                      <Data label="Email Address" value={newProject.projectInfo.contact.email} />
+                      <Data label="Phone Number" value={newProject.projectInfo.contact.phone} />
+                    </Panel>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Panel title={t('Known Software Composition')}>
+                      <Data value={newProject.projectInfo.software_composition} />
+                      { newProject.projectInfo.software_composition_uri?.length > 0 &&
+                        <Tooltip title={newProject.projectInfo.software_composition_uri.join(', ')}>
+                          <small className="d-flex align-center">
+                            <span className="mr-1">{newProject.projectInfo.software_composition_uri.length} file(s) attached</span>
+                            <InfoOutlinedIcon fontSize="inherit" />
+                          </small>
+                        </Tooltip>
+                      }
+                    </Panel>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Panel title={t('Licensing')}>
+                      <Data label="Name" value={newProject.projectInfo.contact.name} />
+                      <Data label="Phone Number" value={newProject.projectInfo.contact.phone} />
+                    </Panel>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Panel title={t('Obfuscation')}>
+                      <Data value={obfuscateList.join(' - ')} />
+                    </Panel>
+                  </Grid>
+                </Grid>
               </div>
           </main>
           <footer className='app-footer'>

@@ -16,7 +16,6 @@
 @import './theme/Main.global.scss';
 @import './theme/Layout.global.scss';
 @import './theme/SplitPane.global.scss';
-@import './theme/Panel.global.scss';
 @import './theme/Dialog.global.scss';
 
 /* utils */
@@ -28,5 +27,7 @@
 @import './features/workspace/pages/ProjectSettings/ProjectSettings';
 @import './features/workspace/pages/ProjectObfuscation/ProjectObfuscation';
 @import './features/workspace/pages/ProjectSummary/ProjectSummary';
+@import './features/workspace/pages/ProjectDetails/ProjectDetails';
+
 
 /* 👮 css rules are forbidden here 👮 */

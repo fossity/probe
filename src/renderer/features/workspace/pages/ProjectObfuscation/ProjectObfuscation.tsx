@@ -22,21 +22,27 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useTranslation } from 'react-i18next';
-import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
+import {
+  selectWorkspaceState,
+  setNewProject,
+  setObfuscateList,
+  setScanPath
+} from '@store/workspace-store/workspaceSlice';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete from '@mui/material/Autocomplete';
 import { obfuscateService } from '@api/services/obfuscate.service';
+import { isBanned } from '@shared/utils/search-utils';
 
 
 const ProjectObfuscation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { projects, scanPath } = useSelector(selectWorkspaceState);
+  const { projects, scanPath, obfuscateList } = useSelector(selectWorkspaceState);
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
 
-  const [value, setValue] = React.useState<string[]>([]);
+  const [value, setValue] = React.useState<string[]>(obfuscateList);
   const [results, setResults] = React.useState<any[]>([]);
 
   useEffect(() => {
@@ -56,9 +62,10 @@ const ProjectObfuscation = () => {
   };
 
   const preview = async () => {
-    const previewData = await obfuscateService.obfuscatePreview(value);
+    const list: string[] = value.filter(item => !isBanned(item));
+    const previewData = await obfuscateService.obfuscatePreview(list);
     setResults(Array.from(previewData, ([key, value]) => ({ key, value })));
-    console.log(Array.from(previewData, ([key, value]) => ({ key, value })));
+    dispatch(setObfuscateList(list));
   }
 
   const submit = async (e) => {
@@ -84,10 +91,10 @@ const ProjectObfuscation = () => {
                 <ArrowBackIcon />
               </IconButton>
               <div>
-                <h4 className="header-subtitle back">
-                  {t('New Project')}
-                </h4>
-                <h2 className="mt-0 mb-0">{scanPath.path}</h2>
+                <h2 className="header-subtitle back">
+                  {t('Obfuscation')}
+                </h2>
+                <h5 className="mt-0 mb-0">{scanPath.path}</h5>
               </div>
             </div>
           </header>
@@ -100,16 +107,17 @@ const ProjectObfuscation = () => {
                     size="small"
                     options={[]}
                     freeSolo
+                    value={value}
                     renderTags={(value: readonly string[], getTagProps) =>
                       value.map((option: string, index: number) => (
                         // eslint-disable-next-line react/jsx-key
                         <Chip
-                          color="primary"
+                          color={!isBanned(option) ? 'primary' : 'error'}
                           variant="outlined"
                           size="small"
                           label={option}
                           {...getTagProps({ index })}
-                          className="bg-primary mr-1"
+                          className={`mr-1 ${ isBanned(option) ? 'isBanned' : ''}`}
                         />
                       ))
                     }
