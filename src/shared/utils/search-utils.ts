@@ -1,44 +1,4 @@
-/**
- * Return the default configuration for the search engine. It used by flexsearch on index and searcher creation.
- * @returns The default configuration
- */
-const getSearchConfig = (): Record<string, any> => ({
-  depth: 1,
-  bidirectional: 0,
-  resolution: 9,
-  minlength: 2,
-  stemmer: getDefaultStemmer(),
-});
-
-/**
- * Return the default stemmer for the search engine
- * @param language The language to use for the stemmer
- */
-const getDefaultStemmer = (language = 'US'): Record<string, string> => {
-  return {
-    es: 'e',
-    ed: 'e',
-    ing: '',
-  };
-};
-
-/**
- * Transform a query search in a list of tokens. This list will be enriched with the reverse of default stemmer.
- * @param text The search query
- * @return A list of tokens
- */
-const unStemmify = (text: string): string[] => {
-  const terms = getTerms(text);
-  const stemms = [];
-  terms.forEach(term => {
-    Object.keys(getDefaultStemmer()).forEach(key => {
-      if (term.endsWith(key)) {
-        stemms.push(term.replace(key, getDefaultStemmer()[key]));
-      }
-    });
-  });
-  return terms.concat(stemms);
-};
+const BANNED_LIST = new Set(["api", "assets", "bin", "build", "cmd", "com", "controller", "deploy", "deployments", "dockerfile", "docs", "githooks", "inc", "include", "install", "internal", "java", "lib", "libs", "main", "makefile", "meta-inf", "model", "package", "pkg", "pom", "resources", "scripts", "source", "src", "template", "templates", "test", "tests", "third_party", "3rd_party", "tools", "vendor", "view", "web-inf", "web"]);
 
 /**
  * Return a list of query terms by splitting the search query
@@ -49,4 +9,10 @@ const getTerms = (querySearch: string, regex = /[\W_]+/): string[] => {
   return querySearch.split(regex);
 };
 
-export { getSearchConfig, unStemmify, getTerms };
+/**
+ * Determine if a term to obfuscate is in the banned list
+ * @param value term to obfuscate
+ */
+const isBanned = (value) => BANNED_LIST.has(value.toLowerCase());
+
+export { getTerms, isBanned };

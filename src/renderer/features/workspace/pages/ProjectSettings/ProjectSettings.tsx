@@ -166,10 +166,10 @@ const ProjectSettings = () => {
                 <ArrowBackIcon />
               </IconButton>
               <div>
-                <h4 className="header-subtitle back">
-                  {t('New Project')}
-                </h4>
-                <h2 className="mt-0 mb-0">{scanPath.path}</h2>
+                <h2 className="header-subtitle back">
+                  {t('Project Information')}
+                </h2>
+                <h5 className="mt-0 mb-0">{scanPath.path}</h5>
               </div>
             </div>
           </header>
@@ -261,7 +261,7 @@ const ProjectSettings = () => {
                       minRows={2}
                       value={newProject.projectInfo.software_composition}
                       onChange={e => dispatch(setNewProject({...newProject, projectInfo: {...newProject.projectInfo, software_composition: e.target.value} }))}
-                      helperText={newProject.projectInfo.software_composition_uri?.join(' - ')}
+                      helperText={newProject.projectInfo.software_composition_uri?.length > 0 ? `${newProject.projectInfo.software_composition_uri.length} file(s) attached.` : ''}
                     />
                   <FormGroup className="mt-2">
                     <FormControlLabel
