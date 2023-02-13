@@ -1,4 +1,5 @@
 import { IAdapter } from './IAdapter';
+import {ObfuscationSummary} from "../../../api/dto";
 
 export class DeobfuscationModule implements IAdapter {
   private mapper: Record<string, string>
@@ -29,5 +30,9 @@ export class DeobfuscationModule implements IAdapter {
 
   public hasWords(): boolean {
     return Object.keys(this.mapper).length > 0;
+  }
+
+  getSummary(): ObfuscationSummary {
+    return null;
   }
 }
