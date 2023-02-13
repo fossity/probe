@@ -13,6 +13,9 @@ import {FingerprintPipelineTask} from "../task/scannerTask/scannerPipeline/Finge
 import { ProjectFilterName } from '../workspace/filters/ProjectFilterName';
 import { broadcastManager } from '../broadcastManager/BroadcastManager';
 import { IpcChannels } from '../../api/ipc-channels';
+import {CipherTask} from "../task/cipherTask/CipherTask";
+import {getAssetFolderPath} from "../util";
+import * as os from "os";
 
 class ProjectService {
   public async createProject(projectDTO: NewProjectDTO): Promise<IMetadata> {
@@ -63,6 +66,8 @@ class ProjectService {
 
 
   public async fossityPackager(params: ProjectPackageDTO) {
+
+    //Zip stage
     if(!params.targetPath.toLowerCase().endsWith('.fossity')) params.targetPath = `${params.targetPath}.fossity`;
     if (path.extname(params.targetPath).toLowerCase() !== '.fossity')
       throw new Error('File type not supported');
@@ -71,7 +76,17 @@ class ProjectService {
       throw new Error("Invalid project metadata");
     }
 
-    await new FossityPackagerTask().run({inputPath: path.join(params.projectPath,  AppDefaultValues.PROJECT.OUTPUT), outputPath: params.targetPath});
+    const tmpZipFile = path.join(os.tmpdir(), new Date().toString(), "-fossity.zip");
+    await new FossityPackagerTask().run({inputPath: path.join(params.projectPath,  AppDefaultValues.PROJECT.OUTPUT), outputPath: tmpZipFile});
+
+
+    //Cipher stage
+    const publicKeyPath = path.join(getAssetFolderPath(),"fossity_pub_key","fossity.pub");
+    const publicKey = await fs.promises.readFile(publicKeyPath, 'utf-8');
+    await new CipherTask().run({rsaPubKey: publicKey, inputPath: tmpZipFile, outputPath: params.targetPath});
+
+    //TODO Remove the .zip tmp file?
+    await fs.promises.unlink(tmpZipFile);
   }
 
   private async isValidObfuscatedFile(projectPath:string): Promise<boolean> {

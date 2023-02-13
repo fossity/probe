@@ -16,3 +16,13 @@ if (process.env.NODE_ENV === 'development') {
     return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
   };
 }
+
+
+
+
+export const getAssetFolderPath = () => {
+  const isDev = process.env.NODE_ENV !== 'production';
+  return isDev
+    ? path.join(__dirname, '../../assets')
+    : path.join(__dirname, './assets')
+}
