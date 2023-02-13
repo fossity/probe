@@ -12,10 +12,6 @@ import { selectWorkspaceState, setScanPath } from '@store/workspace-store/worksp
 import { useTranslation } from 'react-i18next';
 import ProjectList from '../Components/ProjectList';
 import AddProjectButton from '../Components/AddProjectButton/AddProjectButton';
-import { projectService } from '@api/services/project.service';
-import { dialogController } from '../../../../controllers/dialog-controller';
-import { Button } from '@mui/material';
-
 
 const Workspace = () => {
   const navigate = useNavigate();
@@ -24,7 +20,7 @@ const Workspace = () => {
 
   const { projects } = useSelector(selectWorkspaceState);
 
-  const { newProject } = useContext(AppContext) as IAppContext;
+  const { newProject, downloadProject, showProjectFiles } = useContext(AppContext) as IAppContext;
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -38,95 +34,15 @@ const Workspace = () => {
 
   const cleanup = () => {};
 
+  const onNewProjectHandler = () => newProject();
+
   const onShowScanHandler = async (project: IProject) => {
 
   };
 
-  const onShowFilesHandler = async (project: IProject) => {
-    window.shell.openPath(project.work_root);
-  };
+  const onShowFilesHandler = async (project: IProject) => showProjectFiles(project);
 
-  const onDownloadHandler = async (project: IProject) => {
-    const path = await dialogController.showSaveDialog({
-      filters: [{ name: 'Fossity Package Archive', extensions: ['fossity'] }],
-      defaultPath: project.name,
-    });
-
-    if (!path) return;
-
-    const dialog = await dialogCtrl.createProgressDialog(t('Creating Fossity Package').toUpperCase());
-    dialog.present();
-
-    try {
-     await projectService.packageProject({
-        projectPath: project.work_root,
-        targetPath: path,
-      });
-
-      setTimeout(async () => {
-        const timeout = setTimeout(() => dialog.dismiss(), 8000);
-        const dismiss = () => {
-          clearTimeout(timeout);
-          dialog.dismiss();
-        };
-        dialog.finish({
-          message: (
-            <footer className="d-flex space-between">
-              <span>SUCCESSFUL PACKAGED</span>
-              <div>
-                <Button
-                  className="mr-3 text-uppercase"
-                  size="small"
-                  variant="text"
-                  color="primary"
-                  style={{ padding: 0, lineHeight: 1, minWidth: 0 }}
-                  onClick={() => dismiss()}
-                >
-                  {t('Button:Close')}
-                </Button>
-                <Button
-                  className="text-uppercase"
-                  size="small"
-                  variant="text"
-                  color="primary"
-                  style={{ padding: 0, lineHeight: 1, minWidth: 0 }}
-                  onClick={() => {
-                    dismiss();
-                    window.shell.showItemInFolder(path);
-                  }}
-                >
-                  {t('Button:Open')}
-                </Button>
-              </div>
-            </footer>
-          ),
-        });
-      }, 2000);
-
-    } catch (err) {
-      dialog.dismiss();
-      const errorMessage = `<strong>Packaging Error</strong>
-        <span style="font-style: italic;">${err || ''}</span>`;
-
-      await dialogCtrl.openConfirmDialog(
-        `${errorMessage}`,
-        {
-          label: 'OK',
-          role: 'accept',
-        },
-        true
-      );
-    }
-  };
-
-  const deleteProject = async (project: IProject) => {
-    await workspaceService.deleteProject(project.work_root);
-    init();
-  };
-
-  const onNewProjectHandler = () => {
-    newProject();
-  };
+  const onDownloadHandler = async (project: IProject) => downloadProject(project);
 
   const onTrashHandler = async (project: IProject) => {
     const { action } = await dialogCtrl.openConfirmDialog(t('Dialog:DeleteQuestion'), {
@@ -134,7 +50,7 @@ const Workspace = () => {
       role: 'delete',
     });
     if (action === DIALOG_ACTIONS.OK) {
-      await deleteProject(project);
+      await workspaceService.deleteProject(project.work_root);
       init();
     }
   };
@@ -148,7 +64,7 @@ const Workspace = () => {
     <>
       <section id="Workspace" className="app-page">
         <header className="app-header">
-          <h1 className="header-title">{t('Title:Projects')}</h1>
+          <h1 className="header-title">{t('Title:MyAuditProjects')}</h1>
           <section className="subheader">
             <div className="search-box">
               {projects && projects.length > 0 && (

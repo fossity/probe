@@ -27,6 +27,7 @@ import ScannerType = Scanner.ScannerType;
 import ScannerSource = Scanner.ScannerSource;
 import { dialogController } from '../../../../controllers/dialog-controller';
 import { AppDefaultValues } from '@config/AppDefaultValues';
+import FlowStepper from '@components/FlowStepper/FlowStepper';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -360,7 +361,8 @@ const ProjectSettings = () => {
               </Grid>
           </main>
           <footer className='app-footer'>
-          <div className="button-container">
+            <FlowStepper />
+            <div className="button-container">
             <Button
               endIcon={<ArrowForwardIcon />}
               variant="contained"

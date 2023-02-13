@@ -22,7 +22,6 @@ const backgroundColor = '#fefffe';
 const useStyles = makeStyles((theme) => ({
   parentBox: {
     position: 'relative',
-    marginBottom: 60,
   },
   circleParentBox: {
     display: 'flex',

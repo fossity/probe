@@ -48,7 +48,7 @@ export class ObfuscationModule implements IAdapter {
     let wasReplaced = false;
         this.obfuscatedWords.forEach((o) => {
           this.updateSummary(o,this.count(o,input));
-          if(obfuscatedInput.search(new RegExp(o,'gm')) >= 0) {
+          if(obfuscatedInput.search(new RegExp(o,'gmi')) >= 0) {
             wasReplaced = true;
             let key;
             if (this.obfuscatedMapper[o] !== undefined) key = this.obfuscatedMapper[o];
@@ -56,7 +56,7 @@ export class ObfuscationModule implements IAdapter {
               key = this.keyGen();
               this.obfuscatedMapper[o] = key;
             }
-            obfuscatedInput = obfuscatedInput.replace(new RegExp(o, 'g'), key);
+            obfuscatedInput = obfuscatedInput.replace(new RegExp(o, 'gi'), key);
           }
         });
         if(wasReplaced) this.totalFilesObfuscated+=1;

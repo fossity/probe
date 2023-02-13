@@ -6,7 +6,12 @@ import { IpcChannels } from '@api/ipc-channels';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { projectService } from '@api/services/project.service';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
+import {
+  selectWorkspaceState,
+  setCurrentProject,
+  setNewProject,
+  setScanPath
+} from '@store/workspace-store/workspaceSlice';
 import { useTranslation } from 'react-i18next';
 import { AppDefaultValues } from '@config/AppDefaultValues';
 import * as controller from '../../../../controllers/home-controller';
@@ -41,6 +46,11 @@ const ProjectScan = () => {
           dispatch(setNewProject({
             ...newProject,
             uuid: projectMetadata.uuid
+          }));
+
+          dispatch(setCurrentProject({
+            ...projectMetadata,
+            data: null,
           }))
         } else await controller.scan();
       }

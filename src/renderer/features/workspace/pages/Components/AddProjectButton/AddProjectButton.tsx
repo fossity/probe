@@ -9,7 +9,7 @@ const AddProjectButton = ({ onNewProject }) => {
   return (
     <>
         <Button startIcon={<AddIcon />} onClick={onNewProject}>
-          {t('Button:NewProject')}
+          {t('Button:NewAuditProject')}
         </Button>
     </>
   );
