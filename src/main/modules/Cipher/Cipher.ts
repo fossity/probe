@@ -4,9 +4,6 @@ import * as buffer from "buffer";
 
 export class Cipher {
   private AES_key: Buffer;
-
-  private AES_key_cipher: Buffer;
-
   private AES_IV: Buffer;
 
   private RSA_pub_key: string;
@@ -17,8 +14,12 @@ export class Cipher {
   }
 
   private generateAES128params() {
-    const AESkey = Buffer.from('SwAW1D8kbcXVrq31'); // TODO: change for a randomly generated buffer of length 16.
+    const AESkey = crypto.randomBytes(16);
     const AESiv = crypto.randomBytes(16);
+
+    this.AES_key = AESkey;
+    this.AES_IV = AESiv;
+
     return {AESkey, AESiv};
   }
 
@@ -45,7 +46,7 @@ export class Cipher {
   };
 
 
-  public cipherContent_AES128_CBC(textPlainData: Buffer, key: Buffer, iv: Buffer): Buffer {
+  private cipherContent_AES128_CBC(textPlainData: Buffer, key: Buffer, iv: Buffer): Buffer {
     const cipher = crypto.createCipheriv('aes-128-cbc', key, iv);
     return Buffer.concat([cipher.update(textPlainData), cipher.final()])
   }
@@ -63,8 +64,19 @@ export class Cipher {
     const cipherText = this.cipherContent_AES128_CBC(data, AESkey, AESiv);
 
     const packageQi = Buffer.concat([header, cipherText]);
-    console.log(header.length);
     return packageQi;
   }
+
+  public generateDecrypBash(scriptName: string, fossityPackageName: string) {
+    return  `!#/bin/bash
+# You can use this script to decrypt the packet and review the content.
+# Please be careful with this script as it contains the keys to open the .fossity package.
+# Usage ./${scriptName}.sh
+
+dd iflag=skip_bytes if=${fossityPackageName}.fossity of=${fossityPackageName}.enc skip=280 bs=1M #Removes first 280 bytes from the fossity package
+openssl aes-128-cbc -d -in ${fossityPackageName}.enc -out ${fossityPackageName}.zip -iv ${this.AES_IV.toString('hex')} -K ${this.AES_key.toString('hex')}
+
+rm ${fossityPackageName}.enc
+    `}
 
 }
