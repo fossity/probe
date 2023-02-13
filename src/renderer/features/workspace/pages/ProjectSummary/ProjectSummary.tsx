@@ -9,9 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useTranslation } from 'react-i18next';
 import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
-import { DialogContext, IDialogContext } from '@context/DialogProvider';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppDefaultValues } from '@config/AppDefaultValues';
+import FlowStepper from '@components/FlowStepper/FlowStepper';
 
 const Panel = ({ title, children }) => (
   <section className='panel'>
@@ -116,6 +116,7 @@ const ProjectSummary = () => {
               </div>
           </main>
           <footer className='app-footer'>
+           <FlowStepper step={2} />
             <div className="button-container">
               <Button
                 endIcon={<ArrowForwardIcon />}

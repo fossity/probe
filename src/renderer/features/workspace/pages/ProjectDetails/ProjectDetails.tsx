@@ -9,20 +9,28 @@ import { useTranslation } from 'react-i18next';
 import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppContext, IAppContext } from '@context/AppProvider';
+import { IProject } from '@api/types';
 
 
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { projects, scanPath } = useSelector(selectWorkspaceState);
-  const dialogCtrl = useContext(DialogContext) as IDialogContext;
+
+  const { currentProject } = useSelector(selectWorkspaceState);
+  const { downloadProject, showProjectFiles } = useContext(AppContext) as IAppContext;
+
+  const onShowFilesHandler = async (project: IProject) => showProjectFiles(project);
+
+  const onDownloadHandler = async (project: IProject) => downloadProject(project);
 
   useEffect(() => {
     init();
   }, []);
 
   const init = async () => {
+    console.log(currentProject);
   };
 
   return (
@@ -38,15 +46,14 @@ const ProjectDetails = () => {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={e => navigate('/workspace', { replace: true })}
+                        onClick={e => onShowFilesHandler(currentProject)}
                       >
                         {t('Button:ShowFiles')}
                       </Button>
                       <Button
                         variant="contained"
                         color="primary"
-
-                        onClick={e => navigate('/workspace', { replace: true })}
+                        onClick={e => onDownloadHandler(currentProject)}
                       >
                         {t('Button:CreateFossityPackage')}
                       </Button>

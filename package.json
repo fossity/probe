@@ -215,9 +215,9 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "SCANOSS Audit Workbench",
-    "appId": "com.scanoss.workbench",
-    "copyright": "Copyright© 2020,2022 SCANOSS.COM",
+    "productName": "FOSSITY Probe",
+    "appId": "com.fossity.probe",
+    "copyright": "Copyright© 2020,2023 FOSSITY.COM",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

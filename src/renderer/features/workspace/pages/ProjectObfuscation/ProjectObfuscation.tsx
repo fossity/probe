@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete from '@mui/material/Autocomplete';
 import { obfuscateService } from '@api/services/obfuscate.service';
 import { isBanned } from '@shared/utils/search-utils';
+import FlowStepper from '@components/FlowStepper/FlowStepper';
 
 
 const ProjectObfuscation = () => {
@@ -157,6 +158,7 @@ const ProjectObfuscation = () => {
               </div>
           </main>
         <footer className='app-footer'>
+          <FlowStepper step={1} />
           <div className="button-container">
             <Button
               endIcon={<ArrowForwardIcon />}
