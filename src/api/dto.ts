@@ -88,4 +88,14 @@ export interface ProjectPackageDTO { // PROJECT_CREATE_FOSSITY_PACKAGE
   targetPath: string;
 }
 
+export interface PreviewDTO {
+  files: Map<string, string|null>,
+  summary: ObfuscationSummary,
+}
+
+export interface ObfuscationSummary{
+  totalFiles: number,
+  totalFilesObfuscated: number,
+  obfuscationSummary: Record<string, number>
+}
 

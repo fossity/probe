@@ -64,7 +64,7 @@ const ProjectObfuscation = () => {
   const preview = async () => {
     const list: string[] = value.filter(item => !isBanned(item));
     const previewData = await obfuscateService.obfuscatePreview(list);
-    setResults(Array.from(previewData, ([key, value]) => ({ key, value })));
+    setResults(Array.from(previewData.files, ([key, value]) => ({ key, value })));
     dispatch(setObfuscateList(list));
   }
 
