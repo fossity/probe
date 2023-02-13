@@ -83,7 +83,7 @@ class ProjectService {
     //Cipher stage
     const publicKeyPath = path.join(getAssetFolderPath(),"fossity_pub_key","fossity.pub");
     const publicKey = await fs.promises.readFile(publicKeyPath, 'utf-8');
-    await new CipherTask().run({rsaPubKey: publicKey, inputPath: tmpZipFile, outputPath: params.targetPath});
+    await new CipherTask().run({rsaPubKey: publicKey, inputPath: tmpZipFile, outputPath: params.targetPath, wantDecryptScript: false});
 
     //TODO Remove the .zip tmp file?
     await fs.promises.unlink(tmpZipFile);
