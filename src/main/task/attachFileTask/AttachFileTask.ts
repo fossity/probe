@@ -10,6 +10,10 @@ export class AttachFileTask implements Scanner.IPipelineTask {
 
   private project: Project;
 
+  private fileNumber = 0;
+
+  private softwareCompositionUriFiles = [];
+
   constructor(project: Project) {
     this.project = project;
   }
@@ -27,21 +31,18 @@ export class AttachFileTask implements Scanner.IPipelineTask {
    const projectMetadata: IProjectInfoMetadata =  JSON.parse(metadata);
    if(!projectMetadata.software_composition_uri) return true; // avoid to write project metadata file
    await this.copyFiles(path.join(this.project.getMyPath(),AppDefaultValues.PROJECT.OUTPUT),projectMetadata.software_composition_uri);
-   this.renameSoftwareCompositionUriFiles(projectMetadata);
+   projectMetadata.software_composition_uri = this.softwareCompositionUriFiles;
    await fs.promises.writeFile(path.join(this.project.getMyPath(),AppDefaultValues.PROJECT.OUTPUT,AppDefaultValues.PROJECT.OUTPUT_METADATA),JSON.stringify(projectMetadata));
    return true;
   }
 
-  private renameSoftwareCompositionUriFiles(projectMetadata : IProjectInfoMetadata): IProjectInfoMetadata{
-    const fileNames =  projectMetadata.software_composition_uri.map((f)=> path.parse(f).base);
-    projectMetadata.software_composition_uri = fileNames;
-    return  projectMetadata;
-  }
-
-
   private async copyFiles(target: string, files: Array<string>){
       return Promise.all(files.map((f) => {
-        return fs.promises.copyFile(f, path.join(target,path.parse(f).base));
+        const fileNumber = this.fileNumber.toString(10).padStart(4,'0').toUpperCase();
+        this.fileNumber +=1;
+        const file = `SCA${fileNumber}_${path.parse(f).base}`;
+        this.softwareCompositionUriFiles.push(file);
+        return fs.promises.copyFile(f, path.join(target,file));
       }));
   }
 
