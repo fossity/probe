@@ -1,14 +1,21 @@
+/* eslint-disable camelcase */
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext, IAppContext } from '@context/AppProvider';
-import { IProject } from '@api/types';
+import { IProject, ScanState } from '@api/types';
 import { workspaceService } from '@api/services/workspace.service';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { DIALOG_ACTIONS } from '@context/types';
 import SearchBox from '@components/SearchBox/SearchBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProjects } from '@store/workspace-store/workspaceThunks';
-import { selectWorkspaceState, setScanPath } from '@store/workspace-store/workspaceSlice';
+import {
+  clean,
+  selectWorkspaceState,
+  setCurrentProject,
+  setNewProject, setObfuscateList,
+  setScanPath
+} from '@store/workspace-store/workspaceSlice';
 import { useTranslation } from 'react-i18next';
 import ProjectList from '../Components/ProjectList';
 import AddProjectButton from '../Components/AddProjectButton/AddProjectButton';
@@ -37,7 +44,24 @@ const Workspace = () => {
   const onNewProjectHandler = () => newProject();
 
   const onShowScanHandler = async (project: IProject) => {
+    if ( project.scannerState !== ScanState.FINISHED) {
+      dispatch(clean());
 
+      const { uuid, name, scan_root } = project;
+
+      console.log(project);
+
+      dispatch(setScanPath({ path: project.scan_root, action: 'scan' }));
+      dispatch(setCurrentProject(project));
+      dispatch(setObfuscateList([])); // TODO: get list from project
+      dispatch(setNewProject({
+        uuid,
+        name,
+        scan_root,
+        projectInfo: project.data,
+      }));
+      navigate('/workspace/new/settings');
+    }
   };
 
   const onShowFilesHandler = async (project: IProject) => showProjectFiles(project);

@@ -88,7 +88,7 @@ const ProjectList = (props: ProjectListProps) => {
                     `}
                     hover
                     key={project.name}
-                    onClick={() => isProjectFinished(project) && props.onProjectClick(project)}
+                    onClick={() => props.onProjectClick(project)}
                   >
                     <TableCell component="th" scope="row">
                       <div className="project-name">
