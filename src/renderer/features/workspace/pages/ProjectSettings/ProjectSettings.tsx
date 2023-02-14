@@ -3,34 +3,37 @@ import {
   Button,
   Checkbox, FormControl,
   FormControlLabel,
-  FormLabel, Grid,
-  IconButton,
+  Grid,
+  IconButton, InputAdornment,
   Radio, RadioGroup,
-  TextField
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { NewProjectDTO } from '@api/dto';
 import { useTranslation } from 'react-i18next';
+import FormGroup from '@mui/material/FormGroup';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
 import { workspaceService } from '@api/services/workspace.service';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
-import { useDispatch, useSelector } from 'react-redux';
-import FormGroup from '@mui/material/FormGroup';
-import AddIcon from '@mui/icons-material/Add';
-import { Scanner } from '../../../../../main/task/scannerTask/types';
-import ScannerType = Scanner.ScannerType;
-import ScannerSource = Scanner.ScannerSource;
-import { dialogController } from '../../../../controllers/dialog-controller';
 import { AppDefaultValues } from '@config/AppDefaultValues';
 import FlowStepper from '@components/FlowStepper/FlowStepper';
 import { DIALOG_ACTIONS } from '@context/types';
-import {projectService} from "@api/services/project.service";
+import { projectService } from "@api/services/project.service";
+import TextInput from '@components/TextInput';
+import FlowHeader from '@components/FlowHeader';
 
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
+
+import { dialogController } from '../../../../controllers/dialog-controller';
 
 const useStyles = makeStyles((theme) => ({
   size: {
@@ -129,10 +132,9 @@ const ProjectSettings = () => {
   };
 
   const onExitHandler = async () => {
-    const { action } = await dialogCtrl.openConfirmDialog('Are you sure to exit?');
-    await projectService.update(newProject);
+    const { action } = await dialogCtrl.openConfirmDialog('Back to list', 'Are you sure to exit? Project will be saved as a draft.');
     if (action === DIALOG_ACTIONS.OK) {
-      // TODO: save or update project
+       if (!projectNameExists) await projectService.update(newProject);
       navigate('/workspace', { replace: true });
     }
   }
@@ -168,36 +170,28 @@ const ProjectSettings = () => {
     <form onSubmit={(e) => handleClose(e)}>
       <section id="ProjectSettings" className="app-page app-pipeline">
           <header className="app-header">
-            <div className='breadcrumb d-flex align-center'>
-              <IconButton
-                tabIndex={-1}
-                onClick={onExitHandler}
-                component="span"
-                size="large"
-              >
-                <ArrowBackIcon />
-              </IconButton>
-              <div>
-                <h2 className="header-subtitle back">
-                  {t('Project Information')}
-                </h2>
-                <h5 className="mt-0 mb-0">{scanPath.path}</h5>
-              </div>
-            </div>
+            <FlowHeader
+              title={t('Project Information')}
+              subtitle={t('Complete all the Audit Project information')}
+            />
           </header>
           <main className="app-content">
               <Grid container spacing={8} rowSpacing={2}>
                 <Grid item xs={6}>
-
-                  <div className="form-field mb-5">
+                  <div className="form-field mb-0">
                     <label className="input-label">{t('Title:ProjectName')}</label>
-                      <TextField
-                        spellCheck={false}
+                      <TextInput
+                        label="Project Name"
                         error={projectNameExists || !projectValidName}
-                        fullWidth
                         disabled={isEdition}
                         value={newProject.name}
-                        InputProps={{ style: { fontSize: 20, fontWeight: 500 } }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <InsertDriveFileOutlinedIcon />
+                            </InputAdornment>
+                          ),
+                        }}
                         onChange={(e) =>
                           dispatch(setNewProject({
                             ...newProject,
@@ -213,11 +207,16 @@ const ProjectSettings = () => {
 
                   <label className="input-label">{t('Contact Information')}</label>
                   <div className="form-field">
-                    <FormLabel>{t('Name')} <span className="optional">- {t('Optional')}</span></FormLabel>
-                    <TextField
+                    <TextInput
                       name="name"
-                      size="small"
-                      fullWidth
+                      label={t('Name')}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <PersonOutlineOutlinedIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                       value={newProject.projectInfo.contact.name}
                       onChange={(e) => inputHandler(e, 'contact')} />
                   </div>
@@ -225,36 +224,44 @@ const ProjectSettings = () => {
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
                       <div className="form-field">
-                        <FormLabel>{t('Email Address')}</FormLabel>
-                        <TextField
+                        <TextInput
                           name="email"
+                          label={t('Email Address')}
                           type="email"
-                          size="small"
-                          fullWidth
                           required
                           value={newProject.projectInfo.contact.email}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <EmailOutlinedIcon  />
+                              </InputAdornment>
+                            ),
+                          }}
                           onChange={(e) => inputHandler(e, 'contact')} />
                       </div>
                     </Grid>
                     <Grid item xs={6}>
                       <div className="form-field">
-                        <FormLabel>{t('Phone Number')} <span className="optional">- {t('Optional')}</span></FormLabel>
-                        <TextField
+                        <TextInput
                           name="phone"
-                          size="small"
-                          fullWidth
+                          label={t('Phone Number')}
                           value={newProject.projectInfo.contact.phone}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <LocalPhoneOutlinedIcon />
+                              </InputAdornment>
+                            ),
+                          }}
                           onChange={(e) => inputHandler(e, 'contact')} />
                       </div>
                     </Grid>
                   </Grid>
-                </Grid>
-                <Grid item xs={6}>
 
                   <div className="d-flex align-center">
-                    <label className="input-label">{t('Known Software Composition')}</label>
+                    <label className="input-label mt-3">{t('Known Software Composition')}</label>
                     <IconButton
-                      className="ml-2 mb-1"
+                      className="ml-1"
                       title={t('Tooltip:AttachFile')}
                       tabIndex={-1}
                       color="inherit"
@@ -265,25 +272,25 @@ const ProjectSettings = () => {
                     </IconButton>
                   </div>
 
-                  <TextField
-                      fullWidth
-                      multiline
-                      placeholder="Enter here the list of known Open Source components used and/or attach an SBOM (only text files allowed, .i.e. SPDX, CycloneDX, CSV, TXT)."
-                      maxRows={2}
-                      minRows={2}
-                      value={newProject.projectInfo.software_composition}
-                      onChange={e => dispatch(setNewProject({...newProject, projectInfo: {...newProject.projectInfo, software_composition: e.target.value} }))}
-                      helperText={newProject.projectInfo.software_composition_uri?.length > 0 ? `${newProject.projectInfo.software_composition_uri.length} file(s) attached.` : ''}
-                    />
+                  <TextInput
+                    multiline
+                    placeholder="Enter here the list of known Open Source components used and/or attach an SBOM (only text files allowed, .i.e. SPDX, CycloneDX, CSV, TXT)."
+                    maxRows={3}
+                    minRows={3}
+                    value={newProject.projectInfo.software_composition}
+                    onChange={e => dispatch(setNewProject({...newProject, projectInfo: {...newProject.projectInfo, software_composition: e.target.value} }))}
+                    helperText={newProject.projectInfo.software_composition_uri?.length > 0 ? `${newProject.projectInfo.software_composition_uri.length} file(s) attached.` : ''}
+                  />
                   <FormGroup className="mt-2">
                     <FormControlLabel
                       control={<Checkbox required defaultChecked={isEdition} />}
-                      label={<small>I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
+                      label={<small className="checkbox-label">I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
                     />
                   </FormGroup>
-
+                </Grid>
+                <Grid item xs={6}>
                   <>
-                    <label className="input-label mt-5">{t('Licensing')}</label>
+                    <label className="input-label">{t('Licensing')}</label>
                     <FormControl>
                       <RadioGroup
                         defaultValue={license}
@@ -295,10 +302,9 @@ const ProjectSettings = () => {
                       </RadioGroup>
                     </FormControl>
 
-                    <div className="input-container input-container-license mt-1 mb-3">
+                    <div className="mt-1 mb-2">
                       <Autocomplete
                         disabled={license === 'proprietary'}
-                        size="small"
                         onChange={(e, value) =>
                           dispatch(setNewProject({
                             ...newProject, projectInfo:{...newProject.projectInfo, default_license: value?.spdxid}
@@ -340,30 +346,30 @@ const ProjectSettings = () => {
                           );
                         }}
                         renderInput={(params) => (
-                          <TextField
+                          <TextInput
                             {...params}
+                            label={t('SPDX License List')}
                             InputProps={{
                               ...params.InputProps,
-                              startAdornment: <SearchIcon />,
+                              startAdornment: <InputAdornment position="start"><SearchIcon /> </InputAdornment>,
                               disableUnderline: true,
                             }}
                           />
                         )}
                       />
                     </div>
-                    <TextField
-                      fullWidth
+                    <TextInput
                       multiline
                       placeholder="Enter here any additional details about actual licensing of the software being scanned."
-                      minRows={2}
-                      maxRows={2}
+                      minRows={3}
+                      maxRows={3}
                       value={newProject.projectInfo.extra_license}
                       onChange={e => dispatch(setNewProject({...newProject, projectInfo: {...newProject.projectInfo, extra_license: e.target.value}}))}
                     />
                     <FormGroup className="mt-2">
                       <FormControlLabel
                         control={<Checkbox required defaultChecked={isEdition} />}
-                        label={<small>I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
+                        label={<small className="checkbox-label">I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
                       />
                     </FormGroup>
                   </>
@@ -371,17 +377,25 @@ const ProjectSettings = () => {
                 </Grid>
               </Grid>
           </main>
-          <footer className='app-footer'>
-            <FlowStepper />
-            <div className="button-container">
+         <footer className='app-footer'>
+          <div className="button-container">
             <Button
-              endIcon={<ArrowForwardIcon />}
+              color="inherit"
+              variant="contained"
+              type="button"
+              onClick={onExitHandler}
+            >
+              <ArrowBackIcon className="color-primary mr-1" fontSize="small" />
+            </Button>
+          </div>
+          <FlowStepper step={0} />
+          <div className="button-container end">
+            <Button
               variant="contained"
               color="primary"
               type="submit"
-              disabled={!projectValidName || projectNameExists}
             >
-              {t('Button:Continue')}
+              {t('Button:Next')}
             </Button>
           </div>
         </footer>

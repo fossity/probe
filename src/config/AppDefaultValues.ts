@@ -17,5 +17,6 @@ export const AppDefaultValues  = {
   PIPELINE: {
     INDEX: 'index',
     FINGERPRINT: 'fingerprint'
-  }
+  },
+  UPLOAD_URL: 'https://www.fossity.com/upload'
 }

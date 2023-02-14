@@ -8,13 +8,13 @@ const steps = [
 ];
 
 const FlowStepper = ({ step = 0 }) => {
-
   return (
     <div className='progress-stepper'>
-      <Stepper activeStep={step} >
+      <Stepper activeStep={step} sx={{width: 180}}>
         {steps.map((label, index) => (
           <Step key={label}>
-            <StepLabel>{ step === index ? label : ''}</StepLabel>
+           {/* <StepLabel>{ step === index ? label : ''}</StepLabel> */}
+            <StepLabel />
           </Step>
         ))}
       </Stepper>

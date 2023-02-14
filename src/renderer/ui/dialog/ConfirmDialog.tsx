@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogActions, Button, DialogContentText, DialogContent } from '@mui/material';
+import { Dialog, DialogActions, Button, DialogContentText, DialogContent, DialogTitle } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -34,13 +34,12 @@ const useStyles = makeStyles((theme) => ({
   },
   actions: {
     padding: theme.spacing(2),
-    borderTop: '1px solid #D4D4D8',
-    backgroundColor: '#f4f4f5',
   },
 }));
 
 interface ConfirmDialogProps {
   open: boolean;
+  title: string;
   message: string;
   button: any;
   hideDeleteButton: boolean;
@@ -51,7 +50,7 @@ export const ConfirmDialog = (props: ConfirmDialogProps) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const { open, message, button, hideDeleteButton, onClose } = props;
+  const { open, title, message, button, hideDeleteButton, onClose } = props;
 
   const handleCancel = () => onClose({ action: DIALOG_ACTIONS.CANCEL });
   const handleAccept = () => onClose({ action: DIALOG_ACTIONS.OK });
@@ -74,20 +73,28 @@ export const ConfirmDialog = (props: ConfirmDialogProps) => {
           size="large">
           <CloseIcon />
         </IconButton>
+        <DialogTitle>
+          { title }
+        </DialogTitle>
         <DialogContentText className={classes.text}>
           <span dangerouslySetInnerHTML={{ __html: message }} />
         </DialogContentText>
       </DialogContent>
       <DialogActions className={classes.actions}>
         {!hideDeleteButton && (
-          <Button color="inherit" onClick={handleCancel}>
-           {t('Button:Cancel')}
+          <Button
+            color="inherit"
+            size="large"
+            variant="contained"
+            onClick={handleCancel}>
+           {t('Button:No')}
           </Button>
         )}
         <Button
           autoFocus
           className={button?.role === 'delete' ? classes.deleteButton : ''}
           color="secondary"
+          size="large"
           variant="contained"
           onClick={handleAccept}
         >

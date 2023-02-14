@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, IconButton, InputBase } from '@mui/material';
+import { Paper, IconButton, InputBase, InputAdornment } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
+import TextInput from '@components/TextInput';
+import { AccountCircle } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: '0px 4px',
-    display: 'flex',
-    alignItems: 'center',
-  },
   input: {
-    flex: 1,
-  },
-  iconButton: {
-    opacity: 0.6,
-    padding: 10,
+    padding: '12px 12px !important'
   },
 }));
 
@@ -44,23 +37,38 @@ const SearchBox = ({ value, placeholder, responseDelay, disabled, onChange }: Se
   }, [value]);
 
   return (
-    <Paper id="SearchBox" component="form" className={classes.root}>
-      <SearchIcon className={`start-icon ${classes.iconButton}`} />
-      <InputBase
+      <TextInput
+        multiline
+        minRows={1}
+        maxRows={1}
         disabled={disabled}
-        className={classes.input}
         value={query}
         onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
         onChange={(e: any) => setQuery(e.target.value)}
         placeholder={placeholder || t('Search')}
-        inputProps={{ 'aria-label': placeholder, spellCheck: 'false' }}
+        InputProps={{
+          className: classes.input,
+          'aria-label': placeholder,
+          spellCheck: 'false',
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setQuery('')}
+                edge="end"
+                size="small"
+              >
+                { query && <CloseIcon fontSize="inherit" /> }
+              </IconButton>
+            </InputAdornment>
+          ),
+      }}
       />
-      {query && (
-        <IconButton size="small" className={`end-icon ${classes.iconButton}`} onClick={() => setQuery('')}>
-          <CloseIcon fontSize="inherit" />
-        </IconButton>
-      )}
-    </Paper>
   );
 };
 

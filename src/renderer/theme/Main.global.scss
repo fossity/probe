@@ -73,6 +73,10 @@ a {
   font-weight: 400;
 }
 
+.MuiChip-root.MuiChip-filledPrimary.light {
+  background: var(--color-primary-lighten);
+  color: var(--color-primary)
+}
 
 .has-status-bullet {
   &::before {

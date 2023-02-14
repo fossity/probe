@@ -16,6 +16,7 @@ export interface IAppContext {
   newProject: () => void;
   downloadProject: (project: IProject) => void;
   showProjectFiles: (project: IProject) => void;
+  uploadProject: (project: IProject) => void;
 }
 
 export const AppContext = React.createContext<IAppContext | null>(null);
@@ -101,6 +102,7 @@ const AppProvider = ({ children }) => {
         <span style="font-style: italic;">${err || ''}</span>`;
 
       await dialogCtrl.openConfirmDialog(
+        'Error',
         `${errorMessage}`,
         {
           label: 'OK',
@@ -112,7 +114,11 @@ const AppProvider = ({ children }) => {
   };
 
   const showProjectFiles = (project: IProject) => {
-    window.shell.openPath(window.path.join(project.work_root,AppDefaultValues.PROJECT.OUTPUT));
+    window.shell.openPath(window.path.join(project.work_root, AppDefaultValues.PROJECT.OUTPUT));
+  };
+
+  const uploadProject = (project: IProject) => {
+    window.shell.openExternal(AppDefaultValues.UPLOAD_URL);
   };
 
   const setupAppMenuListeners = (): () => void => {
@@ -129,6 +135,7 @@ const AppProvider = ({ children }) => {
         newProject,
         downloadProject,
         showProjectFiles,
+        uploadProject,
       }}
     >
       {children}

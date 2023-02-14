@@ -42,37 +42,21 @@
     height: 100vh;
     padding: 0 65px;
 
-    grid-template-rows: 90px 1fr 70px;
+    grid-template-rows: 120px 1fr 70px;
 
     .app-footer, .app-header {
       display: flex;
       align-items: center;
       padding-bottom: 0em;
-
     }
-
-    .app-content {
-      background: #f2f2f2;
-      border-radius: 20px;
-      padding: 20px;
-    }
-
     .app-footer {
       .button-container {
         display: flex;
         width: 100%;
-        justify-content: flex-end;
+        gap: 16px;
 
-        .btn {
-          padding: 12px 24px;
-          border-radius: 4px;
-        }
-
-        .btn-continue {
-          background-color: #6366f1;
-          color: #fff;
-          font-weight: 400;
-          font-size: 24px;
+        &.end {
+          justify-content: flex-end;
         }
       }
     }
@@ -89,6 +73,13 @@
     }
   }
 
+  .app-content {
+    background: rgba(246, 246, 246, 0.4);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 32px;
+    overflow-y: hidden;
+  }
 
 }
 
@@ -100,26 +91,18 @@
 .app-header {
   margin-bottom: 1.5em;
 
-  .header-subtitle {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    height: 28px;
-    font-size: 14px;
+  .header-title {
+    font-size: 24px;
     font-weight: 700;
-    text-transform: uppercase;
-
-    &.back {
-
-    }
+    margin: 0;
+    margin-bottom: 5px;
   }
 
-  .header-title {
-    margin: 0 0 10px;
-    font-size: 34px;
-    font-weight: 700;
-
-    margin-bottom: 40px;
+  .header-subtitle {
+    font-weight: 400;
+    font-size: 16px;
+    color: #AFB1B6;
+    margin: 0;
   }
 }
 
@@ -138,10 +121,6 @@
     z-index: 9;
   }
 
-  .app-content {
-    overflow-y: hidden;
-    padding: 3px 0;
-  }
 }
 
 #Workbench .app-page {

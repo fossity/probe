@@ -44,24 +44,20 @@ const Workspace = () => {
   const onNewProjectHandler = () => newProject();
 
   const onShowScanHandler = async (project: IProject) => {
-    if ( project.scannerState !== ScanState.FINISHED) {
-      dispatch(clean());
+    const { uuid, name, scan_root } = project;
+    dispatch(clean());
+    dispatch(setScanPath({ path: project.scan_root, action: 'scan' }));
+    dispatch(setCurrentProject(project));
+    dispatch(setObfuscateList(project.obfuscatedList));
+    dispatch(setNewProject({
+      uuid,
+      name,
+      scan_root,
+      projectInfo: project.data,
+    }));
 
-      const { uuid, name, scan_root } = project;
-
-      console.log(project);
-
-      dispatch(setScanPath({ path: project.scan_root, action: 'scan' }));
-      dispatch(setCurrentProject(project));
-      dispatch(setObfuscateList([])); // TODO: get list from project
-      dispatch(setNewProject({
-        uuid,
-        name,
-        scan_root,
-        projectInfo: project.data,
-      }));
-      navigate('/workspace/new/settings');
-    }
+    const route = project.scannerState !== ScanState.FINISHED ? '/workspace/new/settings' : '/workspace/detail';
+    navigate(route);
   };
 
   const onShowFilesHandler = async (project: IProject) => showProjectFiles(project);
@@ -69,8 +65,8 @@ const Workspace = () => {
   const onDownloadHandler = async (project: IProject) => downloadProject(project);
 
   const onTrashHandler = async (project: IProject) => {
-    const { action } = await dialogCtrl.openConfirmDialog(t('Dialog:DeleteQuestion'), {
-      label: t('Button:Delete'),
+    const { action } = await dialogCtrl.openConfirmDialog('Delete Audit Project', t('Dialog:DeleteQuestion'), {
+      label: t('Button:Yes'),
       role: 'delete',
     });
     if (action === DIALOG_ACTIONS.OK) {
@@ -87,20 +83,21 @@ const Workspace = () => {
   return (
     <>
       <section id="Workspace" className="app-page">
-        <header className="app-header">
+        <header className="app-header d-flex space-between align-center">
           <h1 className="header-title">{t('Title:MyAuditProjects')}</h1>
-          <section className="subheader">
+          <AddProjectButton
+            onNewProject={onNewProjectHandler}
+          />
+        </header>
+        <main className="app-content mb-5">
+          <section className="mb-5">
             <div className="search-box">
               {projects && projects.length > 0 && (
                 <SearchBox onChange={(value) => setSearchQuery(value.trim().toLowerCase())} />
               )}
             </div>
-            <AddProjectButton
-              onNewProject={onNewProjectHandler}
-            />
           </section>
-        </header>
-        <main className="app-content">
+
           <ProjectList
             projects={projects}
             searchQuery={searchQuery}
