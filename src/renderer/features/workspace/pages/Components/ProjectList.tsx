@@ -1,25 +1,19 @@
-/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import {
   IconButton,
   Link,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tooltip,
-  Chip,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IProject, ScanState } from '@api/types';
 import { Trans, useTranslation } from 'react-i18next';
 import PreviewIcon from '@mui/icons-material/Preview';
-import DownloadIcon from '@mui/icons-material/Download';
 import SystemUpdateAltOutlinedIcon from '@mui/icons-material/SystemUpdateAltOutlined';
+import ProjectItem from '@components/ProjectItem';
+
+import papers from '@assets/imgs/papers.png';
+import AddProjectButton from './AddProjectButton/AddProjectButton';
+
 
 const filter = (items, query) => {
   if (!items) return null;
@@ -40,13 +34,6 @@ const format = (date) => {
   });
 };
 
-const useStyles = makeStyles((theme) => ({
-  md: {
-    maxWidth: 130,
-    textAlign: 'center',
-  },
-}));
-
 const isProjectFinished = (project: IProject): boolean => project.scannerState === ScanState.FINISHED;
 
 interface ProjectListProps {
@@ -60,51 +47,63 @@ interface ProjectListProps {
 }
 
 const ProjectList = (props: ProjectListProps) => {
-  const classes = useStyles();
   const { t } = useTranslation();
 
   const { projects, searchQuery } = props;
   const filterProjects = filter(projects, searchQuery);
 
+  // loading
+  if (!projects) {
+    return <p>{t('Common:LoadingProjects')}</p>;
+  }
+
+  // no projects found
+  if (projects && projects.length === 0) {
+    return (
+      <div className="empty-container">
+        <div className="empty-list">
+          <img src={papers} />
+          <p className="mt-2 mb-4">{t('Common:NoProjectsFound')}</p>
+          <AddProjectButton
+            onNewProject={props.onProjectCreate}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // no projects found with filter
+  if (projects && filterProjects.length === 0 ) {
+    return (
+      <div className="empty-container">
+        <div className="empty-list">
+          <Trans
+            i18nKey="Common:NoProjectsFoundWith"
+            components={{
+              strong: <strong/>,
+            }}
+            values={{ searchQuery }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {projects && projects.length > 0 ? (
-        <TableContainer component={Paper}>
-          <Table className="projects-table" aria-label="projects table">
-            <TableHead>
-              <TableRow>
-                <TableCell width="50%">{t('Table:Header:Name')}</TableCell>
-                <TableCell>{t('Table:Header:Date')}</TableCell>
-                <TableCell>{t('Table:Header:TotalFiles')}</TableCell>
-                <TableCell width={30} />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filterProjects.length !== 0 ? (
-                filterProjects.map((project) => (
-                  <TableRow
-                    className={`
-                      ${isProjectFinished(project) ? 'scanning-complete' : 'scanning-not-complete'}
-                    `}
-                    hover
+    <section className="projects-list">
+              { filterProjects.map((project) => (
+                  <ProjectItem
+                    project={project}
                     key={project.name}
                     onClick={() => props.onProjectClick(project)}
                   >
-                    <TableCell component="th" scope="row">
-                      <div className="project-name">
-                        <span>{project.name}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>{format(project.date)}</TableCell>
-                    <TableCell>{project.files}</TableCell>
-                    <TableCell className="row-actions">
                       <div className="btn-actions">
-                        <>
-                            <Tooltip title={t('Tooltip:ShowFiles')}>
+                        { isProjectFinished(project) &&
+                          <>
+                            <Tooltip title={t('Tooltip:Review')}>
                               <IconButton
                                 aria-label="show-files"
                                 className="btn-show"
-                                disabled={!isProjectFinished(project)}
                                 onClick={(event) => {
                                   event.stopPropagation();
                                   props.onProjectShowFiles(project);
@@ -115,10 +114,9 @@ const ProjectList = (props: ProjectListProps) => {
                               </IconButton>
                             </Tooltip>
 
-                            <Tooltip title={t('Tooltip:CreateFossityPackage')}>
+                            <Tooltip title={t('Tooltip:Export')}>
                               <IconButton
                                 aria-label="download"
-                                disabled={!isProjectFinished(project)}
                                 className="btn-download"
                                 onClick={(event) => {
                                   event.stopPropagation();
@@ -129,61 +127,25 @@ const ProjectList = (props: ProjectListProps) => {
                                 <SystemUpdateAltOutlinedIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
-
+                          </>
+                        }
                             <Tooltip title={t('Tooltip:RemoveProject')}>
-                            <IconButton
-                              aria-label="delete"
-                              className="btn-delete"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                props.onProjectDelete(project);
-                              }}
-                              size="large"
-                            >
-                              <DeleteIcon fontSize="small" />
+                              <IconButton
+                                aria-label="delete"
+                                className="btn-delete"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  props.onProjectDelete(project);
+                                }}
+                                size="large"
+                              >
+                                <DeleteIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
-                          </>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4}>
-                    <p className="text-center">
-                      <Trans
-                        i18nKey="Common:NoProjectsFoundWith"
-                        components={{
-                          strong: <strong/>,
-                        }}
-                        values={{ searchQuery }}
-                      />
-                    </p>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      ) : !projects ? (
-        <p>{t('Common:LoadingProjects')}</p>
-      ) : (
-        <div className="empty-container">
-          <div className="empty-list">
-            <h3>{t('Common:NoProjectsFound')}</h3>
-            <p>
-              <Trans
-                i18nKey="Common:StartNewProject"
-                components={{
-                  link1: <Link onClick={() => props.onProjectCreate()} underline="hover" />,
-                }}
-                />
-            </p>
-          </div>
-        </div>
-      )}
-    </>
+                    </div>
+                  </ProjectItem>
+              ))}
+        </section>
   );
 };
 

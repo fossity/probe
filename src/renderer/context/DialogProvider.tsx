@@ -10,7 +10,7 @@ import { ProgressDialog } from '../ui/dialog/ProgressDialog';
 
 
 export interface IDialogContext {
-  openConfirmDialog: (message?: string, button?: any, hideDeleteButton?: boolean) => Promise<DialogResponse>;
+  openConfirmDialog: (title?: string, message?: string, button?: any, hideDeleteButton?: boolean) => Promise<DialogResponse>;
   openAlertDialog: (message?: string, buttons?: any[]) => Promise<DialogResponse>;
   openSettings: () => Promise<DialogResponse>;
   createProgressDialog: (message: ReactNode) => Promise<LoaderController>;
@@ -23,6 +23,7 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
 
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
+    title?: string;
     message?: string;
     button?: any;
     hideDeleteButton?: boolean;
@@ -30,12 +31,13 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
   }>({ open: false });
 
   const openConfirmDialog = (
+    title= '',
     message = 'Are you sure?',
     button: {
       label: string;
       role: 'accept' | 'cancel' | 'delete';
     } = {
-      label: 'OK',
+      label: 'Yes',
       role: 'accept',
     },
     hideDeleteButton = false
@@ -43,6 +45,7 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
     return new Promise<DialogResponse>((resolve) => {
       setConfirmDialog({
         open: true,
+        title,
         message,
         button,
         hideDeleteButton,
@@ -165,6 +168,7 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
 
       <ConfirmDialog
         open={confirmDialog.open}
+        title={confirmDialog.title}
         hideDeleteButton={confirmDialog.hideDeleteButton}
         message={confirmDialog.message}
         button={confirmDialog.button}

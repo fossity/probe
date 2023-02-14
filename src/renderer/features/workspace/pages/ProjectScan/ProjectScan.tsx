@@ -67,7 +67,7 @@ const ProjectScan = () => {
         navigate('/workspace/new/obfuscation');
         break
       case AppDefaultValues.PIPELINE.FINGERPRINT:
-        navigate('/workspace/details', { replace: true });
+        navigate('/workspace/new/result', { replace: true });
         break
       default:
         break
@@ -95,6 +95,7 @@ const ProjectScan = () => {
 
     await dialogCtrl.openConfirmDialog(
       `${errorMessage}`,
+      'Scan Error',
       {
         label: t('Button:OK'),
         role: 'accept',
@@ -107,6 +108,7 @@ const ProjectScan = () => {
   const onPauseHandler = async () => {
     const { action } = await dialogCtrl.openConfirmDialog(
      t('Dialog:PauseScannerQuestion'),
+      "Scan Paused",
       {
         label: t('Button:OK'),
         role: 'accept',

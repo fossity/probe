@@ -1,0 +1,55 @@
+#ProjectDetails {
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+   .stepper {
+     $size: 32px;
+
+     position: relative;
+     display: grid;
+     grid-template-columns: repeat(3, 150px);
+
+     .line {
+       position: absolute;
+       top: calc(#{$size} / 2);
+       border-top: 1px dashed #61646B;
+
+       &.left {
+         left: calc(18% + 20px);
+         right: calc(51% + 20px);
+       }
+
+       &.right {
+         left: calc(51% + 20px);
+         right: calc(18% + 20px);
+       }
+     }
+
+     > article {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+
+       > button {
+         margin-top: 16px;
+         width: 90%;
+       }
+
+       .bullet {
+         height: $size;
+         width: $size;
+         border-radius: 50%;
+         background: var(--color-secondary);
+         color: var(--color-primary);
+         font-weight: 600;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+       }
+     }
+   }
+  }
+}

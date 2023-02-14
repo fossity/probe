@@ -89,16 +89,16 @@ class ProjectService {
       throw new Error("Invalid project metadata");
     }
 
-    const tmpZipFile = path.join(os.tmpdir(), new Date().toString(), "-fossity.zip");
+    const tmpZipFile = path.join(os.tmpdir(), new Date().getTime().toString(), "-fossity.zip");
     await new FossityPackagerTask().run({inputPath: path.join(params.projectPath,  AppDefaultValues.PROJECT.OUTPUT), outputPath: tmpZipFile});
 
 
-    //Cipher stage
-    const publicKeyPath = path.join(getAssetFolderPath(),"fossity_pub_key","fossity.pub");
+    // Cipher stage
+    const publicKeyPath = path.join(getAssetFolderPath(), "fossity_pub_key", "fossity.pub");
     const publicKey = await fs.promises.readFile(publicKeyPath, 'utf-8');
     await new CipherTask().run({rsaPubKey: publicKey, inputPath: tmpZipFile, outputPath: params.targetPath, wantDecryptScript: false});
 
-    //TODO Remove the .zip tmp file?
+    // TODO Remove the .zip tmp file?
     await fs.promises.unlink(tmpZipFile);
   }
 

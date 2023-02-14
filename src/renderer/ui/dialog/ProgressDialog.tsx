@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
   size: {
     '& .MuiDialog-paperWidthMd': {
       width: '350px',
+      borderRadius: '5px !important',
     },
   },
   content: {
@@ -33,7 +34,7 @@ export const ProgressDialog = (props: ProgressDialogProps) => {
   return (
     <Dialog id="ProgressDialog" className={`${classes.size} dialog`} maxWidth="md" open={open}>
       <DialogContent className={classes.content}>
-        {loader ? <LinearProgress /> : <LinearProgress variant="determinate" color="secondary" value={100} />}
+        {loader ? <LinearProgress /> : <LinearProgress variant="determinate" color="success" value={100} />}
         <div className={classes.text}>{message}</div>
       </DialogContent>
     </Dialog>

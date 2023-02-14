@@ -79,8 +79,8 @@ export default class App {
   }
 
   private loadTheme(): Theme {
-    const primary = '#6366F1';
-    const secondary = '#22C55E';
+    const primary = '#307FE2';
+    const secondary = '#EBF3FD';
 
     const theme = createTheme({
       palette: {
@@ -90,10 +90,10 @@ export default class App {
         },
         secondary: {
           main: secondary,
-          contrastText: '#FFFFFF',
+          contrastText: '#307FE2',
         },
         success: {
-          main: '#4caf50',
+          main: '#02BD63',
         },
       },
       typography: {
@@ -104,36 +104,36 @@ export default class App {
         fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
       },
       components: {
-        MuiOutlinedInput: {
+        MuiButton: {
+          defaultProps: {
+            disableElevation: true,
+          },
           styleOverrides: {
             root: {
-              '& fieldset': {
-                borderColor: 'white',
-                color: 'black',
-              },
-
-
-                backgroundColor: 'white',
-
+              borderRadius: 10,
+            }
+          }
+        },
+        MuiChip: {
+          styleOverrides: {
+            root: {
+              borderRadius: 6,
+            }
+          }
+        },
+        MuiFilledInput: {
+          styleOverrides: {
+            root: {
+              backgroundColor: 'white',
+              borderRadius: 10,
 
               // TODO: we need to remove "!important" from rules. Currently, default style is more specific that custom styles. Could be controversial in the future
-              '&.Mui-disabled fieldset': {
-                border: 0,
+              '&.Mui-disabled': {
+
               },
-              '&:hover fieldset': {
-                borderColor: 'rgba(39, 39, 42, 0.2) !important',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: `${primary} !important}`,
-              },
-              '&.Mui-error fieldset': {
+
+              '&.Mui-error': {
                 borderColor: '#d32f2f !important',
-              },
-              '&.MuiInputBase-adornedStart .MuiSvgIcon-root': {
-                opacity: 0.5,
-              },
-              '&.Mui-focused.MuiInputBase-adornedStart .MuiSvgIcon-root': {
-                opacity: 1,
               },
               '&.Mui-focused.MuiInputBase-adornedStart > .MuiSvgIcon-root:first-child': {
                 color: primary,

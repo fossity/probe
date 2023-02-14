@@ -1,46 +1,27 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Button,
-  Checkbox, Chip, dividerClasses, FormControl,
-  FormControlLabel,
-  FormHelperText, FormLabel, Grid,
-  IconButton,
-  MenuItem,
-  Paper, Radio, RadioGroup,
-  Select,
-  TextField,
-  Tooltip
-} from '@mui/material';
-import {
-  AutoSizer,
-  Column,
-  Table,
-  TableHeaderProps,
-} from 'react-virtualized';
-import { makeStyles } from '@mui/styles';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Button, Chip, Paper, TextField } from '@mui/material';
+import { AutoSizer, Column, Table } from 'react-virtualized';
 import { useNavigate } from 'react-router-dom';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useTranslation } from 'react-i18next';
-import {
-  selectWorkspaceState,
-  setNewProject,
-  setObfuscateList,
-  setScanPath
-} from '@store/workspace-store/workspaceSlice';
-import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
+import { selectWorkspaceState, setObfuscateList } from '@store/workspace-store/workspaceSlice';
+import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import Autocomplete from '@mui/material/Autocomplete';
 import { obfuscateService } from '@api/services/obfuscate.service';
 import { isBanned } from '@shared/utils/search-utils';
 import FlowStepper from '@components/FlowStepper/FlowStepper';
+import FlowHeader from '@components/FlowHeader';
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 const ProjectObfuscation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { projects, scanPath, obfuscateList , currentProject} = useSelector(selectWorkspaceState);
+  const {obfuscateList } = useSelector(selectWorkspaceState);
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
 
   const [value, setValue] = React.useState<string[]>(obfuscateList);
@@ -50,9 +31,7 @@ const ProjectObfuscation = () => {
     init();
   }, []);
 
-  const init = async () => {
-      setValue(currentProject.obfuscatedList);
-  };
+  const init = async () => { };
 
   const onTagsHandler = (tags: string[]) => {
     const nTags = tags
@@ -83,22 +62,10 @@ const ProjectObfuscation = () => {
       <form onSubmit={(e) => submit(e)}>
         <section id="ProjectObfuscation" className="app-page app-pipeline">
           <header className="app-header">
-            <div className='breadcrumb d-flex align-center'>
-              <IconButton
-                tabIndex={-1}
-                onClick={() => navigate(-2)}
-                component="span"
-                size="large"
-              >
-                <ArrowBackIcon />
-              </IconButton>
-              <div>
-                <h2 className="header-subtitle back">
-                  {t('Obfuscation')}
-                </h2>
-                <h5 className="mt-0 mb-0">{scanPath.path}</h5>
-              </div>
-            </div>
+            <FlowHeader
+              title={t('Project Obfuscation')}
+              subtitle={t('Here you can optionally obfuscate specific strings in the generated file path')}
+            />
           </header>
           <main className="app-content">
               <div className='content'>
@@ -158,20 +125,29 @@ const ProjectObfuscation = () => {
                 </div>
               </div>
           </main>
-        <footer className='app-footer'>
-          <FlowStepper step={1} />
-          <div className="button-container">
-            <Button
-              endIcon={<ArrowForwardIcon />}
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              {t('Button:Continue')}
-            </Button>
-          </div>
-        </footer>
-      </section>
+          <footer className='app-footer'>
+            <div className="button-container">
+              <Button
+                color="inherit"
+                variant="contained"
+                type="button"
+                onClick={() => navigate(-2)}
+              >
+                <ArrowBackIcon className="color-primary mr-1" fontSize="small" />
+              </Button>
+            </div>
+            <FlowStepper step={1} />
+            <div className="button-container end">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+              >
+                {t('Button:Next')}
+              </Button>
+            </div>
+          </footer>
+        </section>
       </form>
     </>
   );

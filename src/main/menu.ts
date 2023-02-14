@@ -70,19 +70,13 @@ export default class MenuBuilder {
             this.mainWindow.webContents.send(IpcChannels.MENU_NEW_PROJECT);
           },
         },
-        {
-          label: i18next.t('AppMenu:ImportProject'),
-          click: () => {
-            this.mainWindow.webContents.send(IpcChannels.MENU_IMPORT_PROJECT);
-          },
-        },
-        {
+       /* {
           label: i18next.t('AppMenu:Settings'),
           accelerator: 'Command+,',
           click: () => {
             this.mainWindow.webContents.send(IpcChannels.MENU_OPEN_SETTINGS);
           },
-        },
+        }, */
         {
           label: i18next.t('AppMenu:Quit'),
           accelerator: 'Command+Q',
@@ -184,19 +178,13 @@ export default class MenuBuilder {
               this.mainWindow.webContents.send(IpcChannels.MENU_NEW_PROJECT);
             },
           },
-          {
-            label: i18next.t('AppMenu:ImportProject'),
-            click: () => {
-              this.mainWindow.webContents.send(IpcChannels.MENU_IMPORT_PROJECT);
-            },
-          },
-          {
+         /* {
             label: i18next.t('AppMenu:Settings'),
             accelerator: 'Ctrl+Alt+S',
             click: () => {
               this.mainWindow.webContents.send(IpcChannels.MENU_OPEN_SETTINGS);
             },
-          },
+          }, */
           {
             label: i18next.t('AppMenu:Close'),
             accelerator: 'Ctrl+W',

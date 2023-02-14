@@ -11,17 +11,17 @@
   }
 
   .error-message {
+    font-size: 10px;
     color: red;
-    height: 30px;
+    height: 26px;
     margin-top: 6px;
   }
 
   .input-label {
     display: block;
-    margin-bottom: 10px;
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 28px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600;
 
     .optional {
       color: gray;
@@ -32,5 +32,11 @@
 
   .item-default {
     color: #a8a8a8 !important;
+  }
+
+  .checkbox-label {
+    display: flex;
+    line-height: normal;
+    font-size: 12px;
   }
 }

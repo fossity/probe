@@ -1,5 +1,5 @@
 {
-  "NewAuditProject": "New audit project",
+  "NewAuditProject": "New Audit Project",
   "Continue": "Continue",
   "Save": "Save",
   "Cancel": "Cancel",
@@ -19,5 +19,6 @@
   "ShowFiles": "Show Files",
   "CreateFossityPackage": "Create Fossity Package",
   "BackToProjects": "Back to Projects",
-  "CreateFingerprints": "Create Fingerprints"
+  "CreateFingerprints": "Create Fingerprints",
+  "AttachFile": "Attach Files"
 }

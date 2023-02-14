@@ -3,75 +3,26 @@
 
   .app-header {
     margin-top: 20px;
-
-    .subheader {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .search-box {
-        width: $search-box-width;
-      }
-    }
-
-    .search-input {
-      width: 400px ;
-    }
   }
 
-  .MuiPaper-root {
-    max-height: 100%;
+  .search-box {
+    width: $search-box-width;
   }
 
-  .projects-table {
+  .projects-list {
       min-width: 650px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 200px);
+      grid-row-gap: 1em;
+      grid-column-gap: 1em;
+      overflow: visible;
+      padding-bottom: 10px;
 
-      .MuiTableRow-root {
-        cursor: pointer;
-
-        &.scanning-not-complete, &.project-deprecated {
-          .MuiTableCell-root{
-            color: grey;
-          }
-        }
-
-        &.project-deprecated {
-          cursor: pointer;
-
-          .project-deprecated-tooltip {
-            max-width: 60px;
-          }
-        }
-
-        .btn-actions {
-          visibility: hidden;
-          display: flex;
-          justify-content: flex-end;
-        }
-
-        &:hover .btn-actions {
-          visibility: visible;
-        }
-
-        .project-name {
-          display: flex;
-          align-items: center;
-
-          .icon {
-            color: orange
-          }
-
-          .MuiChip-sizeSmall {
-            height: 18px;
-            font-size: 0.6rem;
-          }
-        }
-      }
-
-      .row-actions {
-          margin: 0;
-          padding-top: 0;
-          padding-bottom: 0;
+      .btn-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
       }
   }
 
@@ -82,7 +33,7 @@
 
     .empty-list {
       width: 400px;
-      margin: 0 auto 150px;
+      margin: 0 auto 100px;
       text-align: center;
 
       h3, p {

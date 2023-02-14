@@ -8,7 +8,7 @@ const AddProjectButton = ({ onNewProject }) => {
 
   return (
     <>
-        <Button startIcon={<AddIcon />} onClick={onNewProject}>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={onNewProject}>
           {t('Button:NewAuditProject')}
         </Button>
     </>

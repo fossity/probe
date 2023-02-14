@@ -1,12 +1,15 @@
 .dialog {
+
+  .MuiPaper-root {
+    border-radius: 20px;
+  }
+
   .MuiDialogTitle-root {
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    letter-spacing: 0em;
     text-align: left;
-    border-bottom: 1px solid #d4d4d8;
-    display: block;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    padding: 0 0 12px 0;
   }
 
   .MuiDialogContent-root {
