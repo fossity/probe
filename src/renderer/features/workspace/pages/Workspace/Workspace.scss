@@ -30,8 +30,6 @@
         cursor: pointer;
 
         &.scanning-not-complete, &.project-deprecated {
-          cursor: default;
-
           .MuiTableCell-root{
             color: grey;
           }

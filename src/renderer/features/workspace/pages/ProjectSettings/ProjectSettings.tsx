@@ -28,6 +28,7 @@ import ScannerSource = Scanner.ScannerSource;
 import { dialogController } from '../../../../controllers/dialog-controller';
 import { AppDefaultValues } from '@config/AppDefaultValues';
 import FlowStepper from '@components/FlowStepper/FlowStepper';
+import { DIALOG_ACTIONS } from '@context/types';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -115,8 +116,8 @@ const ProjectSettings = () => {
     const existProjectName = (pName) =>
       projects.some(
         (project) =>
-          project.name.trim().toLowerCase() ===
-          pName.trim().toLowerCase()
+          project.name.trim().toLowerCase() === pName.trim().toLowerCase() &&
+          project.uuid !== newProject?.uuid
       );
 
     setProjectNameExists(existProjectName(newProject.name));
@@ -125,6 +126,15 @@ const ProjectSettings = () => {
     const re = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/;
     setProjectValidName(newProject.name.trim() !== '' && re.test(newProject.name));
   };
+
+  const onExitHandler = async () => {
+    const { action } = await dialogCtrl.openConfirmDialog('Are you sure to exit?');
+
+    if (action === DIALOG_ACTIONS.OK) {
+      // TODO: save or update project
+      navigate('/workspace', { replace: true });
+    }
+  }
 
   const submit = async () => {
     dispatch(setScanPath({ ...scanPath, projectName: newProject.name }));
@@ -160,7 +170,7 @@ const ProjectSettings = () => {
             <div className='breadcrumb d-flex align-center'>
               <IconButton
                 tabIndex={-1}
-                onClick={() => navigate(-1)}
+                onClick={onExitHandler}
                 component="span"
                 size="large"
               >

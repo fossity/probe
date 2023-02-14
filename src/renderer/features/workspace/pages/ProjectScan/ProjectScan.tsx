@@ -52,7 +52,9 @@ const ProjectScan = () => {
             ...projectMetadata,
             data: null,
           }))
-        } else await controller.scan();
+        } else { // SCAN PROJECT
+          await controller.scan();
+        }
       }
     } catch (e) {
       console.error(e);
