@@ -57,13 +57,14 @@ export class Cipher {
   // Assimetric: RSA-2048, PKCS1
   public cipherFossityPackage(data: Buffer): Buffer {
     const {AESkey, AESiv} = this.generateAES128params();
-    const AESKeyCiphered = this.cipherContentRSA(AESkey, this.RSA_pub_key);
     const size = Buffer.from(this.longToByteArray(data.length));
 
-    const header = Buffer.concat([size,AESKeyCiphered,AESiv])
+    const header = Buffer.concat([size,AESkey,AESiv])
+    const headerCiphered = this.cipherContentRSA(header, this.RSA_pub_key);
+
     const cipherText = this.cipherContent_AES128_CBC(data, AESkey, AESiv);
 
-    const packageQi = Buffer.concat([header, cipherText]);
+    const packageQi = Buffer.concat([headerCiphered, cipherText]);
     return packageQi;
   }
 
