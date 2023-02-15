@@ -22,10 +22,13 @@ export class Metadata implements IMetadata{
 
   scannerState: ScanState;
 
+  obfuscatedList: Array<string>;
+
   constructor(name, scan_root, work_root) {
     this.name = name;
     this.scan_root = scan_root;
     this.work_root = work_root;
+    this.obfuscatedList = [];
     this.appVersion =
       app.isPackaged === true ? app.getVersion() : packageJson.version;
     this.date = new Date().toISOString();
@@ -97,6 +100,14 @@ export class Metadata implements IMetadata{
     this.files = files;
   }
 
+  public setObfuscatedList(obfuscatedList: Array<string>){
+    this.obfuscatedList = obfuscatedList;
+  }
+
+  public getObfuscatedList(){
+   return this.obfuscatedList;
+  }
+
   public getDto(): IMetadata {
     const Ip: IMetadata = {
       appVersion: this.appVersion,
@@ -107,6 +118,7 @@ export class Metadata implements IMetadata{
       uuid: this.uuid,
       files: this.files,
       scannerState: this.scannerState,
+      obfuscatedList: this.obfuscatedList
     };
     return Ip;
   }

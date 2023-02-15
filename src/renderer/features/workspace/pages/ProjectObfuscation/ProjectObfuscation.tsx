@@ -40,7 +40,7 @@ const ProjectObfuscation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { projects, scanPath, obfuscateList } = useSelector(selectWorkspaceState);
+  const { projects, scanPath, obfuscateList , currentProject} = useSelector(selectWorkspaceState);
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
 
   const [value, setValue] = React.useState<string[]>(obfuscateList);
@@ -51,6 +51,7 @@ const ProjectObfuscation = () => {
   }, []);
 
   const init = async () => {
+      setValue(currentProject.obfuscatedList);
   };
 
   const onTagsHandler = (tags: string[]) => {

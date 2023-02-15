@@ -3,12 +3,11 @@ import log from 'electron-log';
 import { IpcChannels } from '../ipc-channels';
 import { workspace } from '../../main/workspace/Workspace';
 import { Response } from '../Response';
-import { IProject, License } from '../types';
+import { License } from '../types';
 import { ProjectFilterPath } from '../../main/workspace/filters/ProjectFilterPath';
 import { ProjectZipper } from '../../main/workspace/ProjectZipper';
 import { workspaceService } from '../../main/services/WorkspaceService';
-import { WFPObfuscationTask } from '../../main/task/obfuscationTask/WFPObfuscationTask/WFPObfuscationTask';
-import { WFPDeobfuscationTask } from '../../main/task/obfuscationTask/WFPObfuscationTask/WFPDeobfuscationTask';
+
 
 ipcMain.handle(IpcChannels.WORKSPACE_PROJECT_LIST, async (_event) => {
   try {

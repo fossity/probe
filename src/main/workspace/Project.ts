@@ -91,7 +91,6 @@ export class Project {
       'utf8'
     );
     const a = JSON.parse(project);
-    this.filesToScan = a.filesToScan;
     this.filesNotScanned = a.filesNotScanned;
     this.processedFiles = a.processedFiles;
     this.filesSummary = a.filesSummary;
@@ -113,7 +112,6 @@ export class Project {
     this.scanner = null;
     this.logical_tree = null;
     this.tree = null;
-    this.store = null;
     this.filesToScan = null;
     this.filter = null;
   }
@@ -122,7 +120,7 @@ export class Project {
     this.metadata.save();
     const self = this;
     const a: any = {
-      filesToScan: self.filesToScan,
+      bannedList: self.bannedList,
       filesNotScanned: self.filesNotScanned,
       processedFiles: self.processedFiles,
       filesSummary: self.filesSummary,
@@ -187,15 +185,6 @@ export class Project {
 
   public getScanRoot(): string {
     return this.metadata.getScanRoot();
-  }
-
-  public async getResults() {
-    return JSON.parse(
-      await fs.promises.readFile(
-        `${this.metadata.getMyPath()}/result.json`,
-        'utf8'
-      )
-    );
   }
 
   public getTree(): Tree {
@@ -273,8 +262,8 @@ export class Project {
     this.tree = tree;
   }
 
-  public setBannedList(bannedList: Array<string>) {
-    this.bannedList = bannedList;
+  public setObfuscatedList(bannedList: Array<string>) {
+    this.metadata.setObfuscatedList(bannedList);
   }
 
   public getBannedList() {

@@ -41,6 +41,14 @@ class ProjectService extends BaseService {
     return this.response(response);
   }
 
+  public async update(project: NewProjectDTO): Promise<IMetadata> {
+    const response = await window.electron.ipcRenderer.invoke(
+      IpcChannels.PROJECT_UPDATE,
+      project
+    );
+    return this.response(response);
+  }
+
   public async rescan(path: string): Promise<void> {
     const response = await window.electron.ipcRenderer.invoke(
       IpcChannels.PROJECT_RESCAN,
@@ -108,6 +116,7 @@ class ProjectService extends BaseService {
     );
     return this.response(response);
   }
+
 
 }
 export const projectService = new ProjectService();

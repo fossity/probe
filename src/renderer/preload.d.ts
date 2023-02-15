@@ -28,6 +28,7 @@ declare global {
       resolve(p: string, s: string): string;
       basename(path: string, extension?: string): string;
       dirname(path: string): string;
+      join(...paths:string[]): string;
       sep: string;
     };
     app: {
