@@ -7,6 +7,8 @@ export enum ScanState {
   READY_TO_SCAN = 'READY_TO_SCAN',
   SCANNING = 'SCANNING',
   RESCANNING = 'RESCANNING',
+
+  INDEXED = 'INDEXED',
   FINISHED = 'FINISHED',
 }
 
@@ -105,7 +107,8 @@ export interface IMetadata {
   work_root: string;
   uuid: string;
   files: number;
-  scannerState: ScanState
+  scannerState: ScanState;
+  obfuscatedList:Array<string>;
 }
 
 export interface IProject extends IMetadata {

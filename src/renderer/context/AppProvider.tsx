@@ -10,6 +10,7 @@ import { dialogController } from '../controllers/dialog-controller';
 import { IProject } from '@api/types';
 import { projectService } from '@api/services/project.service';
 import { Button } from '@mui/material';
+import {AppDefaultValues} from "@config/AppDefaultValues";
 
 export interface IAppContext {
   newProject: () => void;
@@ -111,7 +112,7 @@ const AppProvider = ({ children }) => {
   };
 
   const showProjectFiles = (project: IProject) => {
-    window.shell.openPath(`${project.work_root}\\output`);
+    window.shell.openPath(window.path.join(project.work_root,AppDefaultValues.PROJECT.OUTPUT));
   };
 
   const setupAppMenuListeners = (): () => void => {

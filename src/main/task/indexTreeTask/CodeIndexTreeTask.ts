@@ -6,8 +6,9 @@ import { Tree } from "../../workspace/tree/Tree";
 import { FilterOR } from "../../workspace/tree/filters/FilterOR";
 import { FilterWFP } from "../../workspace/tree/filters/FilterWFP";
 import { FilterDependency } from "../../workspace/tree/filters/FilterDependency";
+import { ScanState } from "../../../api/types";
 
-export class CodeIndexTreeTask  extends IndexTreeTask{
+export class CodeIndexTreeTask  extends IndexTreeTask {
 
   public async run(params: void):Promise<boolean> {
     const files = this.getProjectFiles(this.project.getScanRoot(),this.project.getScanRoot());
@@ -15,11 +16,12 @@ export class CodeIndexTreeTask  extends IndexTreeTask{
     this.setTreeSummary(this.project.getTree());
     await this.setDependenciesOnFileTree();
     this.createFileMap();
+    this.project.metadata.setScannerState(ScanState.INDEXED);
     this.project.save();
     return true;
   }
 
-  private async setDependenciesOnFileTree(){
+  private async setDependenciesOnFileTree() {
     const f = this.project.getTree().getRootFolder().getFiles();
     const files = f.map((f)=> f.path);
     const localDependencies = new LocalDependencies();
@@ -76,7 +78,6 @@ export class CodeIndexTreeTask  extends IndexTreeTask{
   public setTreeSummary(tree: Tree):void {
     tree.summarize();
     const summary = tree.getSummarize();
-    this.project.filesToScan = summary.files;
     this.project.filesSummary = summary;
     this.project.filesNotScanned = {};
     this.project.processedFiles = 0;

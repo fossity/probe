@@ -29,6 +29,7 @@ import { dialogController } from '../../../../controllers/dialog-controller';
 import { AppDefaultValues } from '@config/AppDefaultValues';
 import FlowStepper from '@components/FlowStepper/FlowStepper';
 import { DIALOG_ACTIONS } from '@context/types';
+import {projectService} from "@api/services/project.service";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -129,7 +130,7 @@ const ProjectSettings = () => {
 
   const onExitHandler = async () => {
     const { action } = await dialogCtrl.openConfirmDialog('Are you sure to exit?');
-
+    await projectService.update(newProject);
     if (action === DIALOG_ACTIONS.OK) {
       // TODO: save or update project
       navigate('/workspace', { replace: true });

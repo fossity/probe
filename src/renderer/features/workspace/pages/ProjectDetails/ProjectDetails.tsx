@@ -30,7 +30,6 @@ const ProjectDetails = () => {
   }, []);
 
   const init = async () => {
-    console.log(currentProject);
   };
 
   return (

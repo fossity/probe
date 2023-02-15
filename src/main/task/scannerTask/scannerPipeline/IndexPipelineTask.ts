@@ -1,6 +1,9 @@
 import { BasePipeline } from "./BasePipeline";
 import { Project } from "../../../workspace/Project";
 import { CodeIndexTreeTask } from "../../indexTreeTask/CodeIndexTreeTask";
+import {ProjectState} from "@api/types";
+import {broadcastManager} from "../../../broadcastManager/BroadcastManager";
+import {IpcChannels} from "@api/ipc-channels";
 
 export class IndexPipelineTask extends BasePipeline {
   public async run(project: Project): Promise<boolean> {
@@ -13,5 +16,6 @@ export class IndexPipelineTask extends BasePipeline {
     await this.done(project);
     return true;
   }
+
 
 }

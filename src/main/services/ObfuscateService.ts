@@ -7,7 +7,8 @@ class ObfuscateService {
   public async obfuscatePreview(words: Array<string>): Promise<PreviewDTO> {
     const p = workspace.getOpenedProjects()[0];
     const obf = new ObfuscationModule(words,'');
-    p.setBannedList(words);
+    p.setObfuscatedList(words);
+    p.metadata.save();
     const fToObfuscate = p.getTree().getFilesToObfuscate();
 
     for (const filePath of fToObfuscate.keys()) {
