@@ -5,6 +5,7 @@ import { Scanner } from '../scannerTask/types';
 import { IProjectInfoMetadata, ScannerStage } from '../../../api/types';
 import { Project } from "../../workspace/Project";
 import { AppDefaultValues } from "../../../config/AppDefaultValues";
+import { fileExist } from "../../util";
 
 export class AttachFileTask implements Scanner.IPipelineTask {
 
@@ -37,17 +38,15 @@ export class AttachFileTask implements Scanner.IPipelineTask {
   }
 
   private async copyFiles(target: string, files: Array<string>) {
-    const promises = files.map((f) => {
-      const fileNumber = this.fileNumber.toString(10).padStart(4, '0').toUpperCase();
-      this.fileNumber += 1;
-      const file = `SCA${fileNumber}_${path.parse(f).base}`;
-      this.softwareCompositionUriFiles.push(file);
-      return fs.promises.copyFile(f, path.join(target, file));
-    });
-    const results = await Promise.all(promises.map(p => p.catch(e => e)));
-    console.log(results);
-    const errors = results.filter(result => (result instanceof Error));
-    console.log(errors);
+    for(let i=0; i < files.length ; i+=1) {
+       if(await fileExist(files[i])) {
+         const fileNumber = this.fileNumber.toString(10).padStart(4, '0').toUpperCase();
+         this.fileNumber += 1;
+         const file = `SCA${fileNumber}_${path.parse(files[i]).base}`;
+         await fs.promises.copyFile(files[i], path.join(target, file));
+         this.softwareCompositionUriFiles.push(file);
+       }
+     }
   }
 
 
