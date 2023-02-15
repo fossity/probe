@@ -130,6 +130,19 @@ ipcMain.handle(
 );
 
 ipcMain.handle(
+  IpcChannels.PROJECT_UPDATE,
+  async (_event, projectDTO: NewProjectDTO) => {
+    try {
+      const project = await projectService.updateProject(projectDTO);
+      return Response.ok({ data: project, message: 'Project updated successfully'});
+    } catch (error: any) {
+      log.error('[CREATE PROJECT]', error);
+      return Response.fail({ message: error.message });
+    }
+  }
+);
+
+ipcMain.handle(
   IpcChannels.PROJECT_CREATE_FOSSITY_PACKAGE,
   async (_event, params: ProjectPackageDTO) => {
     try {

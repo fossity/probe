@@ -44,6 +44,7 @@ contextBridge.exposeInMainWorld('path', {
   sep: path.sep,
   basename: (filepath, extension) => path.basename(filepath, extension),
   dirname: (filepath) => path.dirname(filepath),
+  join: (...paths: string[]) => path.join(...paths),
 });
 
 contextBridge.exposeInMainWorld('shell', {

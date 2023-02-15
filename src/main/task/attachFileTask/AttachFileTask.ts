@@ -36,14 +36,19 @@ export class AttachFileTask implements Scanner.IPipelineTask {
    return true;
   }
 
-  private async copyFiles(target: string, files: Array<string>){
-      return Promise.all(files.map((f) => {
-        const fileNumber = this.fileNumber.toString(10).padStart(4,'0').toUpperCase();
-        this.fileNumber +=1;
-        const file = `SCA${fileNumber}_${path.parse(f).base}`;
-        this.softwareCompositionUriFiles.push(file);
-        return fs.promises.copyFile(f, path.join(target,file));
-      }));
+  private async copyFiles(target: string, files: Array<string>) {
+    const promises = files.map((f) => {
+      const fileNumber = this.fileNumber.toString(10).padStart(4, '0').toUpperCase();
+      this.fileNumber += 1;
+      const file = `SCA${fileNumber}_${path.parse(f).base}`;
+      this.softwareCompositionUriFiles.push(file);
+      return fs.promises.copyFile(f, path.join(target, file));
+    });
+    const results = await Promise.all(promises.map(p => p.catch(e => e)));
+    console.log(results);
+    const errors = results.filter(result => (result instanceof Error));
+    console.log(errors);
   }
+
 
 }

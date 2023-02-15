@@ -93,7 +93,7 @@ export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScann
   }
 
   private async scan() {
-    const scanIn = this.inputAdapter.adapterToScannerInput(this.project, this.project.filesToScan);
+    const scanIn = this.inputAdapter.adapterToScannerInput(this.project, this.project.getTree().getSummarize().files);
     await this.fingerprint.start(scanIn);
   }
 

@@ -1,6 +1,6 @@
 import log from 'electron-log';
 import path from 'path';
-import { IMetadata, IProject, IProjectInfoMetadata, ProjectState } from '../../api/types';
+import {IMetadata, IProjectInfoMetadata, ProjectState, ScanState} from '../../api/types';
 import fs from 'fs';
 import {AppDefaultValues} from "../../config/AppDefaultValues";
 import {Project} from '../workspace/Project';
@@ -10,9 +10,9 @@ import {NewProjectDTO, ProjectPackageDTO} from '../../api/dto';
 import {FossityPackagerTask} from '../task/fossityPackagerTask/FossityPackagerTask';
 import {IndexPipelineTask} from "../task/scannerTask/scannerPipeline/IndexPipelineTask";
 import {FingerprintPipelineTask} from "../task/scannerTask/scannerPipeline/FingerprintPipelineTask";
-import { ProjectFilterName } from '../workspace/filters/ProjectFilterName';
-import { broadcastManager } from '../broadcastManager/BroadcastManager';
-import { IpcChannels } from '../../api/ipc-channels';
+import {ProjectFilterName} from '../workspace/filters/ProjectFilterName';
+import {broadcastManager} from '../broadcastManager/BroadcastManager';
+import {IpcChannels} from '../../api/ipc-channels';
 import {CipherTask} from "../task/cipherTask/CipherTask";
 import {getAssetFolderPath} from "../util";
 import * as os from "os";
@@ -24,15 +24,28 @@ class ProjectService {
       p = await this.create(projectDTO);
       await new IndexPipelineTask().run(p);
     } else {
-      p = await workspace.getOpenProject();
+      p = await workspace.openProject(new ProjectFilterName(projectDTO.name));
       await this.updateProjectMetadata(p, projectDTO);
+      if (p.metadata.getScannerState()!== ScanState.INDEXED) await new IndexPipelineTask().run(p);
       broadcastManager.get().send(IpcChannels.SCANNER_FINISH_SCAN, {
         success: true,
         resultsPath: p.metadata.getMyPath(),
       });
     }
-
     return p.getDto();
+  }
+
+  public async updateProject(projectDTO: NewProjectDTO): Promise<IMetadata>{
+    let p: Project = null;
+    if (!workspace.existProject(projectDTO.name)) {
+      p = await this.create(projectDTO);
+    }else {
+      p = await workspace.openProject(new ProjectFilterName(projectDTO.name))
+      await this.updateProjectMetadata(p, projectDTO);
+    }
+    const dto = p.getDto();
+    await p.close();
+    return dto;
   }
 
   public async resume(projectPath: string) {
