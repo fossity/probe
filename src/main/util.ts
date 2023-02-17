@@ -2,6 +2,7 @@
 import { URL } from 'url';
 import path from 'path';
 import fs, {constants} from "fs";
+import { app } from 'electron';
 
 export let resolveHtmlPath: (htmlFileName: string) => string;
 
@@ -28,8 +29,9 @@ export function fileExist(path:string) {
 }
 
 export const getAssetFolderPath = () => {
-  const isDev = process.env.NODE_ENV !== 'production';
-  return isDev
-    ? path.join(__dirname, '../../assets')
-    : path.join(__dirname, './assets')
+  const RESOURCES_PATH = app.isPackaged
+    ? path.join(process.resourcesPath, 'assets')
+    : path.join(__dirname, '../../assets');
+
+  return RESOURCES_PATH
 }
