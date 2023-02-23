@@ -18,7 +18,7 @@ export abstract class IndexTreeTask implements Scanner.IPipelineTask {
   public getStageProperties(): Scanner.StageProperties {
     return {
       name: ScannerStage.INDEX,
-      label: i18next.t('Title:Indexing'),
+      label: i18next.t('Title:ScanHints.Indexing'),
       isCritical: true,
     };
   }

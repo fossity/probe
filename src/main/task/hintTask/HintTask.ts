@@ -20,7 +20,7 @@ export class HintTask implements Scanner.IPipelineTask {
   public getStageProperties(): Scanner.StageProperties {
     return {
       name: ScannerStage.HINT,
-      label: i18next.t('Title:CreatingHints'),
+      label: i18next.t('Title:ScanHints.CreatingHints'),
       isCritical: false,
     };
   }

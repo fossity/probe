@@ -8,28 +8,11 @@
   }
 
   .app-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    .circular-progress-container {
+    .content {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-    }
-
-    .progressbar {
-      min-height: 30px;
-    }
-
-    .stage-label {
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-bottom: 60px;
-      text-align: center;
-      padding-top: 10px;
+      height: 500px;
     }
   }
 }

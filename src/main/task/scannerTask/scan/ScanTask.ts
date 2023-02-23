@@ -11,7 +11,7 @@ export abstract class ScanTask<TDispatcher extends IDispatch, TInputScannerAdapt
   public getStageProperties(): Scanner.StageProperties {
     return {
       name: ScannerStage.SCAN,
-      label: i18next.t('Title:Scanning'),
+      label: i18next.t('Title:ScanHints.Fingerprint'),
       isCritical: true,
     };
   }

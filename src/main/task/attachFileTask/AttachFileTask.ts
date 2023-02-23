@@ -22,7 +22,7 @@ export class AttachFileTask implements Scanner.IPipelineTask {
   getStageProperties(): Scanner.StageProperties {
     return {
       name: ScannerStage.ATTACH_FILES,
-      label: i18next.t('Title:AttachingFiles'),
+      label: i18next.t('Title:ScanHints.AttachingFiles'),
       isCritical: true,
     };
   }

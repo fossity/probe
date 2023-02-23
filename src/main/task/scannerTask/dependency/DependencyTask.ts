@@ -19,7 +19,7 @@ export class DependencyTask implements Scanner.IPipelineTask {
   public getStageProperties(): Scanner.StageProperties {
     return {
       name: ScannerStage.DEPENDENCY,
-      label: i18next.t('Title:AnalyzingDependencies'),
+      label: i18next.t('Title:ScanHints.AnalyzingDependencies'),
       isCritical: false,
     };
   }

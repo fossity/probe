@@ -402,6 +402,7 @@ const ProjectSettings = () => {
               variant="contained"
               color="primary"
               type="submit"
+              disabled={!projectValidName || projectNameExists}
             >
               {t('Button:Next')}
             </Button>

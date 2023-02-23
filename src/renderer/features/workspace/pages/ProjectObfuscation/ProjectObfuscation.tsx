@@ -36,13 +36,13 @@ const ProjectObfuscation = () => {
 
   const init = async () => { };
 
-  const onTagsHandler = (e) => {
+  const onNewTagHandler = (e) => {
     const tag = inputRef.current.value.toLowerCase().trim();
 
     const banned = isBanned(tag);
     setBannedWord(banned ? tag : null);
 
-    if (e.key !== 'Enter' || tag.length === 0 || banned) return;
+    if ( (e.key && e.key !== 'Enter') || tag.length === 0 || banned) return;
 
     const tags = [...new Set([...value, tag])];
     setValue(tags);
@@ -97,9 +97,10 @@ const ProjectObfuscation = () => {
                     placeholder="Add words to the banned list"
                     helperText={bannedWord ? `"${bannedWord}" cannot be obfuscated as it is an important clue for auditors.` : ' '}
                     name="word"
-                    onKeyUp={onTagsHandler}
+                    onKeyUp={onNewTagHandler}
                     inputRef={inputRef}
                     InputProps={{
+                      autoFocus: true,
                       startAdornment: (
                         <InputAdornment position="start">
                           <TextIncreaseOutlinedIcon />
@@ -108,8 +109,9 @@ const ProjectObfuscation = () => {
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
+                            tabIndex={-1}
                             aria-label="toggle password visibility"
-                            onClick={ (e) => onTagsHandler(e)}
+                            onClick={onNewTagHandler}
                             edge="end"
                             size="small"
                           >

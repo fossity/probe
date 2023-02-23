@@ -17,7 +17,7 @@ export class ObfuscationTask implements Scanner.IPipelineTask {
   getStageProperties(): Scanner.StageProperties {
     return {
       name: ScannerStage.OBFUSCATE,
-      label: i18next.t('Title:Obfuscating'),
+      label: i18next.t('Title:ScanHints.Obfuscating'),
       isCritical: true,
     };
   }

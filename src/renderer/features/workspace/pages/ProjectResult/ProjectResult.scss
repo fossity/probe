@@ -1,11 +1,16 @@
-#ProjectDetails {
+#ProjectResult {
 
   .content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 500px;
 
-   .stepper {
+    .progress-bar-number {
+      width: 50px;
+    }
+
+    .stepper {
      $size: 32px;
 
      position: relative;

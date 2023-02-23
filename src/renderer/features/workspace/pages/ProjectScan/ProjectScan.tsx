@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { IconButton } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { IpcChannels } from '@api/ipc-channels';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { projectService } from '@api/services/project.service';
@@ -10,12 +8,14 @@ import {
   selectWorkspaceState,
   setCurrentProject,
   setNewProject,
-  setScanPath
 } from '@store/workspace-store/workspaceSlice';
+
 import { useTranslation } from 'react-i18next';
 import { AppDefaultValues } from '@config/AppDefaultValues';
 import * as controller from '../../../../controllers/home-controller';
-import CircularComponent from '../Components/CircularComponent';
+import ProgressBar from '../Components/ProgressBar';
+
+import analysis from '@assets/imgs/analysis.png';
 
 const ProjectScan = () => {
   const navigate = useNavigate();
@@ -167,14 +167,15 @@ const ProjectScan = () => {
     <>
       <section id="ProjectScan" className="app-page app-main">
         <main className="app-content">
-          <div className="progressbar">
-            <div className="circular-progress-container">
-              <CircularComponent
+          <div className="content">
+              <img  className="mt-5" src={analysis} alt='Analysis' height="200" />
+              <h1>We are gathering your code samples!</h1>
+
+              <ProgressBar
                 stage={stage}
                 progress={progress}
                 pauseScan={() => onPauseHandler()}
               />
-            </div>
           </div>
         </main>
       </section>

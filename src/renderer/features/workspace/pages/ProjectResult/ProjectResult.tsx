@@ -34,16 +34,17 @@ const ProjectResult = () => {
 
   return (
     <>
-        <section id="ProjectDetails" className="app-page app-main">
+        <section id="ProjectResult" className="app-page app-main">
           <main className="app-content">
               <div className='content'>
-
-                <img src={done} alt='Done!' width="200" />
-                <h1>Your samples have been collected!</h1>
+                <img className="mt-5" src={done} alt='Done!' height="200" />
+                <h1>Your audit samples have been collected!</h1>
 
                 <div className="progress-bar d-flex align-center mb-6">
                   <LinearProgress color="success" value={100} variant="determinate" sx={{width: 500, height: 20, borderRadius: 5,}}/>
-                  <CheckCircleOutlineIcon className="ml-2" color="success" fontSize="medium"/>
+                  <div className='progress-bar-number ml-2 d-flex align-center'>
+                    <CheckCircleOutlineIcon color="success" fontSize="small" />
+                  </div>
                 </div>
                 <section className='stepper'>
                   <div className='line left' />

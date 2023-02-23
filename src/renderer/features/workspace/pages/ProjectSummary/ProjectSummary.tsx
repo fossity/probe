@@ -27,7 +27,7 @@ const ProjectSummary = () => {
           <header className="app-header">
             <FlowHeader
               title={t('Summary')}
-              subtitle={t('Check the audit project information before start the fingerprinting process')}
+              subtitle={t('Please make sure that you are not including any sensitive information in your description texts or any of the information collected')}
             />
           </header>
           <main className="app-content">
