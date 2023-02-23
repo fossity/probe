@@ -1,18 +1,12 @@
 import React, { useEffect } from 'react';
-import { Button, Chip, Grid, Tooltip, Typography } from '@mui/material';
+import { Chip, Tooltip, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-import { AppDefaultValues } from '@config/AppDefaultValues';
 import { selectWorkspaceState } from '@store/workspace-store/workspaceSlice';
-import FlowStepper from '@components/FlowStepper/FlowStepper';
-import FlowHeader from '@components/FlowHeader';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 const useStyles = makeStyles((theme) => ({
   root: {

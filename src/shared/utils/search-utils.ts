@@ -15,4 +15,22 @@ const getTerms = (querySearch: string, regex = /[\W_]+/): string[] => {
  */
 const isBanned = (value) => BANNED_LIST.has(value.toLowerCase());
 
-export { getTerms, isBanned };
+const groupByFirstLetter = (arr: string[]): {[key: string]: string[]} => {
+  const result: {[key: string]: string[]} = {};
+
+  for (const item of arr) {
+    const firstLetter = item[0].toUpperCase();
+    if (!result[firstLetter]) {
+      result[firstLetter] = [];
+    }
+    result[firstLetter].push(item);
+  }
+
+  // Sort the keys in ascending order and return the result object
+  return Object.keys(result).sort().reduce((obj, key) => {
+    obj[key] = result[key];
+    return obj;
+  }, {} as {[key: string]: string[]});
+}
+
+export { getTerms, isBanned, groupByFirstLetter };

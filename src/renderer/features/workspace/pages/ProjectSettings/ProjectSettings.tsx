@@ -14,7 +14,12 @@ import { useTranslation } from 'react-i18next';
 import FormGroup from '@mui/material/FormGroup';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectWorkspaceState, setNewProject, setScanPath } from '@store/workspace-store/workspaceSlice';
+import {
+  selectWorkspaceState,
+  setNewProject,
+  setObfuscateList,
+  setScanPath
+} from '@store/workspace-store/workspaceSlice';
 import { workspaceService } from '@api/services/workspace.service';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
 import { AppDefaultValues } from '@config/AppDefaultValues';
@@ -67,7 +72,7 @@ const ProjectSettings = () => {
   const { t } = useTranslation();
 
 
-  const { projects, scanPath, newProject } = useSelector(selectWorkspaceState);
+  const { projects, scanPath, newProject, obfuscateList } = useSelector(selectWorkspaceState);
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
 
   const [isEdition, setIsEdition] = useState<boolean>(!!newProject.uuid);
@@ -140,8 +145,11 @@ const ProjectSettings = () => {
   }
 
   const submit = async () => {
+    if (!obfuscateList) {
+      const defaultBanned = newProject.projectInfo.contact.email.match(/@([^.]+)/)[1].toLowerCase();
+      dispatch(setObfuscateList([defaultBanned]));
+    }
     dispatch(setScanPath({ ...scanPath, projectName: newProject.name }));
-    // dispatch(setNewProject(projectSettings));
     navigate('/workspace/new/scan', { state: { pipeline: AppDefaultValues.PIPELINE.INDEX } });
   };
 

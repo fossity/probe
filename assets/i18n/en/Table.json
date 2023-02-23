@@ -6,8 +6,8 @@
     "Version": "Version",
     "License": "License",
     "Copyleft": "Copyleft",
-    "OriginalFile": "Original File",
-    "RenamedFile": "Original File"
+    "Original": "Original",
+    "Obfuscated": "Obfuscated"
   },
   "Version": "Version",
   "License": "License"

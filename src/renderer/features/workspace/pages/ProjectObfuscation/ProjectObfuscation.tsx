@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Chip, Paper, TextField } from '@mui/material';
+import { Button, Chip, FormControl, Grid, IconButton, InputAdornment, Paper, TextField } from '@mui/material';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,106 +7,141 @@ import { useTranslation } from 'react-i18next';
 
 import { selectWorkspaceState, setObfuscateList } from '@store/workspace-store/workspaceSlice';
 import { DialogContext, IDialogContext } from '@context/DialogProvider';
-import Autocomplete from '@mui/material/Autocomplete';
 import { obfuscateService } from '@api/services/obfuscate.service';
-import { isBanned } from '@shared/utils/search-utils';
+import { groupByFirstLetter, isBanned } from '@shared/utils/search-utils';
 import FlowStepper from '@components/FlowStepper/FlowStepper';
 import FlowHeader from '@components/FlowHeader';
+import Panel, { Data } from '@components/Panel';
+import TextInput from '@components/TextInput';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
+import TextIncreaseOutlinedIcon from '@mui/icons-material/TextIncreaseOutlined';
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 
 const ProjectObfuscation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const {obfuscateList } = useSelector(selectWorkspaceState);
+  const {obfuscateList, newProject} = useSelector(selectWorkspaceState);
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
 
-  const [value, setValue] = React.useState<string[]>(obfuscateList);
-  const [results, setResults] = React.useState<any[]>([]);
+  const inputRef = React.createRef<any>();
 
-  useEffect(() => {
-    init();
-  }, []);
+
+  const [value, setValue] = React.useState<string[]>(obfuscateList || []);
+  const [group, setGroup] = React.useState< {[key: string]: string[]}>({});
+  const [results, setResults] = React.useState<any[]>([]);
+  const [obfuscatedData, setObfuscatedData] = React.useState<any>(null);
+  const [bannedWord, setBannedWord] = React.useState<string>();
 
   const init = async () => { };
 
-  const onTagsHandler = (tags: string[]) => {
-    const nTags = tags
-      .map((tag) => tag.toLowerCase().trim())
-      // .map((tag) => SearchUtils.getTerms(tag))
-      .flat();
+  const onTagsHandler = (e) => {
+    const tag = inputRef.current.value.toLowerCase().trim();
 
-    setValue(nTags);
+    const banned = isBanned(tag);
+    setBannedWord(banned ? tag : null);
+
+    if (e.key !== 'Enter' || tag.length === 0 || banned) return;
+
+    const tags = [...new Set([...value, tag])];
+    setValue(tags);
+
+    inputRef.current.value = '';
   };
 
+  const onDeleteHandler = (tag: string) => {
+    const tags = value.filter(item => item !== tag )
+    setValue(tags);
+  }
+
   const preview = async () => {
-    const list: string[] = value.filter(item => !isBanned(item));
-    const previewData = await obfuscateService.obfuscatePreview(list);
+    const previewData = await obfuscateService.obfuscatePreview(value);
+    setObfuscatedData(previewData);
     setResults(Array.from(previewData.files, ([key, value]) => ({ key, value })));
-    dispatch(setObfuscateList(list));
+    dispatch(setObfuscateList(value));
   }
 
   const submit = async (e) => {
     navigate('/workspace/new/summary');
   };
 
+
+
   useEffect(() => {
       preview();
-    }, [value]);
+      setGroup(groupByFirstLetter(value));
+  }, [value]);
+
+  useEffect(() => {
+    init();
+  }, []);
 
   return (
     <>
-      <form onSubmit={(e) => submit(e)}>
+
         <section id="ProjectObfuscation" className="app-page app-pipeline">
           <header className="app-header">
             <FlowHeader
               title={t('Project Obfuscation')}
-              subtitle={t('Here you can optionally obfuscate specific strings in the generated file path')}
+              subtitle={t('File paths and file names sometimes contain sensitive information, such as company name or project/product name. Here you can obfuscate sensitive strings')}
             />
           </header>
           <main className="app-content">
               <div className='content'>
-                <Paper className="mb-5 p-1 pl-3 pr-3">
-                  <Autocomplete
-                    multiple
-                    fullWidth
-                    size="small"
-                    options={[]}
-                    freeSolo
-                    value={value}
-                    renderTags={(value: readonly string[], getTagProps) =>
-                      value.map((option: string, index: number) => (
-                        // eslint-disable-next-line react/jsx-key
-                        <Chip
-                          color={!isBanned(option) ? 'primary' : 'error'}
-                          variant="outlined"
-                          size="small"
-                          label={option}
-                          {...getTagProps({ index })}
-                          className={`mr-1 ${ isBanned(option) ? 'isBanned' : ''}`}
-                        />
+                <FormControl
+                  className="input-area"
+                >
+                  <TextInput
+                    error={!!bannedWord}
+                    placeholder="Add words to the banned list"
+                    helperText={bannedWord ? `"${bannedWord}" cannot be obfuscated as it is an important clue for auditors.` : ' '}
+                    name="word"
+                    onKeyUp={onTagsHandler}
+                    inputRef={inputRef}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <TextIncreaseOutlinedIcon />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={ (e) => onTagsHandler(e)}
+                            edge="end"
+                            size="small"
+                          >
+                            <ArrowForwardIosOutlinedIcon fontSize="inherit" />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    />
+                </FormControl>
+
+                <Panel title={`Banned list (${value.length})`}>
+                  <div className="word-list">
+                    {
+                      Object.keys(group).map((key) => (
+                        <>
+                          <h6 className="mb-0 mt-1" key={key} >{ key }</h6>
+                          {
+                            group[key].map( (item) => <Chip
+                            color="secondary"
+                            size="small"
+                            onDelete={(e) => onDeleteHandler(item)}
+                            key={item}
+                            label={`${item} (${obfuscatedData?.summary?.obfuscationSummary[item] || '0'})`} />)
+                          }
+                        </>
                       ))
                     }
-                    onChange={(event, data) => onTagsHandler(data)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        autoFocus
-                        variant="standard"
-                        InputProps={{
-                          ...params.InputProps,
-                          placeholder: value.length > 0 ? '' : "Add words to obfuscate...",
-                          disableUnderline: true,
-                        }}
-                      />
-                    )}
-                  />
-                </Paper>
+                  </div>
+                </Panel>
 
-                <div className='results'>
+                <Panel title={ `Preview ${obfuscatedData ? `(${obfuscatedData.summary.totalFilesObfuscated} of ${obfuscatedData.summary.totalFiles} files renamed)` : ''}`}>
                   <AutoSizer>
                     {({ height, width }) => (
                       <Table
@@ -117,12 +152,12 @@ const ProjectObfuscation = () => {
                         rowCount={results.length}
                         rowGetter={({index}) => results[index]}
                       >
-                        <Column label={t('Table:Header:OriginalFile')} dataKey="key"  width={width / 2} flexGrow={0} flexShrink={0} />
-                        <Column label={t('Table:Header:RenamedFile')} dataKey="value" width={width / 2} flexGrow={0} flexShrink={0} />
+                        <Column label={t('Table:Header:Original')} dataKey="key"  width={width / 2} flexGrow={0} flexShrink={0} />
+                        <Column label={t('Table:Header:Obfuscated')} dataKey="value" width={width / 2} flexGrow={0} flexShrink={0} />
                       </Table>
                     )}
                   </AutoSizer>
-                </div>
+                </Panel>
               </div>
           </main>
           <footer className='app-footer'>
@@ -142,13 +177,13 @@ const ProjectObfuscation = () => {
                 variant="contained"
                 color="primary"
                 type="submit"
+                onClick={submit}
               >
                 {t('Button:Next')}
               </Button>
             </div>
           </footer>
         </section>
-      </form>
     </>
   );
 };

@@ -28,7 +28,7 @@ const initialState: WorkspaceState = {
     },
   },
   scanPath: null,
-  obfuscateList: [],
+  obfuscateList: null,
 };
 
 export const workspaceSlice = createSlice({
@@ -49,7 +49,7 @@ export const workspaceSlice = createSlice({
     },
     clean: (state) => {
       state.newProject = initialState.newProject;
-      state.obfuscateList = [];
+      state.obfuscateList = null;
     }
   },
   extraReducers: {

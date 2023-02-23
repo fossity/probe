@@ -7,7 +7,7 @@ const TextInput = styled((props: TextFieldProps) => (
     fullWidth
     spellCheck={false}
     {...props}
-    InputProps={{ disableUnderline: true, ...props.InputProps } as Partial<OutlinedInputProps>}
+    InputProps={{ className: !props.label && 'no-label', disableUnderline: true, ...props.InputProps } as Partial<OutlinedInputProps>}
   />
 ))(({ theme }) => ({
   '& .MuiFilledInput-root': {
@@ -30,6 +30,9 @@ const TextInput = styled((props: TextFieldProps) => (
 
     '&.MuiInputBase-multiline': {
       padding: '8px 12px',
+    },
+    '&.no-label .MuiInputBase-input': {
+      padding: '14px 12px',
     },
   },
 

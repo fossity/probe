@@ -6,14 +6,29 @@
       height: 100%;
       display: grid;
       grid-template-rows: auto  1fr;
+      grid-template-columns: 1fr  3fr;
+      grid-gap: 16px;
     }
 
-    .results {
-      height: 100%;
-
-      .ReactVirtualized__Table__rowColumn {
-        font-size: 12px;
-      }
+    .input-area {
+      grid-column: 1/3;
+      max-width: $search-box-width;
     }
+
+    .word-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+
+    .ReactVirtualized__Table__headerRow {
+      text-transform: none;
+    }
+    .ReactVirtualized__Table__rowColumn {
+      font-size: 12px;
+    }
+
   }
 }
