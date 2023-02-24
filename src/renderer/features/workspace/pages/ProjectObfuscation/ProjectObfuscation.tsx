@@ -83,8 +83,8 @@ const ProjectObfuscation = () => {
         <section id="ProjectObfuscation" className="app-page app-pipeline">
           <header className="app-header">
             <FlowHeader
-              title={t('Project Obfuscation')}
-              subtitle={t('File paths and file names sometimes contain sensitive information, such as company name or project/product name. Here you can obfuscate sensitive strings')}
+              title={t('Title:ProjectObfuscation')}
+              subtitle={t('Title:ProjectObfuscationSubtitle')}
             />
           </header>
           <main className="app-content">
@@ -94,8 +94,8 @@ const ProjectObfuscation = () => {
                 >
                   <TextInput
                     error={!!bannedWord}
-                    placeholder="Add words to the banned list"
-                    helperText={bannedWord ? `"${bannedWord}" cannot be obfuscated as it is an important clue for auditors.` : ' '}
+                    placeholder={t('Title:BannedInputPlaceholder')}
+                    helperText={bannedWord ? t('NoBannedWord', { word: bannedWord }) : ' '}
                     name="word"
                     onKeyUp={onNewTagHandler}
                     inputRef={inputRef}
@@ -110,7 +110,6 @@ const ProjectObfuscation = () => {
                         <InputAdornment position="end">
                           <IconButton
                             tabIndex={-1}
-                            aria-label="toggle password visibility"
                             onClick={onNewTagHandler}
                             edge="end"
                             size="small"
@@ -123,7 +122,7 @@ const ProjectObfuscation = () => {
                     />
                 </FormControl>
 
-                <Panel title={`Banned list (${value.length})`}>
+                <Panel title={t('Title:NBannedList', { count: value.length })}>
                   <div className="word-list">
                     {
                       Object.keys(group).map((key) => (
@@ -143,7 +142,7 @@ const ProjectObfuscation = () => {
                   </div>
                 </Panel>
 
-                <Panel title={ `Preview ${obfuscatedData ? `(${obfuscatedData.summary.totalFilesObfuscated} of ${obfuscatedData.summary.totalFiles} files renamed)` : ''}`}>
+                <Panel title={  t('Title:ObfuscationPreview', { count: obfuscatedData?.summary.totalFilesObfuscated, total: obfuscatedData?.summary.totalFiles })}>
                   <AutoSizer>
                     {({ height, width }) => (
                       <Table

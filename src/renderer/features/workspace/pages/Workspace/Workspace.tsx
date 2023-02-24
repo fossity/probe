@@ -65,7 +65,7 @@ const Workspace = () => {
   const onDownloadHandler = async (project: IProject) => downloadProject(project);
 
   const onTrashHandler = async (project: IProject) => {
-    const { action } = await dialogCtrl.openConfirmDialog('Delete Audit Project', t('Dialog:DeleteQuestion'), {
+    const { action } = await dialogCtrl.openConfirmDialog(t('Title:DeleteAuditProject'), t('Dialog:DeleteQuestion'), {
       label: t('Button:Yes'),
       role: 'delete',
     });

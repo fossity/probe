@@ -51,7 +51,7 @@ const ProjectDetail = () => {
             <div className="button-container end">
               <Tooltip
                 arrow
-                title="Review the samples generated before package the content.">
+                title={t('Tooltip:ReviewButton')}>
                 <Button
                   variant="contained"
                   color="secondary"
@@ -62,7 +62,8 @@ const ProjectDetail = () => {
               </Tooltip>
               <Tooltip
                 arrow
-                title="Export a encrypted .fossity file with all your samples.">
+                title={t('Tooltip:ExportButton')}
+              >
                 <Button
                   variant="contained"
                   color="primary"

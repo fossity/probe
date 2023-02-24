@@ -8,7 +8,6 @@ import FlowStepper from '@components/FlowStepper/FlowStepper';
 import FlowHeader from '@components/FlowHeader';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ProjectInfo from '../Components/ProjectInfo/ProjectInfo';
 
 
@@ -26,8 +25,8 @@ const ProjectSummary = () => {
         <section id="ProjectSummary" className="app-page app-pipeline">
           <header className="app-header">
             <FlowHeader
-              title={t('Summary')}
-              subtitle={t('Please make sure that you are not including any sensitive information in your description texts or any of the information collected')}
+              title={t('Title:Summary')}
+              subtitle={t('Title:SummarySubtitle')}
             />
           </header>
           <main className="app-content">

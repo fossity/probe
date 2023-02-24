@@ -87,40 +87,40 @@ const ProjectInfo = () => {
 
   return (
     <div id="ProjectInfo" className='content'>
-              <Panel title={t('Contact Information')}>
-                <Data label="Name" value={newProject.projectInfo.contact.name} />
-                <Data label="Email Address" value={newProject.projectInfo.contact.email} />
-                <Data label="Phone Number" value={newProject.projectInfo.contact.phone} />
+              <Panel title={t('Title:ContactInformation')}>
+                <Data label={t('Title:Name')} value={newProject.projectInfo.contact.name} />
+                <Data label={t('Title:EmailAddress')} value={newProject.projectInfo.contact.email} />
+                <Data label={t('Title:PhoneNumber')} value={newProject.projectInfo.contact.phone} />
               </Panel>
 
-              <Panel title={t('Known Software Composition')}>
+              <Panel title={t('Title:KnownSoftwareComposition')}>
                 <Data
-                  label="Files Attached"
+                  label={t('Title:FilesAttached')}
                   value=
                     { newProject.projectInfo.software_composition_uri?.length > 0 ?
                       <Tooltip title={newProject.projectInfo.software_composition_uri.join(', ')}>
                         <small className="d-flex align-center">
-                          <span className="mr-1">{newProject.projectInfo.software_composition_uri.length} file(s) attached</span>
+                          <span className="mr-1">{t('NFilesAttached', { count: newProject.projectInfo.software_composition_uri.length })}</span>
                           <InfoOutlinedIcon fontSize="inherit" />
                         </small>
                       </Tooltip>
-                      : <>No files attached</>
+                      : <>{t('NoFilesAttached')}</>
                     }
                   size="small"
                 />
 
-                <Data label="Additional Information" value={newProject.projectInfo.software_composition} size="small" />
+                <Data label={t('Title:AdditionalInformation')} value={newProject.projectInfo.software_composition} size="small" />
               </Panel>
 
-              <Panel title={t('Licensing')}>
-                <Data label="License" value={newProject.projectInfo.default_license || 'Proprietary'} />
-                <Data label="Additional Information" value={newProject.projectInfo.extra_license} size="small" />
+              <Panel title={t('Title:Licensing')}>
+                <Data label={t('Title:License')} value={newProject.projectInfo.default_license || t('Title:Proprietary')} />
+                <Data label={t('Title:AdditionalInformation')} value={newProject.projectInfo.extra_license} size="small" />
               </Panel>
 
-              <Panel title={t('Obfuscation')}>
+              <Panel title={t('Title:Obfuscation')}>
                 <Data
-                  label="Word List"
-                  value={obfuscateList?.length ? `${obfuscateList.length} word(s) obfuscated` : 'No words obfuscated'}
+                  label={t('Title:BannedList')}
+                  value={t('NBannedList', { count: obfuscateList?.length || 0 })}
                   size="small" />
 
                 <div className="word-list">

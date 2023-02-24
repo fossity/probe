@@ -11,6 +11,8 @@ import { IProject } from '@api/types';
 import { projectService } from '@api/services/project.service';
 import { Button } from '@mui/material';
 import {AppDefaultValues} from "@config/AppDefaultValues";
+import { DIALOG_ACTIONS } from '@context/types';
+import { workspaceService } from '@api/services/workspace.service';
 
 export interface IAppContext {
   newProject: () => void;
@@ -40,6 +42,15 @@ const AppProvider = ({ children }) => {
   };
 
   const downloadProject = async (project: IProject) => {
+/*    const { action } = await dialogCtrl.openConfirmDialog('Export Audit Project', t('Dialog:ExportQuestion'), {
+      label: t('Button:Yes'),
+      role: 'delete',
+    });
+    if (action === DIALOG_ACTIONS.OK) {
+      await workspaceService.deleteProject(project.work_root);
+    }
+*/
+
     const path = await dialogController.showSaveDialog({
       filters: [{ name: 'Fossity Package Archive', extensions: ['fossity'] }],
       defaultPath: project.name,

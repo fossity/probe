@@ -107,8 +107,8 @@ const ProjectScan = () => {
 
   const onPauseHandler = async () => {
     const { action } = await dialogCtrl.openConfirmDialog(
-     t('Dialog:PauseScannerQuestion'),
-      "Scan Paused",
+      t('Dialog:PauseProcess'),
+      t('Dialog:PauseFingerprintProcessQuestion'),
       {
         label: t('Button:OK'),
         role: 'accept',
@@ -169,7 +169,7 @@ const ProjectScan = () => {
         <main className="app-content">
           <div className="content">
               <img  className="mt-5" src={analysis} alt='Analysis' height="200" />
-              <h1>We are gathering your code samples!</h1>
+              <h1>{t('GatheringMessage')}</h1>
 
               <ProgressBar
                 stage={stage}

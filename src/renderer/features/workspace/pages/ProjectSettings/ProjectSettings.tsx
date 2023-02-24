@@ -30,7 +30,6 @@ import TextInput from '@components/TextInput';
 import FlowHeader from '@components/FlowHeader';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
@@ -137,7 +136,7 @@ const ProjectSettings = () => {
   };
 
   const onExitHandler = async () => {
-    const { action } = await dialogCtrl.openConfirmDialog('Back to list', 'Are you sure to exit? Project will be saved as a draft.');
+    const { action } = await dialogCtrl.openConfirmDialog(t('Title:BackToList'), t('Dialog:ExitNewProjectQuestion'));
     if (action === DIALOG_ACTIONS.OK) {
        if (!projectNameExists) await projectService.update(newProject);
       navigate('/workspace', { replace: true });
@@ -179,8 +178,8 @@ const ProjectSettings = () => {
       <section id="ProjectSettings" className="app-page app-pipeline">
           <header className="app-header">
             <FlowHeader
-              title={t('Project Information')}
-              subtitle={t('Complete all the Audit Project information')}
+              title={t('Title:AuditProjectInformation')}
+              subtitle={t('Title:AuditProjectInformationSubtitle')}
             />
           </header>
           <main className="app-content">
@@ -189,11 +188,12 @@ const ProjectSettings = () => {
                   <div className="form-field mb-0">
                     <label className="input-label">{t('Title:ProjectName')}</label>
                       <TextInput
-                        label="Project Name"
+                        label={t('Title:Name')}
                         error={projectNameExists || !projectValidName}
                         disabled={isEdition}
                         value={newProject.name}
                         InputProps={{
+                          autoFocus: true,
                           startAdornment: (
                             <InputAdornment position="start">
                               <InsertDriveFileOutlinedIcon />
@@ -213,7 +213,7 @@ const ProjectSettings = () => {
                     </div>
                   </div>
 
-                  <label className="input-label">{t('Contact Information')}</label>
+                  <label className="input-label">{t('Title:ContactInformation')}</label>
                   <div className="form-field">
                     <TextInput
                       name="name"
@@ -234,7 +234,7 @@ const ProjectSettings = () => {
                       <div className="form-field">
                         <TextInput
                           name="email"
-                          label={t('Email Address')}
+                          label={t('Title:EmailAddress')}
                           type="email"
                           required
                           value={newProject.projectInfo.contact.email}
@@ -252,7 +252,7 @@ const ProjectSettings = () => {
                       <div className="form-field">
                         <TextInput
                           name="phone"
-                          label={t('Phone Number')}
+                          label={t('Title:PhoneNumber')}
                           value={newProject.projectInfo.contact.phone}
                           InputProps={{
                             startAdornment: (
@@ -267,10 +267,10 @@ const ProjectSettings = () => {
                   </Grid>
 
                   <div className="d-flex align-center">
-                    <label className="input-label mt-3">{t('Known Software Composition')}</label>
+                    <label className="input-label mt-3">{t('Title:KnownSoftwareComposition')}</label>
                     <IconButton
                       className="ml-1"
-                      title={t('Tooltip:AttachFile')}
+                      title={t('Tooltip:AttachFiles')}
                       tabIndex={-1}
                       color="inherit"
                       size="small"
@@ -282,7 +282,7 @@ const ProjectSettings = () => {
 
                   <TextInput
                     multiline
-                    placeholder="Enter here the list of known Open Source components used and/or attach an SBOM (only text files allowed, .i.e. SPDX, CycloneDX, CSV, TXT)."
+                    placeholder={t('KnownSoftwareCompositionPlaceholder')}
                     maxRows={3}
                     minRows={3}
                     value={newProject.projectInfo.software_composition}
@@ -292,21 +292,21 @@ const ProjectSettings = () => {
                   <FormGroup className="mt-2">
                     <FormControlLabel
                       control={<Checkbox required defaultChecked={isEdition} />}
-                      label={<small className="checkbox-label">I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
+                      label={<small className="checkbox-label">{t('SensitiveInformationConfirmation')}</small>}
                     />
                   </FormGroup>
                 </Grid>
                 <Grid item xs={6}>
                   <>
-                    <label className="input-label">{t('Licensing')}</label>
+                    <label className="input-label">{t('Title:Licensing')}</label>
                     <FormControl>
                       <RadioGroup
                         defaultValue={license}
                         name="license"
                         onChange={e => setLicense(e.target.value)}
                       >
-                        <FormControlLabel value="proprietary" control={<Radio />} label="Proprietary" />
-                        <FormControlLabel value="other" control={<Radio />} label="Other" />
+                        <FormControlLabel value="proprietary" control={<Radio />} label={t('Title:Proprietary')} />
+                        <FormControlLabel value="other" control={<Radio />} label={t('Title:Other')} />
                       </RadioGroup>
                     </FormControl>
 
@@ -356,7 +356,7 @@ const ProjectSettings = () => {
                         renderInput={(params) => (
                           <TextInput
                             {...params}
-                            label={t('SPDX License List')}
+                            label={t('Title:SPDXLicenseList')}
                             InputProps={{
                               ...params.InputProps,
                               startAdornment: <InputAdornment position="start"><SearchIcon /> </InputAdornment>,
@@ -368,7 +368,7 @@ const ProjectSettings = () => {
                     </div>
                     <TextInput
                       multiline
-                      placeholder="Enter here any additional details about actual licensing of the software being scanned."
+                      placeholder={t('LicensingPlaceholder')}
                       minRows={3}
                       maxRows={3}
                       value={newProject.projectInfo.extra_license}
@@ -377,7 +377,7 @@ const ProjectSettings = () => {
                     <FormGroup className="mt-2">
                       <FormControlLabel
                         control={<Checkbox required defaultChecked={isEdition} />}
-                        label={<small className="checkbox-label">I confirm that the information hereby provided does not contain any sensitive information such as company or product names.</small>}
+                        label={<small className="checkbox-label">{t('SensitiveInformationConfirmation')}</small>}
                       />
                     </FormGroup>
                   </>

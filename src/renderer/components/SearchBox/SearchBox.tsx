@@ -5,7 +5,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
 import TextInput from '@components/TextInput';
-import { AccountCircle } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -58,7 +57,6 @@ const SearchBox = ({ value, placeholder, responseDelay, disabled, onChange }: Se
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
-                aria-label="toggle password visibility"
                 onClick={() => setQuery('')}
                 edge="end"
                 size="small"

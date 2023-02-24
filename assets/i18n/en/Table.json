@@ -3,12 +3,6 @@
     "Name": "Name",
     "Date": "Date",
     "TotalFiles": "Total Files",
-    "Version": "Version",
-    "License": "License",
-    "Copyleft": "Copyleft",
-    "Original": "Original",
     "Obfuscated": "Obfuscated"
-  },
-  "Version": "Version",
-  "License": "License"
+  }
 }

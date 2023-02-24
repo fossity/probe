@@ -38,7 +38,7 @@ const ProjectResult = () => {
           <main className="app-content">
               <div className='content'>
                 <img className="mt-5" src={done} alt='Done!' height="200" />
-                <h1>Your audit samples have been collected!</h1>
+                <h1>{t('FinishMessage')}</h1>
 
                 <div className="progress-bar d-flex align-center mb-6">
                   <LinearProgress color="success" value={100} variant="determinate" sx={{width: 500, height: 20, borderRadius: 5,}}/>
@@ -54,7 +54,8 @@ const ProjectResult = () => {
                     <div className='bullet'>1</div>
                     <Tooltip
                       arrow
-                      title="Review the samples generated before package the content.">
+                      title={t('Tooltip:ReviewButton')}
+                    >
                       <Button
                         variant="contained"
                         color="secondary"
@@ -68,7 +69,8 @@ const ProjectResult = () => {
                     <div className='bullet'>2</div>
                     <Tooltip
                       arrow
-                      title="Export a encrypted .fossity file with all your samples.">
+                      title={t('Tooltip:ExportButton')}
+                    >
                       <Button
                         variant="contained"
                         color="secondary"
@@ -82,7 +84,8 @@ const ProjectResult = () => {
                     <div className='bullet'>3</div>
                     <Tooltip
                       arrow
-                      title="Go to fossity.com and upload your file. We will reach you to start the Audit!">
+                      title={t('Tooltip:UploadButton')}
+                    >
                       <Button
                         variant="contained"
                         color="secondary"
