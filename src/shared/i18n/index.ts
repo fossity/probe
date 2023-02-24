@@ -24,8 +24,7 @@ export enum AppI18nContext {
 
   private static languages: Record<string, string> = {
     'en': "English",
-    'es': "Español",
-    'zh': '简体中文',
+    // 'es': "Español",
   }
 
   private static lng: string;

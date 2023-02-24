@@ -3,6 +3,7 @@
     "Name": "Name",
     "Date": "Date",
     "TotalFiles": "Total Files",
+    "Original": "Original",
     "Obfuscated": "Obfuscated"
   }
 }
