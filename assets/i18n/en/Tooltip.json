@@ -7,6 +7,6 @@
   "Export": "Export",
   "AttachFiles": "Attach Files",
   "ReviewButton": "Review the samples generated before package the content.",
-  "ExportButton": "Export a encrypted .fossity file with all your samples.",
-  "UploadButton": "Go to fossity.com and upload your file. We will reach you to start the Audit!"
+  "ExportButton": "Export an encrypted .fossity file with the collected information and fingerprints.",
+  "UploadButton": "Go to fossity.com and upload your file. You will receive an email with the quotation! If we don't hear from you, your .fossity file is erased after 48hs"
 }
