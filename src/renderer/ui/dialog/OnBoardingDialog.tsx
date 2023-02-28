@@ -35,19 +35,19 @@ const useStyles = makeStyles((theme) => ({
       flexFlow: 'column',
 
       '& p': {
-        textAlign: 'center'
+        textAlign: 'center',
       },
 
       '& .title': {
         margin: 0,
         marginBottom: 8,
-        fontSize: 34,
+        fontSize: 32,
         fontWeight: 600,
       },
       '& .subtitle': {
-        width: '80%',
         margin: '0 auto',
-        fontSize: 17,
+        fontSize: 16,
+        width: '90%',
       }
     },
 
@@ -59,7 +59,8 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
 
       '& > .slide': {
-        maxWidth: '100%'
+        maxWidth: '90%',
+        maxHeight: '90%',
       }
     },
   },
@@ -85,48 +86,49 @@ const useStyles = makeStyles((theme) => ({
 
 const SLIDES = [
   {
-    title: 'Welcome to Fossity Probe!',
-    subtitle: 'Fossity is a specially designed Open Source Auditing Platform with a totally decentralized auditing network. Fossity makes auditing confidential by definition',
+    title: 'Congratulations and thank you for downloading Fossity Probe!',
+    subtitle: 'Fossity Probe is designed to be simple and straightforward to use. Just answer a few basic questions and let the tool extract fingerprints from your code, and Open Source dependencies. Fossity is inherently confidential, as it operates on a Zero Trust principle that does not require the transfer of any sensitive information from the audited code or company.',
     img: c01
   },
   {
-    title: 'Audit Your Projects easier',
-    subtitle: 'Collect software samples with one click and start the process',
+    title: 'Open Source Auditing has never been easier',
+    subtitle: 'Collect your code fingerprints with one click and start the process',
     img: c02
   },
   {
-    title: 'Complete the basic information',
-    subtitle: 'Load the basic information so we can reach you and know more about your audit project',
+    title: 'Answer a few basic questions',
+    subtitle: 'You answers provide context for the auditors and should contain no sensitive information',
     img: c03
   },
   {
-    title: 'Obfuscate strings',
-    subtitle: 'Ban the words sensibles to your project',
+    title: 'File path obfuscation',
+    subtitle: 'To protect sensitive information, you can hide it in file paths by blocking certain keywords',
     img: c04
   },
   {
-    title: 'Analyze your audit project',
-    subtitle: 'Create the fingerprints to audit after',
+    title: 'Fingerprint collection',
+    subtitle: 'Let the Fossity Probe recursively analyze your directory and extract code fingerprints',
     img: c05,
   },
   {
-    title: 'Review the new code',
-    subtitle: 'Check the samples generated, everything must be right when you export.',
+    title: 'Check the information collected ',
+    subtitle: 'All information collected by the Probe will be accessible for your review',
     img: c06,
   },
   {
-    title: 'Download the file .fossity',
-    subtitle: 'Get the file with all your audit project information',
+    title: 'Download the .fossity file',
+    subtitle: 'After you\'ve reviewed the generated files, the Probe will compress and encrypt all information into a single .fossity file, which can be submitted to Fossity to initiate the audit',
     img: c07,
   },
   {
-    title: 'Upload the file in fossity.com',
-    subtitle: 'Go to fossity.com and upload your file. We will reach you to start the Audit!',
+    title: 'Upload your .fossity file',
+    subtitle: 'Securely transfer your file by dropping it in the Fossity website. You will receive a quotation automatically',
     img: c08,
   },
   {
-    title: 'Start auditing easier!',
-    subtitle: 'Now you have it, go and audit your projects in a new simpler way',
+    title: 'Great job, you\'re all set!',
+    subtitle: 'Get started on your software audit immediately by accepting our competitive quote – no further input necessary. \n' +
+      'If you choose to decline the offer or take no action within 48 hours, we automatically delete all information, leaving no trace of the quotation ever being generated.',
     img: c09,
   },
 
