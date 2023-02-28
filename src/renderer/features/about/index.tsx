@@ -73,7 +73,7 @@ const AboutModule = () => {
         <p>
           By using this tool you accept that the results provided do not represent any kind of legal advise, and that you have not included any sensitive information in the entered texts. This tool gathers fingerprints from the source code. These fingerprints cannot be reversed back to the original code. No sensitive information should be submitted to Fossity.
         </p>
-        <p>Copyright &copy; {new Date().getFullYear()} Fossity S.L.</p>
+        <p>Copyright &copy; {new Date().getFullYear()} Fossity Auditing S.L.</p>
         {/*
         <p>
           <LicensesText />
