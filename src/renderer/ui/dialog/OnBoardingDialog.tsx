@@ -157,9 +157,28 @@ const OnBoardingDialog = ({ open, onClose, onCancel }: OnBoardingDialogProps) =>
     }
   }
 
+  const preload = () => {
+    const imgs: Promise<any>[] = SLIDES.map(slide => {
+      return new Promise((resolve, reject) => {
+        const img = new Image()
+        img.onload = function() {
+          resolve(img)
+        }
+        img.onerror = function() {
+          reject(slide.img)
+        }
+        img.src = slide.img
+      });
+    });
+
+    Promise.all(imgs)
+      .then(items => console.log('Carousel imgs loaded succesfully'))
+      .catch(error => console.log(error));
+  };
+
   useEffect(() => {
-    if (open) { }
-  }, [open]);
+    preload();
+  }, []);
 
   return (
     <>

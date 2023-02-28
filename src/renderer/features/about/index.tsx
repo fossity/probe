@@ -71,25 +71,14 @@ const AboutModule = () => {
           .
         </p>
         <p>
-          By using this tool you accept that the results provided do not represent any kind of legal advise and are
-          obtained against the data in the Scanoss Knowledgebase at the time of analysis.
+          By using this tool you accept that the results provided do not represent any kind of legal advise, and that you have not included any sensitive information in the entered texts. This tool gathers fingerprints from the source code. These fingerprints cannot be reversed back to the original code. No sensitive information should be submitted to Fossity.
         </p>
-        <p>The source code is analyzed on the spot and is not transfered anywhere outside this computer.</p>
-        <p>
-          OSADL Attribution Notice:
-          <br />
-          The raw data of the OSADL Open Source License Checklists are licensed under the Creative Commons Attribution
-          4.0 International license (CC-BY-4.0){' '}
-          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">
-            https://creativecommons.org/licenses/by/4.0/
-          </a>
-        </p>
-        <p>© 2017 - 2020 Open Source Automation Development Lab (OSADL) eG and contributors, info@osadl.org</p>
-        <p>For further information about the project see the description at www.osadl.org/checklists</p>
-        <p>Copyright &copy; {new Date().getFullYear()} Scan Open Source Solutions S.L.</p>
+        <p>Copyright &copy; {new Date().getFullYear()} Fossity S.L.</p>
+        {/*
         <p>
           <LicensesText />
         </p>
+        */}
       </div>
       <footer
         style={{

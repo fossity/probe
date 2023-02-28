@@ -4,20 +4,20 @@
   "description": "Desktop version to audit your projects",
   "homepage": "",
   "bugs": {
-    "url": "https://github.com/scanoss/audit-workbench/issues"
+    "url": "https://github.com/fossity/probe/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scanoss/audit-workbench/"
+    "url": "git+https://github.com/fossity/probe/"
   },
   "author": {
     "name": "FOSSITY",
-    "email": "info@fossity.com",
+    "email": "hello@fossity.com",
     "url": "https://www.fossity.com/"
   },
   "license": "GPL-2.0",
   "keywords": [
-    "scanoss",
+    "fossity",
     "opensource"
   ],
   "main": "./src/main/main.ts",
@@ -275,8 +275,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "scanoss",
-      "repo": "audit-workbench"
+      "owner": "fossity",
+      "repo": "probe"
     }
   },
   "devEngines": {

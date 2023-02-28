@@ -1,8 +1,8 @@
-# [SCANOSS AUDIT WORKBENCH](https://scanoss.com/product)
+# [FOSSITY PROBE](https://fossity.com)
 
 ## Internationalization (i18n)
 
-SCANOSS Audit Workbench is multi-language enabled. This is done using the internationalization-framework i18next. See [official documentation](https://www.i18next.com) for more details.
+Fossity Probe is multi-language enabled. This is done using the internationalization-framework i18next. See [official documentation](https://www.i18next.com) for more details.
 
 There are currently 2 languages:
 
@@ -58,4 +58,4 @@ Once you have the application running in development mode, you can gradually cha
 
 ### Contributing
 
-You can help in SCANOSS translations submitting PR directly changing all files described in this guide. For more information see the [Contributing Guide](../../CONTRIBUTING.md) and [Code of Conduct](../../CODE_OF_CONDUCT.md).
+You can help in Fossity translations submitting PR directly changing all files described in this guide. For more information see the [Contributing Guide](../../CONTRIBUTING.md) and [Code of Conduct](../../CODE_OF_CONDUCT.md).

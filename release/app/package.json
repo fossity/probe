@@ -1,12 +1,12 @@
 {
   "name": "fossity-probe",
-  "version": "0.1.1",
-  "description": "Desktop version to use SCANOSS OSS in your projects",
+  "version": "0.9.0",
+  "description": "The Fossity Probe captures basic information and fingerprints from your code.",
   "license": "GPL-2.0",
   "author": {
-    "name": "SCANOSS",
-    "email": "info@scanoss.com",
-    "url": "https://www.scanoss.com/"
+    "name": "FOSSSITY",
+    "email": "hello@fossity.com",
+    "url": "https://www.fossity.com/"
   },
   "main": "./dist/main/main.js",
   "scripts": {
