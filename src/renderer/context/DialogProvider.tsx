@@ -7,12 +7,14 @@ import { LicenseDialog } from '../ui/dialog/LicenseDialog';
 import SettingsDialog from '../ui/dialog/SettingsDialog';
 import { AlertDialog } from '../ui/dialog/AlertDialog';
 import { ProgressDialog } from '../ui/dialog/ProgressDialog';
+import OnBoardingDialog from '../ui/dialog/OnBoardingDialog';
 
 
 export interface IDialogContext {
   openConfirmDialog: (title?: string, message?: string, button?: any, hideDeleteButton?: boolean) => Promise<DialogResponse>;
   openAlertDialog: (message?: string, buttons?: any[]) => Promise<DialogResponse>;
   openSettings: () => Promise<DialogResponse>;
+  openOnBoardingDialog: () => Promise<DialogResponse>;
   createProgressDialog: (message: ReactNode) => Promise<LoaderController>;
 }
 
@@ -133,14 +135,35 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
     });
   };
 
+  const [onBoardingDialog, setOnBoardingDialog] = useState<{
+    open: boolean;
+    onClose?: (response: DialogResponse) => void;
+  }>({ open: false });
+
+  const openOnBoardingDialog = () => {
+    return new Promise<DialogResponse>((resolve) => {
+      setOnBoardingDialog({
+        open: true,
+        onClose: (response) => {
+          setOnBoardingDialog((dialog) => ({ ...dialog, open: false }));
+          resolve(response);
+        },
+      });
+    });
+  };
 
   const handleOpenSettings = () => {
     openSettings();
   };
 
+  const handleOpenOnBoardingDialog = () => {
+    openOnBoardingDialog();
+  };
+
   const setupAppMenuListeners = (): (() => void) => {
     const subscriptions = [];
     subscriptions.push(window.electron.ipcRenderer.on(IpcChannels.MENU_OPEN_SETTINGS, handleOpenSettings));
+    subscriptions.push(window.electron.ipcRenderer.on(IpcChannels.MENU_OPEN_ONBOARDING, handleOpenOnBoardingDialog));
     return () => subscriptions.forEach((unsubscribe) => unsubscribe());
   };
 
@@ -153,7 +176,8 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
         openConfirmDialog,
         openAlertDialog,
         openSettings,
-        createProgressDialog,
+        openOnBoardingDialog,
+        createProgressDialog
       }}
     >
       {children}
@@ -163,6 +187,14 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
           open={settingsDialog.open}
           onCancel={() => settingsDialog.onClose && settingsDialog.onClose(null)}
           onClose={(response) => settingsDialog.onClose && settingsDialog.onClose(response)}
+        />
+      )}
+
+      {onBoardingDialog.open && (
+        <OnBoardingDialog
+          open={onBoardingDialog.open}
+          onCancel={() => onBoardingDialog.onClose && onBoardingDialog.onClose(null)}
+          onClose={(response) => onBoardingDialog.onClose && onBoardingDialog.onClose(response)}
         />
       )}
 

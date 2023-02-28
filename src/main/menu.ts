@@ -61,7 +61,7 @@ export default class MenuBuilder {
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Scanoss',
+      label: 'Fossity',
       submenu: [
         {
           label: i18next.t('AppMenu:NewProject'),
@@ -151,6 +151,12 @@ export default class MenuBuilder {
     const subMenuHelp: MenuItemConstructorOptions = {
       label:  i18next.t('AppMenu:Help'),
       submenu: [
+        {
+          label: i18next.t('AppMenu:GettingStarted'),
+          click: () => {
+            this.mainWindow.webContents.send(IpcChannels.MENU_OPEN_ONBOARDING);
+          },
+        },
         {
           label: i18next.t('AppMenu:About'),
           click: () => {
@@ -254,6 +260,12 @@ export default class MenuBuilder {
       {
         label:  i18next.t('AppMenu:Help'),
         submenu: [
+          {
+            label: i18next.t('AppMenu:GettingStarted'),
+            click: () => {
+              this.mainWindow.webContents.send(IpcChannels.MENU_OPEN_ONBOARDING);
+            },
+          },
           {
             label: i18next.t('AppMenu:About'),
             click: () => {

@@ -77,7 +77,7 @@ const ProjectSettings = () => {
   const [isEdition, setIsEdition] = useState<boolean>(!!newProject.uuid);
 
   const [licenses, setLicenses] = useState([]);
-  const [license, setLicense] = useState<string>(isEdition && newProject.projectInfo.default_license ? 'other' : 'proprietary');
+  const [license, setLicense] = useState<string>(newProject.projectInfo.default_license);
 
   const [projectValidName, setProjectValidName] = useState(false);
   const [projectNameExists, setProjectNameExists] = useState(false);
@@ -158,11 +158,10 @@ const ProjectSettings = () => {
   };
 
   useEffect(() => {
-    if (license === 'proprietary') {
-      dispatch(setNewProject({
-        ...newProject, projectInfo: {...newProject.projectInfo, default_license: null}
-      }))
-    }
+    console.log(license);
+    dispatch(setNewProject({
+      ...newProject, projectInfo: {...newProject.projectInfo, default_license: license}
+    }));
   }, [license]);
 
   useEffect(() => {
@@ -299,73 +298,75 @@ const ProjectSettings = () => {
                 <Grid item xs={6}>
                   <>
                     <label className="input-label">{t('Title:Licensing')}</label>
-                    <FormControl>
+                    <FormControl
+                      sx={{ width: '100%'}}
+                    >
                       <RadioGroup
                         defaultValue={license}
                         name="license"
                         onChange={e => setLicense(e.target.value)}
                       >
                         <FormControlLabel value="proprietary" control={<Radio />} label={t('Title:Proprietary')} />
-                        <FormControlLabel value="other" control={<Radio />} label={t('Title:Other')} />
+                        <FormControlLabel value="opensource" control={<Radio />} label={t('Title:OpenSource')} />
+                        <Autocomplete
+                          className="mb-2"
+                          disabled={license === 'proprietary' || license === 'other'}
+                          onChange={(e, value) =>
+                            dispatch(setNewProject({
+                              ...newProject, projectInfo:{...newProject.projectInfo, default_license: value?.spdxid}
+                            }))
+                          }
+                          fullWidth
+                          value={
+                            licenses.length > 0 && newProject.projectInfo.default_license
+                              ? licenses.find((license) => license.spdxid === newProject.projectInfo.default_license)
+                              : ''
+                          }
+                          selectOnFocus
+                          clearOnBlur
+                          handleHomeEndKeys
+                          options={licenses}
+                          isOptionEqualToValue={(option: any, value: any) => {
+                            return option.spdxid === value?.spdxid
+                          }}
+                          getOptionLabel={(option: any) =>
+                            option ? `${option.name  } (${  option.spdxid  })` : ''
+                          }
+                          renderOption={(props, option, { selected }) => (
+                            <li {...props}>
+                              <div className={classes.option}>
+                                <span>{option.name}</span>
+                                <span className="middle">{option.spdxid}</span>
+                              </div>
+                            </li>
+                          )}
+                          filterOptions={(options, params) => {
+                            return options.filter(
+                              (option) =>
+                                option.name
+                                  .toLowerCase()
+                                  .includes(params.inputValue.toLowerCase()) ||
+                                option.spdxid
+                                  .toLowerCase()
+                                  .includes(params.inputValue.toLowerCase())
+                            );
+                          }}
+                          renderInput={(params) => (
+                            <TextInput
+                              {...params}
+                              label={t('Title:SPDXLicenseList')}
+                              InputProps={{
+                                ...params.InputProps,
+                                startAdornment: <InputAdornment position="start"><SearchIcon /> </InputAdornment>,
+                                disableUnderline: true,
+                              }}
+                            />
+                          )}
+                        />
+                        <FormControlLabel value="other" control={<Radio />} label={t('Title:Unknown')} />
                       </RadioGroup>
                     </FormControl>
 
-                    <div className="mt-1 mb-2">
-                      <Autocomplete
-                        disabled={license === 'proprietary'}
-                        onChange={(e, value) =>
-                          dispatch(setNewProject({
-                            ...newProject, projectInfo:{...newProject.projectInfo, default_license: value?.spdxid}
-                          }))
-                        }
-                        fullWidth
-                        value={
-                          licenses.length > 0 && newProject.projectInfo.default_license
-                            ? licenses.find((license) => license.spdxid === newProject.projectInfo.default_license)
-                            : ''
-                        }
-                        selectOnFocus
-                        clearOnBlur
-                        handleHomeEndKeys
-                        options={licenses}
-                        isOptionEqualToValue={(option: any, value: any) => {
-                          return option.spdxid === value.spdxid
-                        }}
-                        getOptionLabel={(option: any) =>
-                          option ? `${option.name  } (${  option.spdxid  })` : ''
-                        }
-                        renderOption={(props, option, { selected }) => (
-                          <li {...props}>
-                            <div className={classes.option}>
-                              <span>{option.name}</span>
-                              <span className="middle">{option.spdxid}</span>
-                            </div>
-                          </li>
-                        )}
-                        filterOptions={(options, params) => {
-                          return options.filter(
-                            (option) =>
-                              option.name
-                                .toLowerCase()
-                                .includes(params.inputValue.toLowerCase()) ||
-                              option.spdxid
-                                .toLowerCase()
-                                .includes(params.inputValue.toLowerCase())
-                          );
-                        }}
-                        renderInput={(params) => (
-                          <TextInput
-                            {...params}
-                            label={t('Title:SPDXLicenseList')}
-                            InputProps={{
-                              ...params.InputProps,
-                              startAdornment: <InputAdornment position="start"><SearchIcon /> </InputAdornment>,
-                              disableUnderline: true,
-                            }}
-                          />
-                        )}
-                      />
-                    </div>
                     <TextInput
                       multiline
                       placeholder={t('LicensingPlaceholder')}

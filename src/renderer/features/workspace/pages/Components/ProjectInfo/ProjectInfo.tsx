@@ -113,7 +113,7 @@ const ProjectInfo = () => {
               </Panel>
 
               <Panel title={t('Title:Licensing')}>
-                <Data label={t('Title:License')} value={newProject.projectInfo.default_license || t('Title:Proprietary')} />
+                <Data label={t('Title:License')} value={newProject.projectInfo.default_license} />
                 <Data label={t('Title:AdditionalInformation')} value={newProject.projectInfo.extra_license} size="small" />
               </Panel>
 

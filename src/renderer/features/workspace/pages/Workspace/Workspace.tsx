@@ -19,6 +19,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import ProjectList from '../Components/ProjectList';
 import AddProjectButton from '../Components/AddProjectButton/AddProjectButton';
+import { AppDefaultValues } from '@config/AppDefaultValues';
 
 const Workspace = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const Workspace = () => {
 
   const init = async () => {
     try {
+      showGettingStarted();
       dispatch(fetchProjects());
     } catch (error) {
       alert(error);
@@ -40,6 +42,13 @@ const Workspace = () => {
   };
 
   const cleanup = () => {};
+
+  const showGettingStarted = () => {
+    if (localStorage.getItem(AppDefaultValues.GETTING_STARTED) !== 'true') {
+      dialogCtrl.openOnBoardingDialog();
+      localStorage.setItem(AppDefaultValues.GETTING_STARTED, 'true');
+    }
+  }
 
   const onNewProjectHandler = () => newProject();
 

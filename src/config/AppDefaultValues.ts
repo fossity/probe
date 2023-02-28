@@ -18,5 +18,6 @@ export const AppDefaultValues  = {
     INDEX: 'index',
     FINGERPRINT: 'fingerprint'
   },
-  UPLOAD_URL: 'https://www.fossity.com/upload'
+  UPLOAD_URL: 'https://www.fossity.com/internal#upload',
+  GETTING_STARTED: 'GETTING_STARTED',
 }

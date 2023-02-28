@@ -1,4 +1,5 @@
 {
+  "GettingStarted": "Getting Started",
   "MyAuditProjects": "My Audit Projects",
   "ProjectSettings": "Project Settings",
   "ProjectName": "Project Name",
@@ -9,8 +10,10 @@
   "KnownSoftwareComposition": "Known Software Composition",
   "Licensing": "Licensing",
   "License": "License",
+  "Unknown": "Other/Unknown",
   "Proprietary": "Proprietary",
   "Other": "Other",
+  "OpenSource": "Open Source",
   "SPDXLicenseList": "SPDX License List",
   "Name": "Name",
   "Package": "Package",

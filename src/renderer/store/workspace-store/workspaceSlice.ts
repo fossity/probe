@@ -23,7 +23,7 @@ const initialState: WorkspaceState = {
     name: '',
     scan_root: '',
     projectInfo: {
-      default_license: '',
+      default_license: 'proprietary',
       contact: { },
     },
   },
