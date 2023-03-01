@@ -1,6 +1,6 @@
 {
   "name": "fossity-probe",
-  "version": "0.9.0",
+  "version": "0.1.0",
   "description": "The Fossity Probe captures basic information and fingerprints from your code.",
   "license": "GPL-2.0",
   "author": {
