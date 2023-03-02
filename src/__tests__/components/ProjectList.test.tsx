@@ -2,17 +2,16 @@ import React from 'react';
 import { configure } from '@testing-library/react';
 import renderer from 'react-test-renderer';
 import ProjectList from '../../renderer/features/workspace/pages/Components/ProjectList';
+import { IProject } from '@api/types';
 
 const props = {
   projects: [],
   searchQuery: '',
   onProjectClick: jest.fn(),
   onProjectDelete: jest.fn(),
-  onProjectRestore: jest.fn(),
+  onProjectShowFiles: jest.fn(),
   onProjectCreate: jest.fn(),
-  onProjectImport: jest.fn(),
-  onProjectExport: jest.fn(),
-  onProjectRescan: jest.fn(),
+  onProjectDownload: jest.fn(),
 };
 
 describe('ProjectList', () => {

@@ -4,6 +4,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/fossity/probe)
 ![License](https://img.shields.io/badge/license-GPL--2.0-brightgreen)
+![test_workflow](https://github.com/fossity/probe/actions/workflows/test.yml/badge.svg?branch=main)
 
 </div>
 
