@@ -25,7 +25,6 @@ The Fossity Probe captures basic information and fingerprints from your code. Th
 We strongly recommend handling your node versions using [nvm](https://github.com/nvm-sh/nvm)
 
 ## Install
-# [FOSSITY PROBE](https://fossity.com)
 
 ```bash
 npm install
