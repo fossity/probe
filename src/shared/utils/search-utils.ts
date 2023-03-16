@@ -1,4 +1,5 @@
-const BANNED_LIST = new Set(["api", "assets", "bin", "build", "cmd", "com", "controller", "deploy", "deployments", "dockerfile", "docs", "githooks", "inc", "include", "install", "internal", "java", "lib", "libs", "main", "makefile", "meta-inf", "model", "package", "pkg", "pom", "resources", "scripts", "source", "src", "template", "templates", "test", "tests", "third_party", "3rd_party", "tools", "vendor", "view", "web-inf", "web"]);
+const BANNED_LIST = new Set(["api", "assets", "bin", "build", "cmd", "com", "controller", "deploy", "deployments", "dockerfile", "docs", "githooks", "inc", "include", "install", "internal", "java", "lib", "libs", "main", "makefile", "meta-inf", "model", "package", "pkg", "pom", "resources", "scripts", "source", "src", "template", "templates", "test", "tests", "third_party", "3rd_party", "tools", "vendor", "view", "web-inf", "web"
+  ,"packages", "release", "releases", "dist", "scripts", "unit", "type", "types", "yarn", "gem"]);
 
 /**
  * Return a list of query terms by splitting the search query
