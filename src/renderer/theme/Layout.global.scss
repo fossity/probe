@@ -36,6 +36,7 @@
   height: 100%; // 100vh;
   padding: 30px 65px;
   grid-template-rows: auto 1fr;
+  min-width: 1024px;
 
   &.app-pipeline {
     display: grid;
