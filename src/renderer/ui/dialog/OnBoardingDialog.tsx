@@ -153,6 +153,10 @@ const OnBoardingDialog = ({ open, onClose, onCancel }: OnBoardingDialogProps) =>
     setIndex(index - 1);
   }
 
+  const close = (e) => {
+    onClose(e);
+  }
+
   const handleClose = (e, reason) => {
     if (reason !== 'backdropClick') {
       onClose(e);
@@ -231,11 +235,18 @@ const OnBoardingDialog = ({ open, onClose, onCancel }: OnBoardingDialogProps) =>
               ))}
             </div>
 
+          { (index + 1) >= SLIDES.length  ?
             <Button
+              onClick={close} type="button" variant="contained" color="secondary">
+              {t('Button:Finish')}
+            </Button> :
+            <Button
+              hidden={(index + 1) === SLIDES.length}
               disabled={(index + 1) === SLIDES.length}
               onClick={next} type="button" variant="contained" color="secondary">
               {t('Button:Next')}
             </Button>
+          }
           </DialogActions>
       </Dialog>
     </>
