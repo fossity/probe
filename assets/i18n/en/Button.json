@@ -18,5 +18,6 @@
   "RestartNow": "Restart now",
   "BackToProjects": "Back to Audit Projects",
   "CreateFingerprints": "Create Fingerprints",
-  "AttachFile": "Attach Files"
+  "AttachFile": "Attach Files",
+  "Finish": "Finish"
 }
