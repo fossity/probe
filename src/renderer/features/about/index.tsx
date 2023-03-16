@@ -26,6 +26,7 @@ const AboutModule = () => {
         fontWeight: 600,
         height: '100%',
         display: 'grid',
+        width: "100%",
         gridTemplateRows: 'auto 1fr auto',
       }}
     >
@@ -50,7 +51,6 @@ const AboutModule = () => {
         style={{
           padding: '0 1.25rem 0 2rem',
           height: '100%',
-          overflowY: 'scroll',
           textAlign: 'justify',
         }}
       >
