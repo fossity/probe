@@ -22,7 +22,7 @@ export class CodeScannerInputAdapter implements IScannerInputAdapter{
       result.push({
         fileList: fullScanList,
         folderRoot: project.metadata.getScanRoot(),
-        winnowingMode: WinnowingMode.FULL_WINNOWING,
+        winnowingMode: WinnowingMode.FULL_WINNOWING_HPSM,
       });
     }
 
