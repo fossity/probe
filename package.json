@@ -1,7 +1,7 @@
 {
   "name": "fossity-probe",
   "productName": "Fossity Probe",
-  "description": "Desktop version to audit your projects",
+  "description": "The Fossity Probe captures basic information and fingerprints from your code.",
   "homepage": "",
   "bugs": {
     "url": "https://github.com/fossity/probe/issues"
@@ -215,9 +215,10 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "FOSSITY Probe",
+    "productName": "Fossity Probe",
     "appId": "com.fossity.probe",
-    "copyright": "Copyright© 2020,2023 FOSSITY.COM",
+    "artifactName": "fosity-probe-${version}-${os}-${arch}.${ext}",
+    "copyright": "Copyright© 2020, 2023 FOSSITY.COM",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

@@ -12,6 +12,7 @@ interface ProgressBarProps {
     stageStep?: number;
   };
   progress: number;
+  showPause?: boolean;
   pauseScan: () => void;
 }
 
@@ -53,11 +54,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProgressBar = ({
+function ProgressBar({
   stage = null,
   progress,
+  showPause,
   pauseScan = null,
-}: ProgressBarProps) => {
+}: ProgressBarProps) {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -98,8 +100,7 @@ const ProgressBar = ({
   }
 
   return (
-    <>
-      <div className={classes.root}>
+    <div className={classes.root}>
         <div className="progress-bar-container d-flex align-center mb-2">
           <LinearProgress
             color="primary"
@@ -120,19 +121,23 @@ const ProgressBar = ({
             {/* stage.stageStep && <span className={`${classes.stageStep} text-uppercase`}>{t('Title:Stage')} {stage.stageStep}</span> */}
           </div>
           <div className={classes.pauseContainer}>
+          { showPause &&
             <Button
-              disabled={!resumeEnable}
-              startIcon={<PauseIcon />}
-              onClick={pauseScan}
-            >
-              <span className={classes.pause}>{t('Button:PAUSE')}</span>
+                disabled={!resumeEnable}
+                startIcon={<PauseIcon />}
+                onClick={pauseScan}
+              >
+                <span className={classes.pause}>{t('Button:PAUSE')}</span>
             </Button>
+          }
           </div>
         </div>
       </div>
-
-    </>
   );
+}
+
+ProgressBar.defaultProps = {
+  showPause: true,
 };
 
 export default ProgressBar;

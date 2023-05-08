@@ -12,12 +12,12 @@ import {
 
 import { useTranslation } from 'react-i18next';
 import { AppDefaultValues } from '@config/AppDefaultValues';
+import analysis from '@assets/imgs/analysis.png';
 import * as controller from '../../../../controllers/home-controller';
 import ProgressBar from '../Components/ProgressBar';
 
-import analysis from '@assets/imgs/analysis.png';
 
-const ProjectScan = () => {
+function ProjectScan() {
   const navigate = useNavigate();
   const {state} = useLocation();
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
@@ -164,8 +164,7 @@ const ProjectScan = () => {
   }, []);
 
   return (
-    <>
-      <section id="ProjectScan" className="app-page app-main">
+    <section id="ProjectScan" className="app-page app-main">
         <main className="app-content">
           <div className="content">
               <img  className="mt-5" src={analysis} alt='Analysis' height="200" />
@@ -174,13 +173,13 @@ const ProjectScan = () => {
               <ProgressBar
                 stage={stage}
                 progress={progress}
+                showPause={pipeline === AppDefaultValues.PIPELINE.FINGERPRINT}
                 pauseScan={() => onPauseHandler()}
               />
           </div>
         </main>
       </section>
-    </>
   );
-};
+}
 
 export default ProjectScan;
