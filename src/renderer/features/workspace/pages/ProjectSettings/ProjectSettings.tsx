@@ -217,6 +217,7 @@ const ProjectSettings = () => {
                     <TextInput
                       name="name"
                       label={t('Name')}
+                      required
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
