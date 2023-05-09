@@ -9,7 +9,7 @@
   "Optional": "Optional",
   "NotResultsFoundWith": "Not results found with \"{{searchQuery}}\"",
   "KnownSoftwareCompositionPlaceholder": "Enter here the list of known Open Source components used and/or attach an SBOM (only text files allowed, .i.e. SPDX, CycloneDX, CSV, TXT)",
-  "SensitiveInformationConfirmation": "I confirm that the information hereby provided does not contain any sensitive information such as company or product names.",
+  "SensitiveInformationConfirmation": "I confirm that the information provided in this form does not contain any sensitive information such as company or product names.",
   "LicensingPlaceholder": "Enter here any additional details about actual licensing of the software being scanned",
   "GatheringMessage": "We are gathering your code samples!",
   "FinishMessage": "Your audit samples have been collected!",

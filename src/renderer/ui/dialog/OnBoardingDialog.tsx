@@ -86,8 +86,8 @@ const useStyles = makeStyles((theme) => ({
 
 const SLIDES = [
   {
-    title: 'Congratulations and thank you for downloading Fossity Probe!',
-    subtitle: 'The Fossity Probe is designed to be simple and straightforward to use. Just answer a few basic questions and let the tool extract fingerprints from your code, and Open Source dependencies. Fossity is inherently confidential, as it operates on a Zero Trust principle that does not require the transfer of any sensitive information from the audited code or company.',
+    title: 'Congratulations and thank you for downloading the Fossity Probe!',
+    subtitle: 'The Fossity Probe is designed to be simple and straightforward to use. Just answer a few basic questions and let the tool extract fingerprints from your code, and Open Source dependencies. Fossity is inherently confidential, as it operates on a Zero Trust principle that does not require the transfer of any sensitive information from the audited code or company',
     img: c01
   },
   {
