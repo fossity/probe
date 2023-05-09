@@ -3,7 +3,6 @@ import {
   ScannerEvents,
 } from 'scanoss';
 import log from 'electron-log';
-import fs from "fs";
 import path from 'path';
 import { ScanState } from '../../../api/types';
 import { Project } from '../../workspace/Project';
@@ -12,7 +11,6 @@ import { broadcastManager } from '../../broadcastManager/BroadcastManager';
 import { Scanner as ScannerModule } from './types';
 import {IDispatch} from "./dispatcher/IDispatch";
 import {IScannerInputAdapter} from "./adapter/IScannerInputAdapter";
-import {utilModel} from "../../model/UtilModel";
 import {AppDefaultValues} from "../../../config/AppDefaultValues";
 
 export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScannerAdapter extends IScannerInputAdapter> implements ScannerModule.IPipelineTask {
@@ -42,13 +40,13 @@ export abstract class BaseScannerTask<TDispatcher extends IDispatch ,TInputScann
 
   public  init() {
     this.fingerprint = new Fingerprint();
+    this.project.scanner = this.fingerprint; // TODO: Change attribute name on Project.ts
     this.setFingerprintConfig();
     let {processedFiles} = this.project;
 
     this.fingerprint.on(ScannerEvents.WINNOWING_STATUS, async (filesFingerprinted: number) => {
 
       processedFiles += filesFingerprinted;
-
       this.sendToUI(IpcChannels.SCANNER_UPDATE_STATUS, {
         processed:
           (100 * processedFiles) /
