@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 const SLIDES = [
   {
     title: 'Congratulations and thank you for downloading Fossity Probe!',
-    subtitle: 'Fossity Probe is designed to be simple and straightforward to use. Just answer a few basic questions and let the tool extract fingerprints from your code, and Open Source dependencies. Fossity is inherently confidential, as it operates on a Zero Trust principle that does not require the transfer of any sensitive information from the audited code or company.',
+    subtitle: 'The Fossity Probe is designed to be simple and straightforward to use. Just answer a few basic questions and let the tool extract fingerprints from your code, and Open Source dependencies. Fossity is inherently confidential, as it operates on a Zero Trust principle that does not require the transfer of any sensitive information from the audited code or company.',
     img: c01
   },
   {
@@ -97,17 +97,17 @@ const SLIDES = [
   },
   {
     title: 'Answer a few basic questions',
-    subtitle: 'You answers provide context for the auditors and should contain no sensitive information',
+    subtitle: 'Your answers provide context for our auditors and should not contain any sensitive information',
     img: c03
   },
   {
     title: 'File path obfuscation',
-    subtitle: 'To protect sensitive information, you can hide it in file paths by blocking certain keywords',
+    subtitle: 'To protect sensitive information, select keywords in file paths to obfuscate',
     img: c04
   },
   {
     title: 'Fingerprint collection',
-    subtitle: 'Let the Fossity Probe recursively analyze your directory and extract code fingerprints',
+    subtitle: 'Let the Fossity Probe recursively analyse your code base and extract source fingerprints',
     img: c05,
   },
   {
@@ -117,7 +117,7 @@ const SLIDES = [
   },
   {
     title: 'Download the .fossity file',
-    subtitle: 'After you\'ve reviewed the generated files, the Probe will compress and encrypt all information into a single .fossity file, which can be submitted to Fossity to initiate the audit',
+    subtitle: 'After you have reviewed the generated files, the Probe will compress and encrypt all information into a single .fossity file, which can be submitted to Fossity to initiate the audit',
     img: c07,
   },
   {
