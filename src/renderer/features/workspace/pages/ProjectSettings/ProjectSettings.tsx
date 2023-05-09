@@ -289,12 +289,6 @@ const ProjectSettings = () => {
                     onChange={e => dispatch(setNewProject({...newProject, projectInfo: {...newProject.projectInfo, software_composition: e.target.value} }))}
                     helperText={newProject.projectInfo.software_composition_uri?.length > 0 ? `${newProject.projectInfo.software_composition_uri.length} file(s) attached.` : ''}
                   />
-                  <FormGroup className="mt-2">
-                    <FormControlLabel
-                      control={<Checkbox required defaultChecked={isEdition} />}
-                      label={<small className="checkbox-label">{t('SensitiveInformationConfirmation')}</small>}
-                    />
-                  </FormGroup>
                 </Grid>
                 <Grid item xs={6}>
                   <>
@@ -376,10 +370,10 @@ const ProjectSettings = () => {
                       value={newProject.projectInfo.extra_license}
                       onChange={e => dispatch(setNewProject({...newProject, projectInfo: {...newProject.projectInfo, extra_license: e.target.value}}))}
                     />
-                    <FormGroup className="mt-2">
+                    <FormGroup className="mt-3">
                       <FormControlLabel
                         control={<Checkbox required defaultChecked={isEdition} />}
-                        label={<small className="checkbox-label">{t('SensitiveInformationConfirmation')}</small>}
+                        label={<p className="checkbox-label">{t('SensitiveInformationConfirmation')}</p>}
                       />
                     </FormGroup>
                   </>
