@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, LinearProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import PauseIcon from '@mui/icons-material/Pause';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { ScannerStage } from '@api/types';
 import { useTranslation } from 'react-i18next';
 
@@ -12,8 +12,8 @@ interface ProgressBarProps {
     stageStep?: number;
   };
   progress: number;
-  showPause?: boolean;
-  pauseScan: () => void;
+  showCancelButton?: boolean;
+  onCancelScan: () => void;
 }
 
 const textColor = '#71717A';
@@ -57,8 +57,8 @@ const useStyles = makeStyles((theme) => ({
 function ProgressBar({
   stage = null,
   progress,
-  showPause,
-  pauseScan = null,
+  showCancelButton,
+  onCancelScan = null,
 }: ProgressBarProps) {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -121,13 +121,13 @@ function ProgressBar({
             {/* stage.stageStep && <span className={`${classes.stageStep} text-uppercase`}>{t('Title:Stage')} {stage.stageStep}</span> */}
           </div>
           <div className={classes.pauseContainer}>
-          { showPause &&
+          { showCancelButton &&
             <Button
                 disabled={!resumeEnable}
-                startIcon={<PauseIcon />}
-                onClick={pauseScan}
+                startIcon={<CancelIcon />}
+                onClick={onCancelScan}
               >
-                <span className={classes.pause}>{t('Button:PAUSE')}</span>
+                <span className={classes.pause}>{t('Button:Cancel')}</span>
             </Button>
           }
           </div>
@@ -137,7 +137,7 @@ function ProgressBar({
 }
 
 ProgressBar.defaultProps = {
-  showPause: true,
+  showCancelButton: true,
 };
 
 export default ProgressBar;

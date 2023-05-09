@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import fs from 'fs';
 import log from 'electron-log';
-import { IDependencyResponse, Scanner } from 'scanoss';
+import {Fingerprint, IDependencyResponse } from 'scanoss';
 import path from 'path';
 import {
   FileTreeViewMode, IMetadata,
@@ -30,7 +30,7 @@ export class Project {
 
   results: any;
 
-  scanner!: Scanner;
+  scanner!: Fingerprint;
 
   filesSummary: any;
 
@@ -103,7 +103,7 @@ export class Project {
   }
 
   public async close() {
-    if (this.scanner && this.scanner.isRunning()) this.scanner.stop();
+    if (this.scanner) this.scanner.abort();
     log.info(
       `%c[ PROJECT ]: Closing project ${this.metadata.getName()}`,
       'color: green'

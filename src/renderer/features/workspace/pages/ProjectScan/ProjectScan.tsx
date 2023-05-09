@@ -105,7 +105,7 @@ function ProjectScan() {
     navigate('/workspace');
   };
 
-  const onPauseHandler = async () => {
+  const onCancelHandler = async () => {
     const { action } = await dialogCtrl.openConfirmDialog(
       t('Dialog:PauseProcess'),
       t('Dialog:PauseFingerprintProcessQuestion'),
@@ -173,8 +173,8 @@ function ProjectScan() {
               <ProgressBar
                 stage={stage}
                 progress={progress}
-                showPause={pipeline === AppDefaultValues.PIPELINE.FINGERPRINT}
-                pauseScan={() => onPauseHandler()}
+                showCancelButton={pipeline === AppDefaultValues.PIPELINE.FINGERPRINT}
+                onCancelScan={() => onCancelHandler()}
               />
           </div>
         </main>
