@@ -9,7 +9,7 @@
   "Optional": "Optional",
   "NotResultsFoundWith": "Not results found with \"{{searchQuery}}\"",
   "KnownSoftwareCompositionPlaceholder": "Enter here the list of known Open Source components used and/or attach an SBOM (only text files allowed, .i.e. SPDX, CycloneDX, CSV, TXT)",
-  "SensitiveInformationConfirmation": "I confirm that the information provided in this form does not contain any sensitive information such as company or product names.",
+  "SensitiveInformationConfirmation": "I confirm that the information provided in this form does not contain any confidential and/or sensitive information such as company or product names.",
   "LicensingPlaceholder": "Enter here any additional details about actual licensing of the software being scanned",
   "GatheringMessage": "We are gathering your code samples!",
   "FinishMessage": "Your audit samples have been collected!",
@@ -18,5 +18,6 @@
   "NoFilesAttached": "No files attached",
   "NBannedList_zero": "No words obfuscated",
   "NBannedList_one": "{{count}} word obfuscated",
-  "NBannedList_other": "{{count}} words obfuscated"
+  "NBannedList_other": "{{count}} words obfuscated",
+  "OptInSMS": "I opt-in to get audit updates via SMS. To opt-out, simply reply STOP."
 }

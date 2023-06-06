@@ -158,7 +158,6 @@ const ProjectSettings = () => {
   };
 
   useEffect(() => {
-    console.log(license);
     dispatch(setNewProject({
       ...newProject, projectInfo: {...newProject.projectInfo, default_license: license}
     }));
@@ -252,6 +251,7 @@ const ProjectSettings = () => {
                       <div className="form-field">
                         <TextInput
                           name="phone"
+                          required
                           label={t('Title:PhoneNumber')}
                           value={newProject.projectInfo.contact.phone}
                           InputProps={{
@@ -263,6 +263,25 @@ const ProjectSettings = () => {
                           }}
                           onChange={(e) => inputHandler(e, 'contact')} />
                       </div>
+                    </Grid>
+
+                    <Grid item xs={12} className="pt-0 mb-1">
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                          <Checkbox
+                              onChange={(e) => dispatch(setNewProject({
+                                ...newProject,
+                                projectInfo: {
+                                  ...newProject.projectInfo,
+                                  opt_in_sms: e.target.checked,
+                                }
+                              }))
+                            }
+                            defaultChecked={newProject.projectInfo.opt_in_sms} />}
+                          label={<p className="checkbox-label m-0">{t('OptInSMS')}</p>}
+                        />
+                      </FormGroup>
                     </Grid>
                   </Grid>
 

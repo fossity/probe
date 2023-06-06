@@ -24,6 +24,7 @@ const initialState: WorkspaceState = {
     scan_root: '',
     projectInfo: {
       default_license: 'proprietary',
+      opt_in_sms: false,
       contact: { },
     },
   },
