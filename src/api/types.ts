@@ -94,8 +94,10 @@ export interface ItemInclude {
 export interface IProjectInfoMetadata {
   contact?: Record<string, string> | null;
   opt_in_sms: boolean;
-  software_composition?: string;
+  software_composition_known_uri?: string;
+  software_composition_ignore_uri?: string;
   software_composition_uri?: Array<string>;
+  software_composition?: string;
   default_license: string;
   extra_license?: string;
 }
