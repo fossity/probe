@@ -8,7 +8,9 @@ export const AppDefaultValues  = {
     PROJECT_LOG: 'project.log',
     TREE: 'tree.json',
     FILE_COUNT: 'file_count.csv',
-    OBFUSCATION_MAPPER: 'obfuscationMapper.json'
+    OBFUSCATION_MAPPER: 'obfuscationMapper.json',
+    COMPOSITION_KNOWN_FILE_NAME: 'sbom.json',
+    COMPOSITION_IGNORE_FILE_NAME: 'ignore.json',
   },
   WORKSPACE: {
     WORKSPACE_CONFIG: 'workspaceCfg.json',
