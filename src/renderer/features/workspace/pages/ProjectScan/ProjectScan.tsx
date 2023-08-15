@@ -45,7 +45,12 @@ function ProjectScan() {
           const projectMetadata = await controller.create(newProject)
           dispatch(setNewProject({
             ...newProject,
-            uuid: projectMetadata.uuid
+            uuid: projectMetadata.uuid,
+            projectInfo: {
+              ...newProject.projectInfo,
+              software_composition_known_uri: 'path/to/sbom.json',
+              software_composition_ignore_uri: 'path/to/ignore.json'
+            }
           }));
 
           dispatch(setCurrentProject({
