@@ -7,6 +7,7 @@ export enum IpcChannels {
 
 
   PROJECT_CREATE = 'PROJECT_CREATE',
+  PROJECT_VALIDATE = 'PROJECT_VALIDATE',
 
   PROJECT_UPDATE = 'PROJECT_UPDATE',
   PROJECT_CREATE_FINGERPRINTS = 'PROJECT_CREATE_FINGERPRINTS',
@@ -136,6 +137,7 @@ export const ipcMainEvents = [
 
 export const ipcRendererEvents = [
   IpcChannels.PROJECT_CREATE,
+  IpcChannels.PROJECT_VALIDATE,
   IpcChannels.PROJECT_UPDATE,
   IpcChannels.PROJECT_CREATE_FINGERPRINTS,
   IpcChannels.PROJECT_SET_ROOT,

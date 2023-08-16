@@ -16,8 +16,11 @@ import {IpcChannels} from '../../api/ipc-channels';
 import {CipherTask} from "../task/cipherTask/CipherTask";
 import {getAssetFolderPath} from "../util";
 import * as os from "os";
+import {fileHelper} from "../helpers/FileHelper";
+
 
 class ProjectService {
+
   public async createProject(projectDTO: NewProjectDTO): Promise<IMetadata> {
     let p: Project = null;
     if (!workspace.existProject(projectDTO.name)) {
@@ -132,6 +135,38 @@ class ProjectService {
     project.save();
     return true;
   }
+
+  public async validate(newProjectDTO: Partial<NewProjectDTO>){
+    const validProject : any = {
+      valid: true,
+      fields: {},
+    }
+    // validate  COMPOSITION_KNOWN_FILE_NAME
+    if(newProjectDTO.projectInfo?.software_composition_known_uri) {
+      const validSbomFile = await this.validateSbomFile(newProjectDTO.projectInfo.software_composition_known_uri,'software_composition_known_uri');
+      if(!validSbomFile.software_composition_known_uri.valid) validProject.valid = false;
+      Object.assign(validProject.fields, validSbomFile);
+    }
+
+    // validate  COMPOSITION_KNOWN_IGNORE_NAME
+    if(newProjectDTO.projectInfo?.software_composition_ignore_uri) {
+      const validSbomFile = await this.validateSbomFile(newProjectDTO.projectInfo.software_composition_ignore_uri,'software_composition_ignore_uri');
+      if(!validSbomFile.software_composition_ignore_uri.valid) validProject.valid = false;
+      Object.assign(validProject.fields, validSbomFile);
+    }
+
+    return validProject;
+
+  }
+
+    private async validateSbomFile(path: string, field: string){
+      const valid = await fileHelper.isValidJson(path);
+      const error = valid ? null : 'Not a valid JSON';
+      return {
+        [field]: { valid , error }
+      }
+    }
+
 }
 
 export const projectService = new ProjectService();
