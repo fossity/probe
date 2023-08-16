@@ -19,5 +19,7 @@
   "BackToProjects": "Back to Audit Projects",
   "CreateFingerprints": "Create Fingerprints",
   "AttachFile": "Attach Files",
-  "Finish": "Finish"
+  "Finish": "Finish",
+  "AttachKnownSBOM": "Known SBOM",
+  "AttachIgnoreSBOM": "Ignore components"
 }

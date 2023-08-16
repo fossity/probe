@@ -30,6 +30,12 @@
     }
   }
 
+  .input-sublabel {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
   .item-default {
     color: #a8a8a8 !important;
   }
@@ -38,5 +44,9 @@
     display: flex;
     line-height: normal;
     font-size: 14px;
+  }
+
+  .alert-oss {
+    align-items: center;
   }
 }
