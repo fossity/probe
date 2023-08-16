@@ -117,6 +117,13 @@ class ProjectService extends BaseService {
     return this.response(response);
   }
 
-
+  public async validate(newProjectDTO: Partial<NewProjectDTO>): Promise<any> {
+    const response = await window.electron.ipcRenderer.invoke(
+      IpcChannels.PROJECT_VALIDATE,
+      newProjectDTO
+    );
+    return this.response(response);
+  }
 }
 export const projectService = new ProjectService();
+
