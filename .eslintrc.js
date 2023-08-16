@@ -1,5 +1,9 @@
 module.exports = {
-  extends: 'erb',
+  extends: [
+    'erb',
+    'airbnb',
+    'airbnb-typescript',
+  ],
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
     'import/no-extraneous-dependencies': 'off',
@@ -15,6 +19,7 @@ module.exports = {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['off'],
     'prettier/prettier': ['off', { printWidth: 120 }],
+    'max-len': ['warn', { code: 120, comments: 180 }],
     'no-nested-ternary': ['off'],
     'jsx-a11y/anchor-is-valid': ['off'],
     'no-shadow': 'off',
@@ -29,16 +34,17 @@ module.exports = {
     'import/no-cycle': ['warn'],
     'no-empty-pattern': ['off'],
     'react-hooks/exhaustive-deps': 'warn',
-    "no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
-    "import/extensions": [
-      "error",
+    'react/function-component-definition': ['off'],
+    'no-plusplus': ['warn', { allowForLoopAfterthoughts: true }],
+    'import/extensions': [
+      'error',
       {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ]
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
   },
   parserOptions: {
     ecmaVersion: 2020,

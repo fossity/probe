@@ -42,6 +42,8 @@
   "NBannedList": "Banned List ({{count}})",
   "ObfuscationPreview": "Preview ({{count}} of {{total}} files renamed)",
   "Summary": "Summary",
-  "SummarySubtitle": "Please make sure that you are not including any sensitive information in your description texts or any of the information collected"
+  "SummarySubtitle": "Please make sure that you are not including any sensitive information in your description texts or any of the information collected",
+  "KnownSoftwareCompositionIdentify": "Existing SBOM",
+  "KnownSoftwareCompositionIgnore": "SBOM ignore"
 
 }

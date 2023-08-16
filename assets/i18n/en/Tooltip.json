@@ -8,5 +8,9 @@
   "AttachFiles": "Attach Files",
   "ReviewButton": "Review the information collected before packing the .fossity file.",
   "ExportButton": "Export an encrypted .fossity file with the collected information and fingerprints.",
-  "UploadButton": "Go to fossity.com and upload your file. You will receive an email with the quotation! If we don't hear from you, your .fossity file is erased after 48hs"
+  "UploadButton": "Go to fossity.com and upload your file. You will receive an email with the quotation! If we don't hear from you, your .fossity file is erased after 48hs",
+  "AttachKnownSBOM": "If you already have an SBOM, please attach it here. It provides useful context for the auditing team. (only json files allowed: SPDX, CycloneDX)",
+  "AttachIgnoreSBOM": "You can attach an SBOM including the list of components you don’t want to see in the audit results. Useful for finding underlying compliamce issues in Open Source software. (only json files allowed: SPDX, CycloneDX)",
+  "AttachKnownSoftwareCompositionHint": "Enter here the list of known Open Source components in order to enhancement audit results",
+  "JSONBadFormat": "The attached JSON file appears to have a formatting issue."
 }
