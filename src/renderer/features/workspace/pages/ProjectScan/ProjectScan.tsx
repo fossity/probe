@@ -16,10 +16,9 @@ import analysis from '@assets/imgs/analysis.png';
 import * as controller from '../../../../controllers/home-controller';
 import ProgressBar from '../Components/ProgressBar';
 
-
 function ProjectScan() {
   const navigate = useNavigate();
-  const {state} = useLocation();
+  const { state } = useLocation();
   const dialogCtrl = useContext(DialogContext) as IDialogContext;
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -45,12 +44,7 @@ function ProjectScan() {
           const projectMetadata = await controller.create(newProject)
           dispatch(setNewProject({
             ...newProject,
-            uuid: projectMetadata.uuid,
-            projectInfo: {
-              ...newProject.projectInfo,
-              software_composition_known_uri: 'path/to/sbom.json',
-              software_composition_ignore_uri: 'path/to/ignore.json'
-            }
+            uuid: projectMetadata.uuid
           }));
 
           dispatch(setCurrentProject({

@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     '& .label': {
       fontSize: 14,
       fontWeight: 400,
-      color: theme.palette.primary.main
+      color: theme.palette.primary.main,
     },
     '& .value': {
       fontSize: 16,
@@ -38,9 +38,9 @@ const useStyles = makeStyles((theme) => ({
 
       '&.small': {
         fontSize: 12,
-      }
-    }
-  }
+      },
+    },
+  },
 }));
 
 const Panel = ({ title, children }) => {
@@ -60,13 +60,14 @@ const Panel = ({ title, children }) => {
   );
 };
 
-const Data = ({label = null, value, size="normal"}) => (
+const Data = ({ label = null, value, size = 'normal' }) => (
   <>
-    {label &&
+    {label
+      && (
       <Typography className="label" variant="subtitle1">
         {label}
       </Typography>
-    }
+      )}
     <Typography className={`value ${size}`} variant="h6" gutterBottom>
       {value || '-'}
     </Typography>
@@ -84,50 +85,60 @@ const ProjectInfo = () => {
   const init = async () => {
   };
 
-
   return (
-    <div id="ProjectInfo" className='content'>
-              <Panel title={t('Title:ContactInformation')}>
-                <Data label={t('Title:Name')} value={newProject.projectInfo.contact.name} />
-                <Data label={t('Title:EmailAddress')} value={newProject.projectInfo.contact.email} />
-                <Data label={t('Title:PhoneNumber')} value={newProject.projectInfo.contact.phone} />
-              </Panel>
+    <div id="ProjectInfo" className="content">
+      <Panel title={t('Title:ContactInformation')}>
+        <Data label={t('Title:Name')} value={newProject.projectInfo.contact.name} />
+        <Data label={t('Title:EmailAddress')} value={newProject.projectInfo.contact.email} />
+        <Data label={t('Title:PhoneNumber')} value={newProject.projectInfo.contact.phone} />
+      </Panel>
 
-              <Panel title={t('Title:KnownSoftwareComposition')}>
-                <Data
-                  label={t('Title:FilesAttached')}
-                  value=
-                    { newProject.projectInfo.software_composition_uri?.length > 0 ?
-                      <Tooltip title={newProject.projectInfo.software_composition_uri.join(', ')}>
-                        <small className="d-flex align-center">
-                          <span className="mr-1">{t('NFilesAttached', { count: newProject.projectInfo.software_composition_uri.length })}</span>
-                          <InfoOutlinedIcon fontSize="inherit" />
-                        </small>
-                      </Tooltip>
-                      : <>{t('NoFilesAttached')}</>
-                    }
-                  size="small"
-                />
+      <Panel title={t('Title:KnownSoftwareComposition')}>
+        <Data
+          label={t('Title:FilesAttached')}
+          value={
+            newProject.projectInfo.software_composition_uri?.length > 0
+            || newProject.projectInfo.software_composition_known_uri
+            || newProject.projectInfo.software_composition_ignore_uri ? (
+              <>
+                { newProject.projectInfo.software_composition_known_uri && <div className="mr-1"><small>{t('KnownAttached')}</small></div> }
+                { newProject.projectInfo.software_composition_ignore_uri && <div className="mr-1"><small>{t('IgnoreAttached')}</small></div> }
+                { newProject.projectInfo.software_composition_uri?.length > 0
+                  && (
+                  <Tooltip title={newProject.projectInfo.software_composition_uri.join(', ')}>
+                    <small className="d-flex align-center">
+                      <span className="mr-1">{t('NExtraFilesAttached', { count: newProject.projectInfo.software_composition_uri.length })}</span>
+                      <InfoOutlinedIcon fontSize="inherit" />
+                    </small>
+                  </Tooltip>
+                  )}
+              </>
+              )
+              : <>{t('NoFilesAttached')}</>
+          }
+          size="small"
+        />
 
-                <Data label={t('Title:AdditionalInformation')} value={newProject.projectInfo.software_composition} size="small" />
-              </Panel>
+        <Data label={t('Title:AdditionalInformation')} value={newProject.projectInfo.software_composition} size="small" />
+      </Panel>
 
-              <Panel title={t('Title:Licensing')}>
-                <Data label={t('Title:License')} value={newProject.projectInfo.default_license} />
-                <Data label={t('Title:AdditionalInformation')} value={newProject.projectInfo.extra_license} size="small" />
-              </Panel>
+      <Panel title={t('Title:Licensing')}>
+        <Data label={t('Title:License')} value={newProject.projectInfo.default_license} />
+        <Data label={t('Title:AdditionalInformation')} value={newProject.projectInfo.extra_license} size="small" />
+      </Panel>
 
-              <Panel title={t('Title:Obfuscation')}>
-                <Data
-                  label={t('Title:BannedList')}
-                  value={t('NBannedList', { count: obfuscateList?.length || 0 })}
-                  size="small" />
+      <Panel title={t('Title:Obfuscation')}>
+        <Data
+          label={t('Title:BannedList')}
+          value={t('NBannedList', { count: obfuscateList?.length || 0 })}
+          size="small"
+        />
 
-                <div className="word-list">
-                  {obfuscateList.map( (item) => <Chip className="light" color="primary" size="small" key={item} label={item} />)}
-                </div>
-              </Panel>
-            </div>
+        <div className="word-list">
+          {obfuscateList.map((item) => <Chip className="light" color="primary" size="small" key={item} label={item} />)}
+        </div>
+      </Panel>
+    </div>
   );
 };
 
