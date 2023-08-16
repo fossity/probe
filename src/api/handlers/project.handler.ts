@@ -167,4 +167,17 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle(
+  IpcChannels.PROJECT_VALIDATE,
+  async (_event,newProjectDTO: Partial<NewProjectDTO>) => {
+    try {
+      const data = await projectService.validate(newProjectDTO);
+      return Response.ok({ message: 'Fossity package', data });
+    } catch (error: any) {
+      log.error('[FOSSITY PACKAGER]', error);
+      return Response.fail({ message: error.message });
+    }
+  }
+);
+
 
