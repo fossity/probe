@@ -292,7 +292,7 @@ const ProjectSettings = () => {
                     <TextInput
                       name="phone"
                       required
-                      label={t('Title:PhoneNumber')}
+                      label={t('Title:MobileNumber')}
                       value={newProject.projectInfo.contact.phone}
                       InputProps={{
                         startAdornment: (
