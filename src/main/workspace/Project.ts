@@ -267,6 +267,6 @@ export class Project {
   }
 
   public getBannedList() {
-    return this.bannedList;
+    return this.metadata.getObfuscatedList();
   }
 }
