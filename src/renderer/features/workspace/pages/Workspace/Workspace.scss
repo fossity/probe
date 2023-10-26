@@ -15,7 +15,9 @@
       grid-template-columns: repeat(auto-fill, 200px);
       grid-row-gap: 1em;
       grid-column-gap: 1em;
-      overflow: visible;
+      overflow-y: scroll;
+      height: calc(100% - 70px);
+      grid-template-rows: 230px;
       padding-bottom: 10px;
 
       .btn-actions {
