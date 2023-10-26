@@ -274,12 +274,7 @@
     },
     "extraResources": [
       "./assets/**"
-    ],
-    "publish": {
-      "provider": "github",
-      "owner": "fossity",
-      "repo": "probe"
-    }
+    ]
   },
   "devEngines": {
     "node": ">=14.x",
