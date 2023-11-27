@@ -1,6 +1,5 @@
 import {Common} from "../Common";
 import {ObfuscationModule} from "../../../modules/Obfuscation/ObfuscationModule";
-import {WFPExtractPath} from "../../../modules/Obfuscation/extractPath/WFPExtractPath";
 import {DependencyExtractPath} from "../../../modules/Obfuscation/extractPath/DependencyExtractPath";
 
 export class DependencyObfuscationTask extends Common<ObfuscationModule> {

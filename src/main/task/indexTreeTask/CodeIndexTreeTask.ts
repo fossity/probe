@@ -1,5 +1,6 @@
 import fs from "fs";
 import { LocalDependencies } from "scanoss";
+import path from 'path';
 import { IndexTreeTask } from "./IndexTreeTask";
 import Folder from "../../workspace/tree/Folder";
 import { Tree } from "../../workspace/tree/Tree";
@@ -45,11 +46,11 @@ export class CodeIndexTreeTask  extends IndexTreeTask {
       .filter((dirent: any) => !dirent.isSymbolicLink());
 
     for (const dirEntry of dirEntries) {
-      const relativePath = `${dir}/${dirEntry.name}`.replace(rootPath, '');
+      const relativePath = `${dir}${path.sep}${dirEntry.name}`.replace(rootPath, '');
       if (dirEntry.isDirectory()) {
         const f: Folder = new Folder(relativePath, dirEntry.name);
         const subTree = this.getProjectFiles(
-          `${dir}/${dirEntry.name}`,
+          `${dir}${path.sep}${dirEntry.name}`,
           rootPath
         );
 
