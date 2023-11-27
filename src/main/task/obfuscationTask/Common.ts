@@ -63,15 +63,16 @@ export class Common <Adapter extends IAdapter> implements ITask<void, Obfuscatio
 // Read the file and replace any text that matches
       rl.on('line', line => {
         let text = line;
-        const pathToProcess =  this.pathExtractor.extractPath(line);
+        let pathToProcess =  this.pathExtractor.extractPath(line);
         if(pathToProcess) {
             const auxPath = path.join(path.parse(pathToProcess).dir, path.parse(pathToProcess).name);
             const { ext } = path.parse(pathToProcess);
-             const obfuscatedPath = this.obfuscation.adapt(auxPath);
-            const obfuscation = ext !== "" ? `${obfuscatedPath}${ext}` : obfuscatedPath; // add extension if it has one
-            text = line.replace(pathToProcess,obfuscation);
+            const obfuscatedPath = this.obfuscation.adapt(auxPath);
+            let obfuscation = ext !== "" ? `${obfuscatedPath}${ext}` : obfuscatedPath; // add extension if it has one
+            text = line.replace(path.normalize(pathToProcess),path.normalize(obfuscation));
         }
         // write text to the output file stream with new line character
+
         outputFile.write(`${text}\n`)
       });
 
