@@ -547,6 +547,20 @@ const ProjectSettings = () => {
                     control={<Checkbox required defaultChecked={isEdition} />}
                     label={<p className="checkbox-label">{t('SensitiveInformationConfirmation')}</p>}
                   />
+
+                  <FormControlLabel
+                    control={<Checkbox required defaultChecked={isEdition} />}
+                    label={
+                    <p className="checkbox-label">
+                      <Trans
+                        i18nKey="Common:PrivacyPolicyConfirmation"
+                        components={{
+                          link1: <a href="https://www.fossity.com/legal/privacy" target="_blank"/>,
+                        }}
+                      />
+
+                    </p>}
+                  />
                 </FormGroup>
               </>
 
