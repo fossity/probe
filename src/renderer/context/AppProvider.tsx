@@ -53,7 +53,7 @@ const AppProvider = ({ children }) => {
 
     const path = await dialogController.showSaveDialog({
       filters: [{ name: 'Fossity Package Archive', extensions: ['fossity'] }],
-      defaultPath: project.name,
+      defaultPath: project.name + '.fossity',
     });
 
     if (!path) return;
