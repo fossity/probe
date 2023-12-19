@@ -30,7 +30,12 @@ We strongly recommend handling your node versions using [nvm](https://github.com
 ```bash
 npm install
 ```
+---
+⚠️ **Windows Users:**  
 
+To install the dependencies, run **'npm install'** using **Command Prompt (CMD)**.
+
+---
 ### Troubleshooting
 
 Fossity Probe uses [node-gyp](https://www.npmjs.com/package/node-gyp) to compile SQLite3 native module.
