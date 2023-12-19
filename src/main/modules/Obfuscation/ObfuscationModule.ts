@@ -50,13 +50,17 @@ export class ObfuscationModule implements IAdapter {
           this.updateSummary(o,this.count(o,input));
           if(obfuscatedInput.search(new RegExp(o,'gmi')) >= 0) {
             wasReplaced = true;
-            let key;
-            if (this.obfuscatedMapper[o] !== undefined) key = this.obfuscatedMapper[o];
-            else {
-              key = this.keyGen();
-              this.obfuscatedMapper[o] = key;
+            const matches = input.match(RegExp(o, 'gi'));
+            matches.forEach((m) => {
+              if (!this.obfuscatedMapper[m]) {
+                this.obfuscatedMapper[m] = this.keyGen();
+              }
+            });
+
+            for (const [word, key] of Object.entries(this.obfuscatedMapper)) {
+              obfuscatedInput = obfuscatedInput.replace(new RegExp(word, 'gm'), key);
             }
-            obfuscatedInput = obfuscatedInput.replace(new RegExp(o, 'gi'), key);
+
           }
         });
         if(wasReplaced) this.totalFilesObfuscated+=1;
@@ -64,7 +68,7 @@ export class ObfuscationModule implements IAdapter {
   }
 
   private count = (wordToObfuscate: string, input:string) => {
-      return (input.match(new RegExp(wordToObfuscate,'gm')) || []).length
+      return (input.match(new RegExp(wordToObfuscate,'gi')) || []).length
   }
 
   private updateSummary(word:string, replaces:number) {
