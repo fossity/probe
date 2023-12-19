@@ -37,7 +37,7 @@ const ProjectObfuscation = () => {
   const init = async () => { };
 
   const onNewTagHandler = (e) => {
-    const tag = inputRef.current.value.toLowerCase().trim();
+    const tag = inputRef.current.value.trim();
 
     const banned = isBanned(tag);
     setBannedWord(banned ? tag : null);
