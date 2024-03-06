@@ -217,7 +217,7 @@
   "build": {
     "productName": "Fossity Probe",
     "appId": "com.fossity.probe",
-    "artifactName": "fosity-probe-${version}-${os}-${arch}.${ext}",
+    "artifactName": "fossity-probe-${version}-${os}-${arch}.${ext}",
     "copyright": "Copyright© 2020, 2023 FOSSITY.COM",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
