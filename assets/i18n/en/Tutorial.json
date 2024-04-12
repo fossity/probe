@@ -1,0 +1,38 @@
+{
+  "Step1": {
+    "Title": "Congratulations and thank you for downloading the Fossity Probe!",
+    "Subtitle": "The Fossity Probe is designed to be simple and straightforward to use. Just answer a few basic questions and let the tool extract fingerprints from your code, and Open Source dependencies. Fossity is inherently confidential, as it operates on a Zero Trust principle that does not require the transfer of any sensitive information from the audited code or company"
+  },
+  "Step2": {
+    "Title": "Open Source Auditing has never been easier",
+    "Subtitle": "Collect your code fingerprints with one click and start the process"
+  },
+  "Step3": {
+    "Title": "Answer a few basic questions",
+    "Subtitle": "Your answers provide context for our auditors and should not contain any sensitive information"
+  },
+  "Step4": {
+    "Title": "File path obfuscation",
+    "Subtitle": "To protect sensitive information, select keywords in file paths to obfuscate"
+  },
+  "Step5": {
+    "Title": "Fingerprint collection",
+    "Subtitle": "Let the Fossity Probe recursively analyse your code base and extract source fingerprints"
+  },
+  "Step6": {
+    "Title": "Check the information collected",
+    "Subtitle": "All information collected by the Probe will be accessible for your review"
+  },
+  "Step7": {
+    "Title": "Download the .fossity file",
+    "Subtitle": "After you have reviewed the generated files, the Probe will compress and encrypt all information into a single .fossity file, which can be submitted to Fossity to initiate the audit"
+  },
+  "Step8": {
+    "Title": "Upload your .fossity file",
+    "Subtitle": "Securely transfer your file by dropping it in the Fossity website. You will receive a quotation automatically"
+  },
+  "Step9": {
+    "Title": "Great job, you're all set!",
+    "Subtitle": "Get started on your software audit immediately by accepting our competitive quote – no further input necessary. \nIf you choose to decline the offer or take no action within 48 hours, we automatically delete all information, leaving no trace of the quotation ever being generated."
+  }
+}

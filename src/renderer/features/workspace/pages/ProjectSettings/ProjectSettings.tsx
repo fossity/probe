@@ -88,7 +88,7 @@ const ProjectSettings = () => {
   const [licenses, setLicenses] = useState([]);
   const [license, setLicense] = useState<string>(newProject.projectInfo.default_license);
 
-  const [valid, setValid] = useState<any>({ valid: true});
+  const [valid, setValid] = useState<any>({ valid: true });
   const [projectValidName, setProjectValidName] = useState(false);
   const [projectNameExists, setProjectNameExists] = useState(false);
 
@@ -501,9 +501,9 @@ const ProjectSettings = () => {
                           InputProps={{
                             ...params.InputProps,
                             startAdornment:
-                              <InputAdornment position="start">
-                                <SearchIcon />
-                              </InputAdornment>,
+  <InputAdornment position="start">
+    <SearchIcon />
+  </InputAdornment>,
                             disableUnderline: true,
                           }}
                         />

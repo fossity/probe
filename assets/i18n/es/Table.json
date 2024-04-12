@@ -1,0 +1,9 @@
+{
+  "Header": {
+    "Name": "Nombre",
+    "Date": "Fecha",
+    "TotalFiles": "Ficheros totales",
+    "Original": "Original",
+    "Obfuscated": "Ofuscado"
+  }
+}

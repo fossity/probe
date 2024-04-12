@@ -1,0 +1,16 @@
+{
+  "ResumeScan": "Reanudar escaneo",
+  "Rescan": "Volver a escanear",
+  "RemoveProject": "Eliminar",
+  "BackToProjects": "Volver a proyectos de auditoría",
+  "Review": "Revisar",
+  "Export": "Exportar",
+  "AttachFiles": "Adjuntar ficheros",
+  "ReviewButton": "Revisar la información recopilada antes de empaquetar el fichero .fossity.",
+  "ExportButton": "Exportar un fichero .fossity cifrado con la información recopilada y los fingerprints.",
+  "UploadButton": "Ve a fossity.com y carga tu fivhero. ¡Recibirás un correo electrónico con el presupuesto! Si no recibimos noticias tuyas, tu fichero .fossity se borrará después de 48 horas.",
+  "AttachKnownSBOM": "Si ya tienes un SBOM, por favor adjúntalo aquí. Proporciona contexto útil para el equipo de auditoría. (solo se permiten archivos json: SPDX, CycloneDX)",
+  "AttachIgnoreSBOM": "Puedes adjuntar un SBOM que incluya la lista de componentes que no deseas ver en los resultados de la auditoría. Útil para encontrar problemas de cumplimiento subyacentes en el software de código abierto. (solo se permiten archivos json: SPDX, CycloneDX)",
+  "AttachKnownSoftwareCompositionHint": "Ingresa aquí la lista de componentes de código abierto existentes para mejorar los resultados de la auditoría",
+  "JSONBadFormat": "El fichero JSON adjunto parece tener un problema de formato."
+}

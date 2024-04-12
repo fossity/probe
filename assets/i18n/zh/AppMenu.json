@@ -1,0 +1,16 @@
+{
+  "File": "&File",
+  "NewProject": "&New audit project",
+  "Settings": "&Settings",
+  "Close":  "&Close",
+  "Edit": "&Edit",
+  "View": "&View",
+  "Reload": "&Reload",
+  "ToggleFullScreen": "Toggle &Full Screen",
+  "ToggleDeveloperTools": "Toggle &Developer Tools",
+  "OpenTutorial": "Open On Boarding Tutorial",
+  "Help": "Help",
+  "GettingStarted": "Getting Started",
+  "About": "About",
+  "Quit": "Quit"
+}

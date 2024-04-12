@@ -1,0 +1,17 @@
+{
+  "File": "&Archivo",
+  "NewProject": "&Nuevo proyecto de auditoría",
+  "Settings": "&Configuración",
+  "Close": "&Cerrar",
+  "Edit": "&Editar",
+  "View": "&Ver",
+  "Reload": "&Recargar",
+  "ToggleFullScreen": "Alternar pantalla &completa",
+  "ToggleDeveloperTools": "Alternar Herramientas de &desarrollador",
+  "OpenTutorial": "Abrir Tutorial de Bienvenida",
+  "Help": "Ayuda",
+  "GettingStarted": "Primeros pasos",
+  "About": "Acerca de",
+  "Quit": "Salir"
+}
+

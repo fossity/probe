@@ -14,12 +14,12 @@ import {
   selectWorkspaceState,
   setCurrentProject,
   setNewProject, setObfuscateList,
-  setScanPath
+  setScanPath,
 } from '@store/workspace-store/workspaceSlice';
 import { useTranslation } from 'react-i18next';
+import { AppDefaultValues } from '@config/AppDefaultValues';
 import ProjectList from '../Components/ProjectList';
 import AddProjectButton from '../Components/AddProjectButton/AddProjectButton';
-import { AppDefaultValues } from '@config/AppDefaultValues';
 
 const Workspace = () => {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ const Workspace = () => {
       dialogCtrl.openOnBoardingDialog();
       localStorage.setItem(AppDefaultValues.GETTING_STARTED, 'true');
     }
-  }
+  };
 
   const onNewProjectHandler = () => newProject();
 
@@ -90,35 +90,33 @@ const Workspace = () => {
   }, []);
 
   return (
-    <>
-      <section id="Workspace" className="app-page">
-        <header className="app-header d-flex space-between align-center">
-          <h1 className="header-title">{t('Title:MyAuditProjects')}</h1>
-          <AddProjectButton
-            onNewProject={onNewProjectHandler}
-          />
-        </header>
-        <main className="app-content mb-5">
-          <section className="mb-5">
-            <div className="search-box">
-              {projects && projects.length > 0 && (
-                <SearchBox onChange={(value) => setSearchQuery(value.trim().toLowerCase())} />
-              )}
-            </div>
-          </section>
+    <section id="Workspace" className="app-page">
+      <header className="app-header d-flex space-between align-center">
+        <h1 className="header-title">{t('Title:MyAuditProjects')}</h1>
+        <AddProjectButton
+          onNewProject={onNewProjectHandler}
+        />
+      </header>
+      <main className="app-content mb-5">
+        <section className="mb-5">
+          <div className="search-box">
+            {projects && projects.length > 0 && (
+            <SearchBox onChange={(value) => setSearchQuery(value.trim().toLowerCase())} />
+            )}
+          </div>
+        </section>
 
-          <ProjectList
-            projects={projects}
-            searchQuery={searchQuery}
-            onProjectClick={onShowScanHandler}
-            onProjectDelete={onTrashHandler}
-            onProjectDownload={onDownloadHandler}
-            onProjectShowFiles={onShowFilesHandler}
-            onProjectCreate={onNewProjectHandler}
-          />
-        </main>
-      </section>
-    </>
+        <ProjectList
+          projects={projects}
+          searchQuery={searchQuery}
+          onProjectClick={onShowScanHandler}
+          onProjectDelete={onTrashHandler}
+          onProjectDownload={onDownloadHandler}
+          onProjectShowFiles={onShowFilesHandler}
+          onProjectCreate={onNewProjectHandler}
+        />
+      </main>
+    </section>
   );
 };
 

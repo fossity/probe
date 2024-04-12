@@ -1,0 +1,32 @@
+{
+  "NewAuditProject": "Nuevo Proyecto de Auditoría",
+  "Continue": "Continuar",
+  "Save": "Guardar",
+  "Cancel": "Cancelar",
+  "Close": "Cerrar",
+  "Accept": "Aceptar",
+  "Open": "Abrir",
+  "OK": "OK",
+  "ShowMore": "Mostrar más",
+  "MoreDetails": "Más detalles",
+  "PAUSE": "PAUSA",
+  "Create": "Crear",
+  "Add": "Agregar",
+  "Delete": "Eliminar",
+  "Yes": "Sí",
+  "RestartLater": "Reiniciar luego",
+  "RestartNow": "Reiniciar ahora",
+  "BackToProjects": "Volver a Proyectos de Auditoría",
+  "CreateFingerprints": "Crear fingerprints",
+  "AttachFile": "Adjuntar archivos",
+  "Finish": "Finalizar",
+  "AttachKnownSBOM": "SBOM Existente",
+  "AttachIgnoreSBOM": "Ignorar Componentes",
+  "Review": "Revisar",
+  "Export": "Exportar",
+  "Next": "Siguiente",
+  "Upload": "Subir",
+  "Back": "Atras"
+
+}
+

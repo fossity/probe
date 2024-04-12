@@ -1,0 +1,38 @@
+{
+  "Step1": {
+    "Title": "¡Felicitaciones y gracias por descargar Fossity Probe!",
+    "Subtitle": "Fossity Probe está diseñado para ser simple y fácil de usar. Simplemente responde algunas preguntas básicas y deja que la herramienta extraiga huellas digitales de tu código y dependencias de código abierto. Fossity es inherentemente confidencial, ya que opera según el principio de Confianza Cero que no requiere la transferencia de ninguna información sensible del código auditado o de la empresa."
+  },
+  "Step2": {
+    "Title": "La auditoría de código abierto nunca ha sido más fácil",
+    "Subtitle": "Recopila las huellas digitales de tu código con un solo click y comienza el proceso"
+  },
+  "Step3": {
+    "Title": "Responde algunas preguntas básicas",
+    "Subtitle": "Tus respuestas proporcionan contexto para nuestros auditores y no deben contener información sensible"
+  },
+  "Step4": {
+    "Title": "Ofuscación de rutas de ficheros",
+    "Subtitle": "Para proteger información sensible, selecciona palabras clave en las rutas de ficheros para ofuscar"
+  },
+  "Step5": {
+    "Title": "Recopilación de huellas digitales",
+    "Subtitle": "Deja que Fossity Probe analice recursivamente tu base de código y extraiga huellas digitales de origen"
+  },
+  "Step6": {
+    "Title": "Verifica la información recopilada",
+    "Subtitle": "Toda la información recopilada por Fossity Probe estará disponible para su revisión"
+  },
+  "Step7": {
+    "Title": "Descarga el fichero .fossity",
+    "Subtitle": "Después de revisar los ficheros generados, Fossity Probe comprimirá y cifrará toda la información en un solo fichero .fossity, que se puede enviar a Fossity para iniciar la auditoría"
+  },
+  "Step8": {
+    "Title": "Sube tu fichero .fossity",
+    "Subtitle": "Transfiere tu fichero de forma segura al soltarlo en el sitio web de Fossity. Recibirás automáticamente un presupuesto"
+  },
+  "Step9": {
+    "Title": "¡Buen trabajo, todo listo!",
+    "Subtitle": "Comienza tu auditoría de software de inmediato aceptando nuestra cotización competitiva; no se requieren más datos. Si decides rechazar la oferta o no hacer nada en 48 horas, eliminaremos automáticamente toda la información, sin dejar rastro de que se haya generado la cotización."
+  }
+}
