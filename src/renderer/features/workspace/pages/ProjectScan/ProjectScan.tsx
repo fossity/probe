@@ -41,16 +41,16 @@ function ProjectScan() {
 
       if (action === 'scan') {
         if (pipeline === AppDefaultValues.PIPELINE.INDEX) { // NEW PROJECT
-          const projectMetadata = await controller.create(newProject)
+          const projectMetadata = await controller.create(newProject);
           dispatch(setNewProject({
             ...newProject,
-            uuid: projectMetadata.uuid
+            uuid: projectMetadata.uuid,
           }));
 
           dispatch(setCurrentProject({
             ...projectMetadata,
             data: null,
-          }))
+          }));
         } else { // SCAN PROJECT
           await controller.scan();
         }
@@ -64,12 +64,12 @@ function ProjectScan() {
     switch (pipeline) {
       case AppDefaultValues.PIPELINE.INDEX:
         navigate('/workspace/new/obfuscation');
-        break
+        break;
       case AppDefaultValues.PIPELINE.FINGERPRINT:
         navigate('/workspace/new/result', { replace: true });
-        break
+        break;
       default:
-        break
+        break;
     }
   };
 
@@ -83,9 +83,7 @@ function ProjectScan() {
   };
 
   const handlerScannerError = async (e, err) => {
-    const cause = (err.cause.message || err.cause || '').replace(/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gm,  m => {
-      return `<a href="${m}" target='_blank'>${m}</a>`;
-    })
+    const cause = (err.cause.message || err.cause || '').replace(/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gm, (m) => `<a href="${m}" target='_blank'>${m}</a>`);
 
     const errorMessage = `<strong>${t('Dialog:ScanPaused')}</strong>
 
@@ -99,7 +97,7 @@ function ProjectScan() {
         label: t('Button:OK'),
         role: 'accept',
       },
-      true
+      true,
     );
     navigate('/workspace');
   };
@@ -112,7 +110,7 @@ function ProjectScan() {
         label: t('Button:OK'),
         role: 'accept',
       },
-      false
+      false,
     );
     if (action === 'ok') {
       await projectService.stop();
@@ -131,26 +129,26 @@ function ProjectScan() {
     subscriptions.push(
       window.electron.ipcRenderer.on(
         IpcChannels.SCANNER_UPDATE_STATUS,
-        handlerScannerStatus
-      )
+        handlerScannerStatus,
+      ),
     );
     subscriptions.push(
       window.electron.ipcRenderer.on(
         IpcChannels.SCANNER_FINISH_SCAN,
-        handlerScannerFinish
-      )
+        handlerScannerFinish,
+      ),
     );
     subscriptions.push(
       window.electron.ipcRenderer.on(
         IpcChannels.SCANNER_ERROR_STATUS,
-        handlerScannerError
-      )
+        handlerScannerError,
+      ),
     );
     subscriptions.push(
       window.electron.ipcRenderer.on(
         IpcChannels.SCANNER_UPDATE_STAGE,
-        handlerScannerStage
-      )
+        handlerScannerStage,
+      ),
     );
     return () => subscriptions.forEach((unsubscribe) => unsubscribe());
   };
@@ -164,20 +162,20 @@ function ProjectScan() {
 
   return (
     <section id="ProjectScan" className="app-page app-main">
-        <main className="app-content">
-          <div className="content">
-              <img  className="mt-5" src={analysis} alt='Analysis' height="200" />
-              <h1>{t('GatheringMessage')}</h1>
+      <main className="app-content">
+        <div className="content">
+          <img className="mt-5" src={analysis} alt="Analysis" height="200" />
+          <h1>{t('GatheringMessage')}</h1>
 
-              <ProgressBar
-                stage={stage}
-                progress={progress}
-                showCancelButton={pipeline === AppDefaultValues.PIPELINE.FINGERPRINT}
-                onCancelScan={() => onCancelHandler()}
-              />
-          </div>
-        </main>
-      </section>
+          <ProgressBar
+            stage={stage}
+            progress={progress}
+            showCancelButton={pipeline === AppDefaultValues.PIPELINE.FINGERPRINT}
+            onCancelScan={() => onCancelHandler()}
+          />
+        </div>
+      </main>
+    </section>
   );
 }
 

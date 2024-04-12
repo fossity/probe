@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Dialog, DialogActions, IconButton } from '@mui/material';
+import {
+  Button, Dialog, DialogActions, IconButton,
+} from '@mui/material';
 import { DialogResponse, DIALOG_ACTIONS } from '@context/types';
-import CloseIcon from "@mui/icons-material/Close";
+import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 import c01 from '@assets/imgs/carousel/c01.png';
 import c02 from '@assets/imgs/carousel/c02.png';
@@ -48,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
         margin: '0 auto',
         fontSize: 16,
         width: '90%',
-      }
+      },
     },
 
     '& .slides': {
@@ -61,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
       '& > .slide': {
         maxWidth: '90%',
         maxHeight: '90%',
-      }
+      },
     },
   },
 
@@ -79,60 +82,11 @@ const useStyles = makeStyles((theme) => ({
 
       '&.active': {
         backgroundColor: theme.palette.primary.main,
-      }
+      },
     },
-  }
+  },
 }));
 
-const SLIDES = [
-  {
-    title: 'Congratulations and thank you for downloading the Fossity Probe!',
-    subtitle: 'The Fossity Probe is designed to be simple and straightforward to use. Just answer a few basic questions and let the tool extract fingerprints from your code, and Open Source dependencies. Fossity is inherently confidential, as it operates on a Zero Trust principle that does not require the transfer of any sensitive information from the audited code or company',
-    img: c01
-  },
-  {
-    title: 'Open Source Auditing has never been easier',
-    subtitle: 'Collect your code fingerprints with one click and start the process',
-    img: c02
-  },
-  {
-    title: 'Answer a few basic questions',
-    subtitle: 'Your answers provide context for our auditors and should not contain any sensitive information',
-    img: c03
-  },
-  {
-    title: 'File path obfuscation',
-    subtitle: 'To protect sensitive information, select keywords in file paths to obfuscate',
-    img: c04
-  },
-  {
-    title: 'Fingerprint collection',
-    subtitle: 'Let the Fossity Probe recursively analyse your code base and extract source fingerprints',
-    img: c05,
-  },
-  {
-    title: 'Check the information collected ',
-    subtitle: 'All information collected by the Probe will be accessible for your review',
-    img: c06,
-  },
-  {
-    title: 'Download the .fossity file',
-    subtitle: 'After you have reviewed the generated files, the Probe will compress and encrypt all information into a single .fossity file, which can be submitted to Fossity to initiate the audit',
-    img: c07,
-  },
-  {
-    title: 'Upload your .fossity file',
-    subtitle: 'Securely transfer your file by dropping it in the Fossity website. You will receive a quotation automatically',
-    img: c08,
-  },
-  {
-    title: 'Great job, you\'re all set!',
-    subtitle: 'Get started on your software audit immediately by accepting our competitive quote – no further input necessary. \n' +
-      'If you choose to decline the offer or take no action within 48 hours, we automatically delete all information, leaving no trace of the quotation ever being generated.',
-    img: c09,
-  },
-
-];
 
 interface OnBoardingDialogProps {
   open: boolean;
@@ -143,43 +97,89 @@ interface OnBoardingDialogProps {
 const OnBoardingDialog = ({ open, onClose, onCancel }: OnBoardingDialogProps) => {
   const { t, i18n } = useTranslation();
   const classes = useStyles();
-  const [index, setIndex] = useState<number>(0)
+  const [index, setIndex] = useState<number>(0);
+
+  const SLIDES = [
+    {
+      title: t('Tutorial:Step1.Title'),
+      subtitle: t('Tutorial:Step1.Subtitle'),
+      img: c01,
+    },
+    {
+      title: t('Tutorial:Step2.Title'),
+      subtitle: t('Tutorial:Step2.Subtitle'),
+      img: c02,
+    },
+    {
+      title: t('Tutorial:Step3.Title'),
+      subtitle: t('Tutorial:Step3.Subtitle'),
+      img: c03,
+    },
+    {
+      title: t('Tutorial:Step4.Title'),
+      subtitle: t('Tutorial:Step4.Subtitle'),
+      img: c04,
+    },
+    {
+      title: t('Tutorial:Step5.Title'),
+      subtitle: t('Tutorial:Step5.Subtitle'),
+      img: c05,
+    },
+    {
+      title: t('Tutorial:Step6.Title'),
+      subtitle: t('Tutorial:Step6.Subtitle'),
+      img: c06,
+    },
+    {
+      title: t('Tutorial:Step7.Title'),
+      subtitle: t('Tutorial:Step7.Subtitle'),
+      img: c07,
+    },
+    {
+      title: t('Tutorial:Step8.Title'),
+      subtitle: t('Tutorial:Step8.Subtitle'),
+      img: c08,
+    },
+    {
+      title: t('Tutorial:Step9.Title'),
+      subtitle: t('Tutorial:Step9.Subtitle'),
+      img: c09,
+    },
+  ];
 
   const next = () => {
     setIndex(index + 1);
-  }
+  };
 
   const previous = () => {
     setIndex(index - 1);
-  }
+  };
 
   const close = (e) => {
     onClose(e);
-  }
+  };
 
   const handleClose = (e, reason) => {
     if (reason !== 'backdropClick') {
       onClose(e);
     }
-  }
+  };
 
   const preload = () => {
-    const imgs: Promise<any>[] = SLIDES.map(slide => {
-      return new Promise((resolve, reject) => {
-        const img = new Image()
-        img.onload = function() {
-          resolve(img)
-        }
-        img.onerror = function() {
-          reject(slide.img)
-        }
-        img.src = slide.img
-      });
-    });
+    const imgs: Promise<any>[] = SLIDES.map((slide) => new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = function () {
+        resolve(img);
+      };
+      img.onerror = function () {
+        reject(slide.img);
+      };
+      img.src = slide.img;
+    }));
 
     Promise.all(imgs)
-      .then(items => console.log('Carousel imgs loaded succesfully'))
-      .catch(error => console.log(error));
+      .then((items) => console.log('Carousel imgs loaded succesfully'))
+      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
@@ -187,69 +187,79 @@ const OnBoardingDialog = ({ open, onClose, onCancel }: OnBoardingDialogProps) =>
   }, []);
 
   return (
-    <>
-      <Dialog
-        id="OnBoardingDialog"
-        className="dialog"
-        maxWidth="sm"
-        scroll="body"
-        fullWidth
-        open={open}
-        onClose={handleClose}
-      >
-        <header className="dialog-title">
-          <span>{t('Title:GettingStarted')}</span>
-          <IconButton aria-label="close" tabIndex={-1} onClick={onCancel} size="large">
-            <CloseIcon />
-          </IconButton>
-        </header>
+    <Dialog
+      id="OnBoardingDialog"
+      className="dialog"
+      maxWidth="sm"
+      scroll="body"
+      fullWidth
+      open={open}
+      onClose={handleClose}
+    >
+      <header className="dialog-title">
+        <span>{t('Title:GettingStarted')}</span>
+        <IconButton aria-label="close" tabIndex={-1} onClick={onCancel} size="large">
+          <CloseIcon />
+        </IconButton>
+      </header>
 
-        <div className="dialog-content">
-            <div className={classes.carousel}>
-              <header>
-                <p className="title">{SLIDES[index].title}</p>
-                <p className="subtitle">{SLIDES[index].subtitle}</p>
-              </header>
+      <div className="dialog-content">
+        <div className={classes.carousel}>
+          <header>
+            <p className="title">{SLIDES[index].title}</p>
+            <p className="subtitle">{SLIDES[index].subtitle}</p>
+          </header>
 
-              <div id="slide-container">
-                  <div className="slides">
-                    <img alt={SLIDES[index].title} className="slide" src={SLIDES[index].img}  />
-                  </div>
-              </div>
+          <div id="slide-container">
+            <div className="slides">
+              <img alt={SLIDES[index].title} className="slide" src={SLIDES[index].img} />
             </div>
           </div>
+        </div>
+      </div>
 
-        <DialogActions className={classes.actions}>
+      <DialogActions className={classes.actions}>
+        <Button
+          onClick={previous}
+          disabled={index === 0}
+          color="inherit"
+        >
+          {t('Button:Back')}
+        </Button>
+
+        <div id="dotsContainer">
+          { SLIDES.map((slide, key) => (
+            <span
+              className={`dots ${key === index ? 'active' : ''}`}
+            />
+          ))}
+        </div>
+
+        { (index + 1) >= SLIDES.length
+          ? (
             <Button
-              onClick={previous}
-              disabled={index === 0}
-              color="inherit" >
-              {t('Button:Back')}
-            </Button>
-
-            <div id="dotsContainer">
-              { SLIDES.map( (slide, key) => (
-                <span
-                  className={ `dots ${ key === index ? 'active' : ''}`}
-                />
-              ))}
-            </div>
-
-          { (index + 1) >= SLIDES.length  ?
-            <Button
-              onClick={close} type="button" variant="contained" color="secondary">
+              onClick={close}
+              type="button"
+              variant="contained"
+              color="secondary"
+            >
               {t('Button:Finish')}
-            </Button> :
+            </Button>
+          )
+          : (
             <Button
               hidden={(index + 1) === SLIDES.length}
               disabled={(index + 1) === SLIDES.length}
-              onClick={next} type="button" variant="contained" color="secondary">
+              onClick={next}
+              type="button"
+              variant="contained"
+              color="secondary"
+            >
               {t('Button:Next')}
             </Button>
-          }
-          </DialogActions>
-      </Dialog>
-    </>
+          )}
+      </DialogActions>
+    </Dialog>
   );
 };
 

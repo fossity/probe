@@ -8,13 +8,12 @@ import FlowStepper from '@components/FlowStepper/FlowStepper';
 import FlowHeader from '@components/FlowHeader';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import ProjectInfo from '../Components/ProjectInfo/ProjectInfo';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSelector } from 'react-redux';
 import { selectWorkspaceState } from '@store/workspace-store/workspaceSlice';
 import { IProject } from '@api/types';
 import { AppContext, IAppContext } from '@context/AppProvider';
-
+import ProjectInfo from '../Components/ProjectInfo/ProjectInfo';
 
 const ProjectDetail = () => {
   const navigate = useNavigate();
@@ -28,53 +27,54 @@ const ProjectDetail = () => {
 
   return (
     <section id="ProjectDetail" className="app-page app-pipeline">
-          <header className="app-header">
-            <FlowHeader
-              title={currentProject.name.toUpperCase()}
-              subtitle={currentProject.scan_root}
-            />
-          </header>
-          <main className="app-content">
-              <ProjectInfo />
-          </main>
-          <footer className='app-footer'>
-            <div className="button-container">
-              <Button
-                color="inherit"
-                variant="contained"
-                type="button"
-                onClick={() => navigate(-1)}
-              >
-                <ArrowBackIcon className="color-primary mr-1" fontSize="small" />
-              </Button>
-            </div>
-            <div className="button-container end">
-              <Tooltip
-                arrow
-                title={t('Tooltip:ReviewButton')}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={e => onShowFilesHandler(currentProject)}
-                >
-                  {t('Button:Review')}
-                </Button>
-              </Tooltip>
-              <Tooltip
-                arrow
-                title={t('Tooltip:ExportButton')}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={e => onDownloadHandler(currentProject)}
-                >
-                  {t('Button:Export')}
-                </Button>
-              </Tooltip>
-            </div>
-          </footer>
-        </section>
+      <header className="app-header">
+        <FlowHeader
+          title={currentProject.name.toUpperCase()}
+          subtitle={currentProject.scan_root}
+        />
+      </header>
+      <main className="app-content">
+        <ProjectInfo />
+      </main>
+      <footer className="app-footer">
+        <div className="button-container">
+          <Button
+            color="inherit"
+            variant="contained"
+            type="button"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowBackIcon className="color-primary mr-1" fontSize="small" />
+          </Button>
+        </div>
+        <div className="button-container end">
+          <Tooltip
+            arrow
+            title={t('Tooltip:ReviewButton')}
+          >
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={(e) => onShowFilesHandler(currentProject)}
+            >
+              {t('Button:Review')}
+            </Button>
+          </Tooltip>
+          <Tooltip
+            arrow
+            title={t('Tooltip:ExportButton')}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={(e) => onDownloadHandler(currentProject)}
+            >
+              {t('Button:Export')}
+            </Button>
+          </Tooltip>
+        </div>
+      </footer>
+    </section>
   );
 };
 

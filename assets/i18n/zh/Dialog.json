@@ -1,0 +1,9 @@
+{
+
+  "PauseFingerprintProcessQuestion": "Are you sure you want to pause the process?",
+  "PauseProcess": "Pause Process",
+  "PleaseTryAgainLater": "Please try again later.",
+  "DeleteQuestion": "Are you sure you want to delete this audit project?",
+  "YouNeedRestartQuestion": "You need restart the application to change the language. Do you?",
+  "ExitNewProjectQuestion": "Are you sure to exit? Audit project will be saved as a draft."
+}

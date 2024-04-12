@@ -1,0 +1,8 @@
+{
+  "PauseFingerprintProcessQuestion": "¿Estás seguro de que quieres pausar el proceso?",
+  "PauseProcess": "Pausar Proceso",
+  "PleaseTryAgainLater": "Por favor, inténtalo de nuevo más tarde.",
+  "DeleteQuestion": "¿Estás seguro de que quieres eliminar este proyecto de auditoría?",
+  "YouNeedRestartQuestion": "Necesitas reiniciar la aplicación para cambiar el idioma. ¿Deseas hacerlo?",
+  "ExitNewProjectQuestion": "¿Estás seguro de querer salir? El proyecto de auditoría se guardará como borrador."
+}
