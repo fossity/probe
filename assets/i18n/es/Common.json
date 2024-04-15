@@ -23,5 +23,6 @@
   "KnownAttached": "Fichero SBOM existente adjuntado",
   "IgnoreAttached": "Fichero SBOM para ignorar adjuntado",
   "OpenSourceWarning": "Si estás auditando un proyecto de código abierto, considera <link1>agregar componentes para ser ignorados</link1>.",
-  "OpenSourceWarningHint": "Si estás auditando un proyecto de código abierto, es probable que obtengas el mismo componente identificado en los resultados de la auditoría. Para descubrir posibles problemas de cumplimiento en tu proyecto de código abierto, considera agregar qué componentes deseas que se ignoren en el ejercicio."
+  "OpenSourceWarningHint": "Si estás auditando un proyecto de código abierto, es probable que obtengas el mismo componente identificado en los resultados de la auditoría. Para descubrir posibles problemas de cumplimiento en tu proyecto de código abierto, considera agregar qué componentes deseas que se ignoren en el ejercicio.",
+  "Draft": "Borrador"
 }

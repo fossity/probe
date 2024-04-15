@@ -24,5 +24,6 @@
   "IgnoreAttached": "Ignore SBOM file attached",
   "OpenSourceWarning": "If you are auditing an Open Source project consider <link1>adding components to be ignored</link1>.",
   "OpenSourceWarningHint": "If you are auditing an Open Source project, most likely you will get the same component identified in the audit results. To uncover potential compliance issues in your Open Source project, consider adding which components you wish to be ignored in the exercise.",
-  "PrivacyPolicyConfirmation": "I have read and understood the <link1>Privacy Policy</link1> regarding the use of this information by Fossity."
+  "PrivacyPolicyConfirmation": "I have read and understood the <link1>Privacy Policy</link1> regarding the use of this information by Fossity.",
+  "Draft": "Draft"
 }

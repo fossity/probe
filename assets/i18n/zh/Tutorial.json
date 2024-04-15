@@ -1,38 +1,38 @@
 {
   "Step1": {
-    "Title": "Congratulations and thank you for downloading the Fossity Probe!",
-    "Subtitle": "The Fossity Probe is designed to be simple and straightforward to use. Just answer a few basic questions and let the tool extract fingerprints from your code, and Open Source dependencies. Fossity is inherently confidential, as it operates on a Zero Trust principle that does not require the transfer of any sensitive information from the audited code or company"
+    "Title": "恭喜并感谢您下载 Fossity 探针！",
+    "Subtitle": "Fossity 探针设计简单易用。只需回答几个基本问题，让工具从您的代码和开源依赖中提取指纹。Fossity 本质上是保密的，因为它遵循零信任原则，不需要从审核的代码或公司转移任何敏感信息"
   },
   "Step2": {
-    "Title": "Open Source Auditing has never been easier",
-    "Subtitle": "Collect your code fingerprints with one click and start the process"
+    "Title": "开源审计从未如此简单",
+    "Subtitle": "一键收集您的代码指纹并开始流程"
   },
   "Step3": {
-    "Title": "Answer a few basic questions",
-    "Subtitle": "Your answers provide context for our auditors and should not contain any sensitive information"
+    "Title": "回答几个基本问题",
+    "Subtitle": "您的答案为我们的审计员提供背景，并且不应包含任何敏感信息"
   },
   "Step4": {
-    "Title": "File path obfuscation",
-    "Subtitle": "To protect sensitive information, select keywords in file paths to obfuscate"
+    "Title": "文件路径混淆",
+    "Subtitle": "为了保护敏感信息，请选择文件路径中的关键字进行混淆"
   },
   "Step5": {
-    "Title": "Fingerprint collection",
-    "Subtitle": "Let the Fossity Probe recursively analyse your code base and extract source fingerprints"
+    "Title": "指纹收集",
+    "Subtitle": "让 Fossity 探针递归分析您的代码库并提取源指纹"
   },
   "Step6": {
-    "Title": "Check the information collected",
-    "Subtitle": "All information collected by the Probe will be accessible for your review"
+    "Title": "检查收集的信息",
+    "Subtitle": "探针收集的所有信息都可以供您审查"
   },
   "Step7": {
-    "Title": "Download the .fossity file",
-    "Subtitle": "After you have reviewed the generated files, the Probe will compress and encrypt all information into a single .fossity file, which can be submitted to Fossity to initiate the audit"
+    "Title": "下载 .fossity 文件",
+    "Subtitle": "在查看生成的文件后，探针将压缩并加密所有信息成一个单独的 .fossity 文件，可提交给 Fossity 启动审核"
   },
   "Step8": {
-    "Title": "Upload your .fossity file",
-    "Subtitle": "Securely transfer your file by dropping it in the Fossity website. You will receive a quotation automatically"
+    "Title": "上传您的 .fossity 文件",
+    "Subtitle": "将您的文件安全地放入 Fossity 网站中。您将自动收到报价"
   },
   "Step9": {
-    "Title": "Great job, you're all set!",
-    "Subtitle": "Get started on your software audit immediately by accepting our competitive quote – no further input necessary. \nIf you choose to decline the offer or take no action within 48 hours, we automatically delete all information, leaving no trace of the quotation ever being generated."
+    "Title": "恭喜您，一切就绪！",
+    "Subtitle": "立即开始软件审核，接受我们的竞争性报价 - 无需进一步操作。\n如果您选择拒绝报价或在 48 小时内不采取任何行动，我们将自动删除所有信息，不留下任何生成报价的痕迹。"
   }
 }
