@@ -1,14 +1,15 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import { IpcChannels } from '@api/ipc-channels';
 import { useTranslation } from 'react-i18next';
-import { DIALOG_ACTIONS, DialogResponse, InventoryForm, InventorySelectorResponse, LoaderController } from './types';
+import {
+  DIALOG_ACTIONS, DialogResponse, InventoryForm, InventorySelectorResponse, LoaderController,
+} from './types';
 import { ConfirmDialog } from '../ui/dialog/ConfirmDialog';
 import { LicenseDialog } from '../ui/dialog/LicenseDialog';
 import SettingsDialog from '../ui/dialog/SettingsDialog';
 import { AlertDialog } from '../ui/dialog/AlertDialog';
 import { ProgressDialog } from '../ui/dialog/ProgressDialog';
 import OnBoardingDialog from '../ui/dialog/OnBoardingDialog';
-
 
 export interface IDialogContext {
   openConfirmDialog: (title?: string, message?: string, button?: any, hideDeleteButton?: boolean) => Promise<DialogResponse>;
@@ -29,41 +30,39 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
     message?: string;
     button?: any;
     hideDeleteButton?: boolean;
-    onClose?: (response: DialogResponse) => void;
+    onClose?:(response: DialogResponse) => void;
   }>({ open: false });
 
   const openConfirmDialog = (
-    title= '',
+    title = '',
     message = 'Are you sure?',
     button: {
       label: string;
       role: 'accept' | 'cancel' | 'delete';
     } = {
-      label: 'Yes',
+      label: t('Button:Yes'),
       role: 'accept',
     },
-    hideDeleteButton = false
-  ): Promise<DialogResponse> => {
-    return new Promise<DialogResponse>((resolve) => {
-      setConfirmDialog({
-        open: true,
-        title,
-        message,
-        button,
-        hideDeleteButton,
-        onClose: (response) => {
-          setConfirmDialog((dialog) => ({ ...dialog, open: false }));
-          resolve(response);
-        },
-      });
+    hideDeleteButton = false,
+  ): Promise<DialogResponse> => new Promise<DialogResponse>((resolve) => {
+    setConfirmDialog({
+      open: true,
+      title,
+      message,
+      button,
+      hideDeleteButton,
+      onClose: (response) => {
+        setConfirmDialog((dialog) => ({ ...dialog, open: false }));
+        resolve(response);
+      },
     });
-  };
+  });
 
   const [alertDialog, setAlertDialog] = useState<{
     open: boolean;
     message?: string;
     buttons?: any[];
-    onClose?: (response: DialogResponse) => void;
+    onClose?:(response: DialogResponse) => void;
   }>({ open: false, buttons: [] });
 
   const openAlertDialog = (
@@ -76,20 +75,18 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
         label: 'OK',
         role: 'accept',
       },
-    ]
-  ): Promise<DialogResponse> => {
-    return new Promise<DialogResponse>((resolve) => {
-      setAlertDialog({
-        open: true,
-        message,
-        buttons,
-        onClose: (response) => {
-          setAlertDialog((dialog) => ({ ...dialog, open: false }));
-          resolve(response);
-        },
-      });
+    ],
+  ): Promise<DialogResponse> => new Promise<DialogResponse>((resolve) => {
+    setAlertDialog({
+      open: true,
+      message,
+      buttons,
+      onClose: (response) => {
+        setAlertDialog((dialog) => ({ ...dialog, open: false }));
+        resolve(response);
+      },
     });
-  };
+  });
 
   const [progressDialog, setProgressDialog] = useState<{
     open: boolean;
@@ -97,60 +94,54 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
     message?: React.ReactNode;
   }>({ open: false, loader: false });
 
-  const createProgressDialog = (message: React.ReactNode = 'Wait a moment please'): Promise<LoaderController> => {
-    return new Promise<LoaderController>((resolve) => {
-      setProgressDialog({
-        open: false,
-        message,
-      });
-      resolve({
-        present: ({ message } = {}) => setProgressDialog((dialog) => ({ ...dialog, open: true, loader: true, ...( message ? { message } : {} )})),
-        finish: ({ message }) => setProgressDialog((dialog) => ({ ...dialog, message, loader: false })),
-        dismiss: (props) => {
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              setProgressDialog((dialog) => ({ ...dialog, open: false }));
-              resolve(true);
-            }, props?.delay || 0);
-          });
-        },
-      });
+  const createProgressDialog = (message: React.ReactNode = 'Wait a moment please'): Promise<LoaderController> => new Promise<LoaderController>((resolve) => {
+    setProgressDialog({
+      open: false,
+      message,
     });
-  };
+    resolve({
+      present: ({ message } = {}) => setProgressDialog((dialog) => ({
+        ...dialog, open: true, loader: true, ...(message ? { message } : {}),
+      })),
+      finish: ({ message }) => setProgressDialog((dialog) => ({ ...dialog, message, loader: false })),
+      dismiss: (props) => new Promise((resolve) => {
+        setTimeout(() => {
+          setProgressDialog((dialog) => ({ ...dialog, open: false }));
+          resolve(true);
+        }, props?.delay || 0);
+      }),
+    });
+  });
 
   const [settingsDialog, setSettingsDialog] = useState<{
     open: boolean;
-    onClose?: (response: DialogResponse) => void;
+    onClose?:(response: DialogResponse) => void;
   }>({ open: false });
 
-  const openSettings = () => {
-    return new Promise<DialogResponse>((resolve) => {
-      setSettingsDialog({
-        open: true,
-        onClose: (response) => {
-          setSettingsDialog((dialog) => ({ ...dialog, open: false }));
-          resolve(response);
-        },
-      });
+  const openSettings = () => new Promise<DialogResponse>((resolve) => {
+    setSettingsDialog({
+      open: true,
+      onClose: (response) => {
+        setSettingsDialog((dialog) => ({ ...dialog, open: false }));
+        resolve(response);
+      },
     });
-  };
+  });
 
   const [onBoardingDialog, setOnBoardingDialog] = useState<{
     open: boolean;
-    onClose?: (response: DialogResponse) => void;
+    onClose?:(response: DialogResponse) => void;
   }>({ open: false });
 
-  const openOnBoardingDialog = () => {
-    return new Promise<DialogResponse>((resolve) => {
-      setOnBoardingDialog({
-        open: true,
-        onClose: (response) => {
-          setOnBoardingDialog((dialog) => ({ ...dialog, open: false }));
-          resolve(response);
-        },
-      });
+  const openOnBoardingDialog = () => new Promise<DialogResponse>((resolve) => {
+    setOnBoardingDialog({
+      open: true,
+      onClose: (response) => {
+        setOnBoardingDialog((dialog) => ({ ...dialog, open: false }));
+        resolve(response);
+      },
     });
-  };
+  });
 
   const handleOpenSettings = () => {
     openSettings();
@@ -177,7 +168,7 @@ export const DialogProvider: React.FC<any> = ({ children }) => {
         openAlertDialog,
         openSettings,
         openOnBoardingDialog,
-        createProgressDialog
+        createProgressDialog,
       }}
     >
       {children}

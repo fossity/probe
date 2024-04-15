@@ -1,9 +1,9 @@
 {
 
-  "PauseFingerprintProcessQuestion": "Are you sure you want to pause the process?",
-  "PauseProcess": "Pause Process",
-  "PleaseTryAgainLater": "Please try again later.",
-  "DeleteQuestion": "Are you sure you want to delete this audit project?",
-  "YouNeedRestartQuestion": "You need restart the application to change the language. Do you?",
-  "ExitNewProjectQuestion": "Are you sure to exit? Audit project will be saved as a draft."
+  "PauseFingerprintProcessQuestion": "您确定要暂停该进程吗",
+  "PauseProcess": "暂停进程",
+  "PleaseTryAgainLater": "请稍后重试。",
+  "DeleteQuestion": "您确定要删除此审计项目吗？",
+  "YouNeedRestartQuestion": "您需要重新启动应用程序以更改语言。您要这样做吗？",
+  "ExitNewProjectQuestion": "您确定要退出吗？审计项目将保存为草稿。"
 }

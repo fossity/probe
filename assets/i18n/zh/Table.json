@@ -1,9 +1,9 @@
 {
   "Header": {
-    "Name": "Name",
-    "Date": "Date",
-    "TotalFiles": "Total Files",
-    "Original": "Original",
-    "Obfuscated": "Obfuscated"
+    "Name": "名称",
+    "Date": "日期",
+    "TotalFiles": "总文件数",
+    "Original": "原始",
+    "Obfuscated": "混淆的"
   }
 }

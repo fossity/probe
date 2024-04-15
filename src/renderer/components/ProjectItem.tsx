@@ -1,7 +1,10 @@
 import React from 'react';
-import { ButtonBase, Card, CardContent, Chip, Step, StepLabel, Stepper } from '@mui/material';
+import {
+  ButtonBase, Card, CardContent, Chip, Step, StepLabel, Stepper,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { ScanState } from '@api/types';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: '#F6F6F6',
       boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.08)',
-},
+    },
 
     '& > button': {
       width: '100%',
@@ -33,13 +36,14 @@ const useStyles = makeStyles((theme) => ({
       '& header': {
         textTransform: 'uppercase',
         fontWeight: 500,
-      }
-    }
+      },
+    },
   },
 }));
 
 const ProjectItem = ({ project, onClick, children }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   return (
     <Card className={classes.root} elevation={0}>
@@ -49,7 +53,7 @@ const ProjectItem = ({ project, onClick, children }) => {
             { project.name }
           </header>
           <main>
-            { project.scannerState !== ScanState.FINISHED && <Chip label="Draft" /> }
+            { project.scannerState !== ScanState.FINISHED && <Chip label={t('Draft')} /> }
           </main>
           <footer>
             {children}
