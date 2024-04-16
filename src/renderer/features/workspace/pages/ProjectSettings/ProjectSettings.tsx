@@ -550,16 +550,17 @@ const ProjectSettings = () => {
 
                   <FormControlLabel
                     control={<Checkbox required defaultChecked={isEdition} />}
-                    label={
-                    <p className="checkbox-label">
-                      <Trans
-                        i18nKey="Common:PrivacyPolicyConfirmation"
-                        components={{
-                          link1: <a href="https://www.fossity.com/legal/privacy" target="_blank"/>,
-                        }}
-                      />
+                    label={(
+                      <p className="checkbox-label">
+                        <Trans
+                          i18nKey="Common:PrivacyPolicyConfirmation"
+                          components={{
+                            link1: <a href="https://www.fossity.com/legal/privacy" target="_blank" rel="noreferrer" />,
+                          }}
+                        />
 
-                    </p>}
+                      </p>
+                  )}
                   />
                 </FormGroup>
               </>

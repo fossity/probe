@@ -24,5 +24,6 @@
   "IgnoreAttached": "已附加忽略的SBOM文件",
   "OpenSourceWarning": "如果您正在审计一个开源项目，请考虑<link1>添加要忽略的组件</link1>",
   "OpenSourceWarningHint": "如果您正在审计一个开源项目，您很可能会在审计结果中得到相同的识别到的组件。若要发现您开源项目中的潜在合规问题，请考虑在扫描过程中添加您希望被忽略的组件",
+  "PrivacyPolicyConfirmation": "我已阅读并理解有关 Fossity 使用此信息的<link1>隐私政策</link1>。",
   "Draft": "草稿"
 }
