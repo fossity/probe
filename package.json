@@ -228,6 +228,7 @@
     ],
     "afterSign": ".erb/scripts/notarize.js",
     "mac": {
+      "asarUnpack": "**/*.node",
       "notarize" : false,
       "target": {
         "target": "default",
