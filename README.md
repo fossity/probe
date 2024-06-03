@@ -35,14 +35,6 @@ npm install
 
 To install the dependencies, run **'npm install'** using **Command Prompt (CMD)**.
 
----
-### Troubleshooting
-
-Fossity Probe uses [node-gyp](https://www.npmjs.com/package/node-gyp) to compile SQLite3 native module.
-This module uses "node-pre-gyp" to download the prebuilt binary for your platform instead you need build from source.
-In case it does not exist for your platform, node-gyp going to build it.
-
-Depending on your operating system, you will need prepare the correct environment to run node-gyp: See [https://github.com/nodejs/node-gyp#installation](https://github.com/nodejs/node-gyp#installation)
 
 ## Starting Development
 
