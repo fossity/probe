@@ -86,7 +86,7 @@ jobs:
 
   build_m:
     name: "Build for MacOS"
-    runs-on: macos-latest
+    runs-on: macos-13
 
     steps:
       - name: Checkout git repo
