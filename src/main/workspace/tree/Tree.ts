@@ -245,7 +245,7 @@ export class Tree {
       fs.writeFileSync(
         `${this.projectPath}/filter.json`,
         JSON.stringify(defaultBannedList).toString()
-      );
+);
     bannedList.load(`${this.projectPath}/filter.json`);
 
     log.info(`%c[ PROJECT ]: Building tree`, 'color: green');

@@ -102,7 +102,6 @@ class SizeFilter extends AbstractFilter {
 
   evaluate(path: string): boolean {
     const stat = fs.statSync(path);
-
     if (this.condition === '>') {
       if (stat.size > parseInt(this.value, 10)) {
         return false;
@@ -121,6 +120,7 @@ class SizeFilter extends AbstractFilter {
       }
       return true;
     }
+
     return true;
   }
 }
@@ -174,13 +174,21 @@ export class BannedList {
 
       let i: number;
       for (i = 0; i < this.filters.length; i += 1) {
-        const evaluation = this.filters[i].evaluate(path);
+        if (this.filters[i].scope === 'FOLDER'
+          && pathStat.isDirectory()
+          && !this.filters[i].evaluate(path)) {
+          return false;
+        }
 
-        if (this.filters[i].scope === 'FOLDER' && pathStat.isDirectory() && !evaluation) return false;
+        if (this.filters[i].scope === 'FILE'
+          && pathStat.isFile()
+          && !this.filters[i].evaluate(path)) {
+          return false;
+        }
 
-        if (this.filters[i].scope === 'FILE' && pathStat.isFile() && !evaluation) return false;
-
-        if (this.filters[i].scope === 'ALL' && !evaluation) return false;
+        if (this.filters[i].scope === 'ALL' && !this.filters[i].evaluate(path)) {
+          return false;
+        }
       }
       return true;
     } catch (e) {
