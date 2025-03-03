@@ -174,21 +174,13 @@ export class BannedList {
 
       let i: number;
       for (i = 0; i < this.filters.length; i += 1) {
-        if (this.filters[i].scope === 'FOLDER'
-          && pathStat.isDirectory()
-          && !this.filters[i].evaluate(path)) {
-          return false;
-        }
+        const evaluation = this.filters[i].evaluate(path);
 
-        if (this.filters[i].scope === 'FILE'
-          && pathStat.isFile()
-          && !this.filters[i].evaluate(path)) {
-          return false;
-        }
+        if (this.filters[i].scope === 'FOLDER' && pathStat.isDirectory() && !evaluation) return false;
 
-        if (this.filters[i].scope === 'ALL' && !this.filters[i].evaluate(path)) {
-          return false;
-        }
+        if (this.filters[i].scope === 'FILE' && pathStat.isFile() && !evaluation) return false;
+
+        if (this.filters[i].scope === 'ALL' && !evaluation) return false;
       }
       return true;
     } catch (e) {
