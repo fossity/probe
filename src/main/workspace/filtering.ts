@@ -102,7 +102,6 @@ class SizeFilter extends AbstractFilter {
 
   evaluate(path: string): boolean {
     const stat = fs.statSync(path);
-
     if (this.condition === '>') {
       if (stat.size > parseInt(this.value, 10)) {
         return false;
@@ -121,6 +120,7 @@ class SizeFilter extends AbstractFilter {
       }
       return true;
     }
+
     return true;
   }
 }
