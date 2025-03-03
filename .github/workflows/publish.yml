@@ -34,7 +34,7 @@ jobs:
         run:
           npm exec -- electron-builder build --win --publish never
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: artifact_w_unsigned
           path: |
