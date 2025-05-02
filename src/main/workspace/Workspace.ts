@@ -3,15 +3,20 @@ import * as fs from 'fs';
 import log from 'electron-log';
 import path from 'path';
 import { NewProjectDTO } from '@api/dto';
+import { app } from 'electron';
+import os from 'os';
+import { WorkspaceMigration } from 'migration/WorkspaceMigration';
 import { Project } from './Project';
-import { IMetadata, IProjectInfoMetadata, License, ProjectState } from '../../api/types';
+import {
+  IMetadata, IProjectInfoMetadata, License, ProjectState,
+} from '../../api/types';
 import { licenses } from '../../../assets/data/licenses';
 import { ProjectFilter } from './filters/ProjectFilter';
 import { Scanner } from '../task/scannerTask/types';
-import { WorkspaceMigration } from '../migration/WorkspaceMigration';
 import { userSettingService } from '../services/UserSettingService';
 import { Metadata } from './Metadata';
-import {AppDefaultValues} from "../../config/AppDefaultValues";
+import { AppDefaultValues } from '../../config/AppDefaultValues';
+import packageJson from '../../../release/app/package.json';
 
 class Workspace {
   private projectList: Array<Project>;
@@ -25,40 +30,36 @@ class Workspace {
   public async read(workspacePath: string) {
     this.wsPath = workspacePath;
     await this.initWorkspaceFileSystem();
-    log.transports.file.resolvePath = () =>  path.join(this.wsPath,AppDefaultValues.WORKSPACE.WORKSPACE_LOG);
+    log.transports.file.resolvePath = () => path.join(this.wsPath, AppDefaultValues.WORKSPACE.WORKSPACE_LOG);
     // if (this.projectList.length) this.close();  //Prevents to keep projects opened when directory changes
-    log.info(`%c[ WORKSPACE ]: Reading projects....`, 'color: green');
+    log.info('%c[ WORKSPACE ]: Reading projects....', 'color: green');
     const projectPaths = await this.getAllProjectsPaths();
-    const projectArray: Promise<Project>[] = projectPaths.map((projectPath) =>
-      Project.readFromPath(projectPath)
-        .then((p) => {
-          log.info(
-            `%c[ WORKSPACE ]: Successfully read project ${projectPath}`,
-            'color: green'
-          );
-          return p;
-        })
-        .catch((e) => {
-          log.info(
-            `%c[ WORKSPACE ]: Cannot read project ${projectPath}`,
-            'color: green'
-          );
-          throw e;
-        })
-    );
+    const projectArray: Promise<Project>[] = projectPaths.map((projectPath) => Project.readFromPath(projectPath)
+      .then((p) => {
+        log.info(
+          `%c[ WORKSPACE ]: Successfully read project ${projectPath}`,
+          'color: green',
+        );
+        return p;
+      })
+      .catch((e) => {
+        log.info(
+          `%c[ WORKSPACE ]: Cannot read project ${projectPath}`,
+          'color: green',
+        );
+        throw e;
+      }));
     let projectsReaded = (await Promise.allSettled(
-      projectArray
+      projectArray,
     )) as PromiseSettledResult<Project>[];
     projectsReaded = projectsReaded.filter((p) => p.status === 'fulfilled');
     this.projectList = projectsReaded.map(
-      (p) => (p as PromiseFulfilledResult<Project>).value
+      (p) => (p as PromiseFulfilledResult<Project>).value,
     );
   }
 
   public getProjectsMetadata(): Array<IMetadata> {
-    const projectMetadata: Array<IMetadata> = this.projectList.map((p) =>
-      p.getDto()
-    );
+    const projectMetadata: Array<IMetadata> = this.projectList.map((p) => p.getDto());
     return projectMetadata;
   }
 
@@ -77,25 +78,25 @@ class Workspace {
 
   public existProject(projectName: string): boolean {
     // eslint-disable-next-line no-restricted-syntax
-    for (let i = 0; i < this.projectList.length; i += 1)
-      if (this.projectList[i].getProjectName() === projectName) return true;
+    for (let i = 0; i < this.projectList.length; i += 1) if (this.projectList[i].getProjectName() === projectName) return true;
     return false;
   }
 
   public async removeProject(p: Project) {
     log.info(
       `%c[ WORKSPACE ]: Removing project ${p.getProjectName()}`,
-      'color: green'
+      'color: green',
     );
-    for (let i = 0; i < this.projectList.length; i += 1)
+    for (let i = 0; i < this.projectList.length; i += 1) {
       if (this.projectList[i].getProjectName() === p.getProjectName()) {
-        // eslint-disable-next-line no-await-in-loop
+      // eslint-disable-next-line no-await-in-loop
         await fs.promises.rm(this.projectList[i].getMyPath(), {
           recursive: true,
         });
         this.projectList.splice(i, 1);
         return true;
       }
+    }
     return false;
   }
 
@@ -117,7 +118,7 @@ class Workspace {
     const p: Project = this.getProject(filter);
     log.info(
       `%c[ WORKSPACE ]: Opening project ${filter.getParam()}`,
-      'color: green'
+      'color: green',
     );
     await p.upgrade();
     await p.open();
@@ -129,23 +130,22 @@ class Workspace {
   }
 
   public async closeAllProjects() {
-    log.info(`%c[ WORKSPACE ]: Closing all opened projects`, 'color: green');
+    log.info('%c[ WORKSPACE ]: Closing all opened projects', 'color: green');
     // eslint-disable-next-line no-restricted-syntax
-    for (const p of this.projectList)
-      if (p.getState() === ProjectState.OPENED) await p.close();
+    for (const p of this.projectList) if (p.getState() === ProjectState.OPENED) await p.close();
   }
 
   public async addProject(p: Project) {
     if (this.existProject(p.getProjectName())) {
       log.info(
-        `%c[ WORKSPACE ]: Project already exist and will be replaced`,
-        'color: green'
+        '%c[ WORKSPACE ]: Project already exist and will be replaced',
+        'color: green',
       );
       await this.removeProject(p);
     }
     log.info(
       `%c[ WORKSPACE ]: Adding project ${p.getProjectName()} to workspace`,
-      'color: green'
+      'color: green',
     );
     this.addNewProject(p);
     return this.projectList.length - 1;
@@ -161,16 +161,14 @@ class Workspace {
       .catch((e) => {
         log.info(
           `%c[ WORKSPACE ]: Cannot read the workspace directory ${this.wsPath}`,
-          'color: green'
+          'color: green',
         );
         log.error(e);
         throw e;
       });
-    const projectsDirEnt = workspaceStuff.filter((dirent) => {
-      return !dirent.isSymbolicLink() && !dirent.isFile();
-    });
+    const projectsDirEnt = workspaceStuff.filter((dirent) => !dirent.isSymbolicLink() && !dirent.isFile());
     const projectPaths = projectsDirEnt.map(
-      (dirent) => `${this.wsPath}/${dirent.name}`
+      (dirent) => `${this.wsPath}/${dirent.name}`,
     );
     return projectPaths;
   }
@@ -179,13 +177,27 @@ class Workspace {
     return licenses;
   }
 
+  private async addAppInfo(projectPath: string): Promise<void> {
+    const outputPath = path.join(projectPath, AppDefaultValues.PROJECT.OUTPUT, 'app-metadata.json');
+    const probeMetadata = {
+      version: app.isPackaged ? app.getVersion() : packageJson.version,
+      os: {
+        platform: process.platform, // 'darwin', 'win32', 'linux', etc.
+        arch: process.arch, // 'x64', 'arm64', etc.
+        type: os.type(), // 'Darwin', 'Windows_NT', 'Linux', etc.
+      },
+    };
+    await fs.promises.writeFile(outputPath, JSON.stringify(probeMetadata), 'utf8');
+  }
+
   public async createProject(projectDTO: NewProjectDTO): Promise<Project> {
     const newProject: Project = new Project();
-    const metadata = new Metadata(projectDTO.name, projectDTO.scan_root, path.join(workspace.getMyPath(),projectDTO.name));
+    const metadata = new Metadata(projectDTO.name, projectDTO.scan_root, path.join(workspace.getMyPath(), projectDTO.name));
     newProject.setMetadata(metadata);
     await this.addProject(newProject);
     await newProject.createProjectFolder();
-    await fs.promises.writeFile(path.join(newProject.getMyPath(),AppDefaultValues.PROJECT.OUTPUT,AppDefaultValues.PROJECT.OUTPUT_METADATA),JSON.stringify(projectDTO.projectInfo));
+    await fs.promises.writeFile(path.join(newProject.getMyPath(), AppDefaultValues.PROJECT.OUTPUT, AppDefaultValues.PROJECT.OUTPUT_METADATA), JSON.stringify(projectDTO.projectInfo));
+    await this.addAppInfo(newProject.getMyPath());
     newProject.save();
     return newProject;
   }
