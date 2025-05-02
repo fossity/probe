@@ -39,8 +39,10 @@ jobs:
           name: artifact_w_unsigned
           path: |
             release/build/${{ env.ARTIFACT_NAME_PREFIX }}*.exe
+            release/build/${{ env.ARTIFACT_NAME_PREFIX }}*.zip
             release/build/latest.yml
             release/build/*exe.blockmap
+            release/build/*zip.blockmap
           retention-days: 2
 
 
@@ -123,8 +125,10 @@ jobs:
           name: artifact_m
           path: |
             release/build/${{ env.ARTIFACT_NAME_PREFIX }}*.dmg
+            release/build/${{ env.ARTIFACT_NAME_PREFIX }}*.zip
             release/build/latest-mac.yml
             release/build/*dmg.blockmap
+            release/build/*zip.blockmap
           retention-days: 2
 
   build_l:
@@ -156,6 +160,7 @@ jobs:
           name: artifact_l
           path: |
             release/build/${{ env.ARTIFACT_NAME_PREFIX }}*.AppImage
+            release/build/${{ env.ARTIFACT_NAME_PREFIX }}*.zip
             release/build/latest-linux.yml
           retention-days: 2
 
@@ -191,4 +196,4 @@ jobs:
                             --repo ${{ github.server_url }}/${{ github.repository }} \
                             --generate-notes \
                             --draft \
-                            $(ls *.AppImage *.exe *.dmg *.yml *.blockmap)
+                            $(ls *.AppImage *.exe *.dmg *.yml *.blockmap *.zip)

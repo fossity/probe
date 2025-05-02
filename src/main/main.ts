@@ -34,13 +34,13 @@ import '../api/handlers/app.handler';
 
 import { broadcastManager } from './broadcastManager/BroadcastManager';
 
-class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
+autoUpdater.autoDownload = false;
+autoUpdater.setFeedURL({
+  provider: 'github',
+  owner: 'fossity',
+  repo: 'probe',
+  releaseType: 'release',
+});
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -107,6 +107,67 @@ const createWindow = async () => {
     } else {
       mainWindow.show();
     }
+    autoUpdater.checkForUpdates();
+  });
+
+  // Check for updates
+  autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for updates...');
+  });
+
+  // Handle available update
+  autoUpdater.on('update-available', (info) => {
+    console.log('Update available:', info);
+
+    // eslint-disable-next-line promise/catch-or-return
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'Update Available',
+      message: `Version ${info.version} is available.`,
+      detail: 'Would you like to download it now?',
+      buttons: ['Download', 'Later'],
+      cancelId: 1,
+    }).then((result) => {
+      if (result.response === 0) {
+        autoUpdater.downloadUpdate();
+      }
+    });
+  });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    log.info(`Download progress: ${progressObj.percent.toFixed(2)}%`);
+  });
+
+  autoUpdater.on('update-downloaded', (info) => {
+    log.info('Update downloaded:', info);
+
+    // eslint-disable-next-line promise/catch-or-return
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'Update Ready',
+      message: `Version ${info.version} has been downloaded.`,
+      detail: 'The application will restart to install the update.',
+      buttons: ['Restart Now', 'Later'],
+      cancelId: 1,
+    }).then((result) => {
+      if (result.response === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    });
+  });
+
+  autoUpdater.on('error', (error) => {
+    log.error('Update error:', error);
+
+    let errorMessage = error.message;
+
+    // If this is a 404 error for the ZIP file, suggest trying the DMG manually
+    if (error.message.includes('404') && error.message.includes('.zip')) {
+      const version = app.getVersion();
+      const { arch } = process;
+      errorMessage = 'The automatic update failed. Please download the latest version manually from:\n\nhttps://github.com/fossity/probe/releases/latest';
+    }
+    dialog.showErrorBox('Update Error', errorMessage);
   });
 
   mainWindow.on('closed', () => {
@@ -153,11 +214,7 @@ const createWindow = async () => {
  */
 
 app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
 });
 
 app
