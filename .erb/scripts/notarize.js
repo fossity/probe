@@ -12,6 +12,12 @@ exports.default = async function notarizeMacos(context) {
     return;
   }
 
+  // Verificar si la notarización está deshabilitada
+  if (build.mac && build.mac.notarize === false) {
+    console.log('Notarization is disabled in build config');
+    return;
+  }
+
   if (!('APPLE_ID' in process.env && 'APPLE_ID_PASS' in process.env)) {
     console.warn(
       'Skipping notarizing step. APPLE_ID and APPLE_ID_PASS env variables must be set'
