@@ -2,6 +2,7 @@
 
 export {licenses}
 
+// REUSE-IgnoreStart
 const licenses = [
 
      {
@@ -3113,3 +3114,4 @@ const licenses = [
         "url": ""
     }
 ]
+// REUSE-IgnoreEnd
